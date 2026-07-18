@@ -1,0 +1,909 @@
+/* =========================================================
+   app.js — theme, language, rendering, gallery, lightbox,
+   mobile menu, page transitions, scroll reveals.
+   Depends on `SITE` from data.js (loaded first).
+   Runs on index.html, about.html and case-study.html —
+   page-specific renderers bail out when their root element
+   is not present.
+   ========================================================= */
+(function () {
+  "use strict";
+
+  const root = document.documentElement;          // <html data-theme="...">
+  const STORE = { theme: "bs-theme", lang: "bs-lang" };
+  const GALLERY_MAX = 9;                          // ./Framer/<Project>/1.webp … 9.webp
+
+  /* ---------------------------------------------------------
+     1. THEME  (default dark; toggles data-theme on <html>)
+     --------------------------------------------------------- */
+  function applyTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    document.body.classList.toggle("light", theme === "light");
+    try { localStorage.setItem(STORE.theme, theme); } catch (e) {}
+  }
+
+  function initTheme() {
+    let saved;
+    try { saved = localStorage.getItem(STORE.theme); } catch (e) {}
+    applyTheme(saved || "dark");
+
+    document.getElementById("themeToggle").addEventListener("click", function () {
+      applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
+  }
+
+  /* ---------------------------------------------------------
+     2. LANGUAGE  (en / de) — swaps every [data-i18n] node
+     --------------------------------------------------------- */
+  let currentLang = "en";
+
+  /* resolve a dot-path ("home.why.title") through a nested dictionary */
+  function resolve(dict, key) {
+    return key.split(".").reduce(function (o, k) {
+      return (o == null) ? undefined : o[k];
+    }, dict);
+  }
+
+  function t(key) {
+    const val = resolve(SITE.text[currentLang], key);
+    if (val != null) return val;
+    const fallback = resolve(SITE.text.en, key);   // English fallback
+    return fallback != null ? fallback : key;
+  }
+
+  /* pick a bilingual value: {en, de} object or plain string */
+  function pick(val) {
+    if (val == null) return "";
+    if (typeof val === "string") return val;
+    return val[currentLang] || val.en || "";
+  }
+
+  function applyLang(lang) {
+    currentLang = SITE.text[lang] ? lang : "en";
+    root.setAttribute("lang", currentLang);
+
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      el.textContent = t(el.getAttribute("data-i18n"));
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(function (b) {
+      b.classList.toggle("is-active", b.dataset.lang === currentLang);
+    });
+
+    renderProjects();       // index page      (no-op elsewhere)
+    renderExperience();     // about page      (no-op elsewhere)
+    renderCaseStudy();      // case-study page (no-op elsewhere)
+    buildHeroRepel();       // re-split the (just-updated) hero title into letters
+    buildWordReveal();      // re-split scroll-reveal text into words
+    try { localStorage.setItem(STORE.lang, currentLang); } catch (e) {}
+  }
+
+  function initLang() {
+    let saved;
+    try { saved = localStorage.getItem(STORE.lang); } catch (e) {}
+    const browser = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
+    applyLang(saved || browser);
+
+    document.querySelectorAll(".lang-btn").forEach(function (b) {
+      b.addEventListener("click", function () { applyLang(b.dataset.lang); });
+    });
+  }
+
+  /* ---------------------------------------------------------
+     3. MOBILE MENU (hamburger <-> dropdown panel)
+     --------------------------------------------------------- */
+  function initMenu() {
+    const btn = document.getElementById("menuToggle");
+    const nav = document.getElementById("mainNav");
+    if (!btn || !nav) return;
+
+    function setOpen(open) {
+      nav.classList.toggle("open", open);
+      btn.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", String(open));
+    }
+
+    btn.addEventListener("click", function () {
+      setOpen(!nav.classList.contains("open"));
+    });
+    nav.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+  }
+
+  /* ---------------------------------------------------------
+     4. SHARED BUILDERS
+     --------------------------------------------------------- */
+  /* project card (used by the home grid and "other projects") */
+  function buildCard(p) {
+    const cat = pick(p.category);
+
+    const card = document.createElement("a");
+    card.className = "project-card";
+    card.href = p.link || "#";
+    card.setAttribute("aria-label", p.title + " — " + cat);
+
+    const media = document.createElement("div");
+    media.className = "project-media";
+    media.dataset.label = p.title;
+
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.alt = p.title + " project cover";
+    img.src = p.image;
+    img.addEventListener("error", function () {
+      img.remove();
+      media.classList.add("is-empty");
+    });
+    media.appendChild(img);
+
+    const info = document.createElement("div");
+    info.className = "project-info";
+    const name = document.createElement("span");
+    name.className = "project-name";
+    name.textContent = p.title;
+    const catEl = document.createElement("span");
+    catEl.className = "project-cat";
+    catEl.textContent = cat;
+    info.appendChild(name);
+    info.appendChild(catEl);
+
+    card.appendChild(media);
+    card.appendChild(info);
+    attachTilt(media);
+    return card;
+  }
+
+  /* 3D tilt-card effect (evade: tilts away from the cursor) + spotlight.
+     Ported from the React TiltCard; pointer/motion-safe. */
+  function attachTilt(el) {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const TILT = 12, SCALE = 1.05, PERSPECTIVE = 1200, DIR = -1;   // DIR -1 = "evade"
+    const rest = "perspective(" + PERSPECTIVE + "px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+
+    const spot = document.createElement("div");
+    spot.className = "tilt-spotlight";
+    spot.setAttribute("aria-hidden", "true");
+    el.appendChild(spot);
+
+    el.addEventListener("pointerenter", function () { el.classList.add("tilting"); });
+    el.addEventListener("pointermove", function (e) {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      const xRot = (py - 0.5) * (TILT * 2) * DIR;
+      const yRot = (px - 0.5) * -(TILT * 2) * DIR;
+      el.style.transform =
+        "perspective(" + PERSPECTIVE + "px) rotateX(" + xRot + "deg) rotateY(" + yRot +
+        "deg) scale3d(" + SCALE + "," + SCALE + "," + SCALE + ")";
+      spot.style.setProperty("--sx", (px * 100) + "%");
+      spot.style.setProperty("--sy", (py * 100) + "%");
+    });
+    el.addEventListener("pointerleave", function () {
+      el.style.transform = rest;
+      el.classList.remove("tilting");
+    });
+  }
+
+  /* fill a figure with an image; hide the figure if the file is missing */
+  function setMedia(container, src, alt) {
+    if (!container) return;
+    container.innerHTML = "";
+    container.classList.remove("is-hidden");
+
+    // no loading="lazy": a lazy image inside display:none is never fetched
+    const img = document.createElement("img");
+    img.decoding = "async";
+    img.alt = alt;
+    img.src = src;
+    img.tabIndex = 0;                       // lightbox: keyboard-operable
+    img.setAttribute("role", "button");
+    img.addEventListener("error", function () {
+      container.classList.add("is-hidden");
+    });
+    container.appendChild(img);
+  }
+
+  /* ---------------------------------------------------------
+     5. HOME — project grid + category filters
+     --------------------------------------------------------- */
+  let currentFilter = "all";              // "all" | "ux-ui" | "branding"
+
+  function renderProjects() {
+    const grid = document.getElementById("projectGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    SITE.projects
+      .filter(function (p) { return currentFilter === "all" || p.filter === currentFilter; })
+      .forEach(function (p) { grid.appendChild(buildCard(p)); });
+    observeReveals();
+  }
+
+  function initFilters() {
+    const buttons = document.querySelectorAll(".filter-btn");
+    if (!buttons.length) return;
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (btn.dataset.filter === currentFilter) return;
+        currentFilter = btn.dataset.filter;
+        buttons.forEach(function (b) { b.classList.toggle("is-active", b === btn); });
+        renderProjects();                 // cards re-enter with the reveal animation
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------
+     5b. SMOOTH CURSOR FOLLOWER
+         A small dot that trails the pointer + a larger ring
+         that lags further behind and grows over interactive
+         elements. Ported from the React cursor-follower.
+     --------------------------------------------------------- */
+  function initCursor() {
+    // pointer-only + motion-safe: keep the native cursor otherwise
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const wrap = document.createElement("div");
+    wrap.className = "cursor-follower";
+    wrap.setAttribute("aria-hidden", "true");
+    wrap.innerHTML = '<div class="cursor-dot"></div><div class="cursor-ring"></div>';
+    document.body.appendChild(wrap);
+    document.body.classList.add("has-custom-cursor");   // hides the native arrow
+
+    const dot = wrap.querySelector(".cursor-dot");
+    const ring = wrap.querySelector(".cursor-ring");
+
+    const DOT_SMOOTHNESS = 0.2;      // dot catches up quickly
+    const RING_SMOOTHNESS = 0.1;     // ring lags further behind
+
+    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const dotPos = { x: mouse.x, y: mouse.y };
+    const ringPos = { x: mouse.x, y: mouse.y };
+    let hovering = false;
+
+    // grow the ring over anything the mouse can meaningfully interact with
+    const INTERACTIVE = "a, button, img, input, textarea, select, [role='button'], .cs-figure";
+
+    window.addEventListener("mousemove", function (e) {
+      mouse.x = e.clientX; mouse.y = e.clientY;
+    }, { passive: true });
+
+    // event-delegated hover so it survives re-rendered cards / galleries
+    document.addEventListener("mouseover", function (e) {
+      if (e.target.closest(INTERACTIVE)) hovering = true;
+    });
+    document.addEventListener("mouseout", function (e) {
+      if (e.target.closest(INTERACTIVE) &&
+          !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(INTERACTIVE))) {
+        hovering = false;
+      }
+    });
+
+    function lerp(start, end, factor) { return start + (end - start) * factor; }
+
+    (function animate() {
+      dotPos.x = lerp(dotPos.x, mouse.x, DOT_SMOOTHNESS);
+      dotPos.y = lerp(dotPos.y, mouse.y, DOT_SMOOTHNESS);
+      ringPos.x = lerp(ringPos.x, mouse.x, RING_SMOOTHNESS);
+      ringPos.y = lerp(ringPos.y, mouse.y, RING_SMOOTHNESS);
+
+      dot.style.transform  = "translate(" + dotPos.x + "px, " + dotPos.y + "px) translate(-50%, -50%)";
+      ring.style.transform = "translate(" + ringPos.x + "px, " + ringPos.y + "px) translate(-50%, -50%)";
+      ring.classList.toggle("is-hover", hovering);
+
+      requestAnimationFrame(animate);
+    })();
+  }
+
+  /* ---------------------------------------------------------
+     5c. HERO TEXT — repel effect + fit-to-1440-width.
+         Splits "Hi, I'm Bohdan" (or the German title) into
+         letters that spring away from the cursor, and scales
+         the font so the line fills the full container width.
+         Ported from the framer-motion TextRepel component.
+     --------------------------------------------------------- */
+  const REPEL = { radius: 120, strength: 45, spring: 0.16, friction: 0.78 };
+  let heroEl = null;
+  let heroLetters = [];
+  let heroMouse = { x: -9999, y: -9999, active: false };
+  let heroReduced = false;
+  let heroLoopStarted = false;
+
+  /* natural text width (layout, ignores current transforms) */
+  function heroTextWidth() {
+    const range = document.createRange();
+    range.selectNodeContents(heroEl);
+    return range.getBoundingClientRect().width;
+  }
+
+  /* scale the font-size so the title fills the full available width */
+  function fitHeroTitle() {
+    if (!heroEl) return;
+    heroLetters.forEach(function (L) { L.x = L.y = L.vx = L.vy = 0; L.el.style.transform = ""; });
+    const avail = heroEl.clientWidth;
+    if (!avail) return;
+    let cur = parseFloat(getComputedStyle(heroEl).fontSize) || 100;
+    let w = heroTextWidth();
+    if (!w) return;
+    let next = cur * (avail / w);
+    heroEl.style.fontSize = next + "px";
+    w = heroTextWidth();                      // one refinement pass for precision
+    if (w) heroEl.style.fontSize = (next * (avail / w)) + "px";
+    measureHeroOrigins();
+  }
+
+  /* record each letter's rest centre relative to the container */
+  function measureHeroOrigins() {
+    if (!heroEl) return;
+    const cr = heroEl.getBoundingClientRect();
+    heroLetters.forEach(function (L) {
+      const r = L.el.getBoundingClientRect();
+      L.ox = r.left - cr.left + r.width / 2;
+      L.oy = r.top - cr.top + r.height / 2;
+    });
+  }
+
+  /* (re)build the per-letter spans from the current title text */
+  function buildHeroRepel() {
+    const el = document.querySelector(".hero-title");
+    if (!el) return;
+    heroEl = el;
+    heroReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const text = el.textContent;              // plain text just set by applyLang
+    el.textContent = "";
+    el.setAttribute("data-text-repel", "");
+    heroLetters = [];
+    Array.prototype.forEach.call(text, function (ch) {
+      const span = document.createElement("span");
+      span.className = "repel-letter";
+      span.textContent = ch === " " ? " " : ch;   // keep spaces measurable
+      el.appendChild(span);
+      heroLetters.push({ el: span, x: 0, y: 0, vx: 0, vy: 0, ox: 0, oy: 0 });
+    });
+
+    fitHeroTitle();
+
+    if (heroReduced) return;                  // motion-off: fitted text, no repel
+
+    // pointer handlers (idempotent — replace container each rebuild is fine,
+    // listeners live on the persistent element, guard against double-binding)
+    if (!el.dataset.repelBound) {
+      el.dataset.repelBound = "1";
+      el.addEventListener("mousemove", function (e) {
+        const r = el.getBoundingClientRect();
+        heroMouse.x = e.clientX - r.left;
+        heroMouse.y = e.clientY - r.top;
+        heroMouse.active = true;
+      });
+      el.addEventListener("mouseleave", function () {
+        heroMouse.active = false; heroMouse.x = -9999; heroMouse.y = -9999;
+      });
+    }
+    startHeroLoop();
+  }
+
+  function startHeroLoop() {
+    if (heroLoopStarted) return;
+    heroLoopStarted = true;
+    (function tick() {
+      for (let i = 0; i < heroLetters.length; i++) {
+        const L = heroLetters[i];
+        let tx = 0, ty = 0;
+        if (heroMouse.active) {
+          const dx = L.ox - heroMouse.x, dy = L.oy - heroMouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < REPEL.radius && dist > 0) {
+            const force = Math.pow(1 - dist / REPEL.radius, 2) * REPEL.strength;  // quadratic falloff
+            const ang = Math.atan2(dy, dx);
+            tx = Math.cos(ang) * force;
+            ty = Math.sin(ang) * force;
+          }
+        }
+        // simple bouncy spring toward the target displacement
+        L.vx = (L.vx + (tx - L.x) * REPEL.spring) * REPEL.friction;
+        L.vy = (L.vy + (ty - L.y) * REPEL.spring) * REPEL.friction;
+        L.x += L.vx; L.y += L.vy;
+        L.el.style.transform = "translate(" + L.x + "px, " + L.y + "px) rotate(" + (L.x * 0.3) + "deg)";
+      }
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  /* ---------------------------------------------------------
+     5e. SKILLS MARQUEE — infinite horizontal loop.
+         Two identical groups so the -50% keyframe wraps
+         seamlessly. Vanilla port of the Remotion marquee.
+     --------------------------------------------------------- */
+  function initMarquee() {
+    const track = document.getElementById("marqueeTrack");
+    if (!track || !SITE.marquee || !SITE.marquee.length) return;
+    track.innerHTML = "";
+
+    function buildGroup(hidden) {
+      const group = document.createElement("div");
+      group.className = "marquee-group";
+      if (hidden) group.setAttribute("aria-hidden", "true");   // duplicate isn't announced
+      SITE.marquee.forEach(function (item) {
+        const label = document.createElement("span");
+        label.className = "marquee-item";
+        label.textContent = item;
+        group.appendChild(label);
+        const sep = document.createElement("span");
+        sep.className = "marquee-sep";
+        sep.setAttribute("aria-hidden", "true");
+        sep.textContent = "✦";                            // ✦
+        group.appendChild(sep);
+      });
+      return group;
+    }
+
+    track.appendChild(buildGroup(false));
+    track.appendChild(buildGroup(true));   // second copy → seamless wrap at -50%
+  }
+
+  function initHero() {
+    if (!document.querySelector(".hero-title")) return;   // only the homepage
+    let rt = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(fitHeroTitle, 150);                 // re-fit + re-measure on resize
+    });
+    // fonts can load after first paint → re-fit once they're ready
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeroTitle);
+  }
+
+  /* ---------------------------------------------------------
+     5d. WORD-BY-WORD TEXT REVEAL on scroll (fade-in-blur).
+         Any [data-reveal-words] element has its text split into
+         staggered word spans that un-blur when scrolled into view.
+         Ported from the motion/react TextReveal component.
+     --------------------------------------------------------- */
+  let wordObs = null;
+  function buildWordReveal() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;   // text stays plain
+    const els = document.querySelectorAll("[data-reveal-words]");
+    if (!els.length) return;
+
+    if (!wordObs) {
+      wordObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("wr-in"); wordObs.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    }
+
+    els.forEach(function (el) {
+      const text = el.textContent;               // current-language plain text (set by applyLang)
+      if (!text.trim()) return;
+      el.setAttribute("aria-label", text);       // screen readers read the whole line
+      el.classList.remove("wr-in");              // reset so it re-reveals on language change
+      el.textContent = "";
+
+      let wi = 0;
+      text.split(/(\s+)/).forEach(function (part) {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { el.appendChild(document.createTextNode(part)); return; }  // keep spacing
+        const span = document.createElement("span");
+        span.className = "reveal-word";
+        span.setAttribute("aria-hidden", "true");
+        span.style.setProperty("--wr-i", wi++);
+        span.textContent = part;
+        el.appendChild(span);
+      });
+
+      wordObs.observe(el);
+    });
+  }
+
+  /* ---------------------------------------------------------
+     6. ABOUT — avatar + experience timeline
+     --------------------------------------------------------- */
+  function initAvatar() {
+    const wrap = document.getElementById("aboutAvatar");
+    if (!wrap) return;
+    const grid = document.getElementById("aboutGrid");
+
+    /* real file first ("Photo Avatar.webp" in the site root),
+       then generic fallbacks */
+    const sources = ["./Photo Avatar.webp", "./avatar.webp", "./avatar.jpg"];
+    let i = 0;
+
+    const img = document.createElement("img");
+    img.decoding = "async";
+    img.alt = "Portrait of Bohdan Savchenko";
+
+    img.addEventListener("load", function () {
+      wrap.classList.remove("is-hidden");
+      if (grid) grid.classList.remove("no-avatar");
+    });
+    img.addEventListener("error", function () {
+      i += 1;
+      if (i < sources.length) img.src = sources[i];   // try next extension
+      // else: stays hidden, grid stays single-column
+    });
+
+    img.src = sources[0];
+    wrap.appendChild(img);
+  }
+
+  function renderExperience() {
+    const list = document.getElementById("expList");
+    if (!list) return;
+    list.innerHTML = "";
+
+    SITE.experience.forEach(function (job) {
+      const li = document.createElement("li");
+      li.className = "exp-row";
+
+      const company = document.createElement("span");
+      company.className = "exp-company";
+      company.textContent = job.company;
+
+      const role = document.createElement("span");
+      role.className = "exp-role";
+      role.textContent = pick(job.role);
+
+      const period = document.createElement("span");
+      period.className = "exp-period";
+      period.textContent = job.period;
+
+      li.appendChild(company);
+      li.appendChild(role);
+      li.appendChild(period);
+      list.appendChild(li);
+    });
+  }
+
+  /* ---------------------------------------------------------
+     7. CASE STUDY  (case-study.html?project=<slug>)
+     --------------------------------------------------------- */
+  function renderCaseStudy() {
+    const page = document.getElementById("caseStudy");
+    if (!page) return;
+
+    const slug = new URLSearchParams(window.location.search).get("project");
+    const idx = SITE.projects.findIndex(function (p) { return p.slug === slug; });
+
+    if (idx === -1) {
+      page.innerHTML =
+        '<p class="cs-notfound">' + t("cs.notfound") + "</p>" +
+        '<a class="cs-back" href="./index.html">← ' + t("cs.back") + "</a>";
+      return;
+    }
+
+    const p = SITE.projects[idx];
+    const cs = p.caseStudy || {};
+    document.title = p.title + " — Bohdan Savchenko";
+
+    document.getElementById("csTitle").textContent = p.title;
+    document.getElementById("csType").textContent = pick(cs.type || p.category);
+    document.getElementById("csYear").textContent = cs.year || "";
+    document.getElementById("csRole").textContent = pick(cs.role);
+    document.getElementById("csClient").textContent = pick(cs.client);
+
+    ["overview", "problem", "research", "final"].forEach(function (key) {
+      const el = document.getElementById("cs_" + key);
+      if (el) el.textContent = pick(cs[key]);
+    });
+
+    // large hero image
+    setMedia(document.getElementById("csCover"), p.image, p.title + " cover");
+
+    renderGallery(p);
+    renderOtherProjects(idx);
+  }
+
+  /* automated gallery: collects <folder>/1.webp … 9.webp (falling
+     back to .gif per slot — e.g. Golden Draught ships 9.gif).
+     Candidates are appended optimistically (keeps DOM order) and
+     remove themselves if no file exists — gaps in numbering are fine.
+     The slot already used as the page hero (p.image) is skipped.
+     A cheap HEAD probe prunes missing slots immediately; the <img>
+     keeps loading="lazy" so real pixels still load on demand. */
+  function renderGallery(p) {
+    const grid = document.getElementById("csGallery");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    // optional per-project horizontal pair: p.pair = { nums:[9,8], cols:"1fr 2fr" }
+    const pair = p.pair || null;
+    const pairNums = pair ? pair.nums : [];
+    const pairFigs = {};                    // n -> figure, held out of the normal flow
+
+    for (let n = 1; n <= GALLERY_MAX; n++) {
+      const webp = p.folder + "/" + n + ".webp";
+      const gif  = p.folder + "/" + n + ".gif";
+      if (webp === p.image) continue;       // already shown as the hero
+
+      const fig = document.createElement("figure");
+      fig.className = "cs-figure";
+
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.alt = p.title + " — gallery image " + n;
+      img.src = webp;
+      img.tabIndex = 0;                     // lightbox: keyboard-operable
+      img.setAttribute("role", "button");
+      // .webp missing -> try .gif once; if that fails too, drop the slot
+      img.addEventListener("error", function () {
+        if (img.src.indexOf(".gif") === -1) { img.src = gif; }
+        else { fig.remove(); }
+      });
+
+      fig.appendChild(img);
+
+      if (pairNums.indexOf(n) !== -1) {
+        pairFigs[n] = fig;                  // keep for the horizontal row
+      } else {
+        grid.appendChild(fig);
+      }
+
+      // prune missing slots right away instead of waiting for the lazy
+      // fetch; if HEAD itself fails (e.g. file://), the img error
+      // handler above still covers it.
+      fetch(webp, { method: "HEAD" })
+        .then(function (r) {
+          if (r.ok) return;
+          return fetch(gif, { method: "HEAD" }).then(function (r2) {
+            if (r2.ok) { img.src = gif; } else { fig.remove(); }
+          });
+        })
+        .catch(function () {});
+    }
+
+    // build the horizontal pair row (in the configured order + column ratio)
+    if (pair && pairNums.some(function (n) { return pairFigs[n]; })) {
+      const row = document.createElement("div");
+      row.className = "cs-gallery-pair";
+      if (pair.cols) row.style.gridTemplateColumns = pair.cols;   // e.g. "1fr 2fr"
+
+      // the widest column drives the row height; the others fill to match it
+      let driverIdx = pairNums.length - 1;
+      if (pair.cols) {
+        const fr = pair.cols.split(/\s+/).map(function (v) { return parseFloat(v) || 0; });
+        driverIdx = fr.indexOf(Math.max.apply(null, fr));
+      }
+      pairNums.forEach(function (n, i) {
+        if (!pairFigs[n]) return;
+        pairFigs[n].classList.add(i === driverIdx ? "pair-tall" : "pair-fill");
+        row.appendChild(pairFigs[n]);
+      });
+      grid.appendChild(row);
+    }
+  }
+
+  /* "other projects" — up to 3 cards, excluding the current one */
+  function renderOtherProjects(currentIdx) {
+    const grid = document.getElementById("otherProjects");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    for (let step = 1; step <= 3 && step < SITE.projects.length; step++) {
+      const p = SITE.projects[(currentIdx + step) % SITE.projects.length];
+      grid.appendChild(buildCard(p));
+    }
+    observeReveals();
+  }
+
+  /* ---------------------------------------------------------
+     8. LIGHTBOX — click any .cs-figure image to zoom.
+        Overlay is built once; opening is event-delegated so
+        re-rendered figures keep working.
+     --------------------------------------------------------- */
+  function initLightbox() {
+    const lb = document.createElement("div");
+    lb.className = "lightbox";
+    lb.setAttribute("role", "dialog");
+    lb.setAttribute("aria-modal", "true");
+    lb.setAttribute("aria-label", "Image preview");
+    lb.innerHTML =
+      '<button type="button" class="lightbox-close" aria-label="Close image preview">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>' +
+      "</button>" +
+      '<button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image">' +
+      '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>' +
+      "</button>" +
+      '<img class="lightbox-img" alt="" />' +
+      '<button type="button" class="lightbox-nav lightbox-next" aria-label="Next image">' +
+      '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>' +
+      "</button>";
+    document.body.appendChild(lb);
+
+    const imgEl = lb.querySelector(".lightbox-img");
+    const closeBtn = lb.querySelector(".lightbox-close");
+    const prevBtn = lb.querySelector(".lightbox-prev");
+    const nextBtn = lb.querySelector(".lightbox-next");
+
+    let images = [];      // snapshot of the current gallery's <img> nodes
+    let index = -1;       // index within `images`
+    let lastFocus = null;
+
+    // load the image at position i and update arrow availability (no looping)
+    function show(i) {
+      if (i < 0 || i >= images.length) return;
+      index = i;
+      const img = images[i];
+      imgEl.src = img.currentSrc || img.src;
+      imgEl.alt = img.alt || "";
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === images.length - 1;
+      // never leave focus on a disabled arrow
+      if (document.activeElement === prevBtn && prevBtn.disabled) focusSafe(nextBtn);
+      if (document.activeElement === nextBtn && nextBtn.disabled) focusSafe(prevBtn);
+    }
+
+    function focusSafe(pref) {
+      if (pref && !pref.disabled) pref.focus();
+      else if (!nextBtn.disabled) nextBtn.focus();
+      else if (!prevBtn.disabled) prevBtn.focus();
+      else closeBtn.focus();
+    }
+
+    function next() { if (index < images.length - 1) show(index + 1); }
+    function prev() { if (index > 0) show(index - 1); }
+
+    function openFrom(clickedImg) {
+      // snapshot the gallery at open time so the index maps to what's on screen
+      images = Array.prototype.slice.call(document.querySelectorAll(".cs-gallery img"));
+      let i = images.indexOf(clickedImg);
+      if (i === -1) { images = [clickedImg]; i = 0; }   // fallback: standalone image
+      lastFocus = document.activeElement;
+      lb.classList.add("open");
+      document.body.classList.add("no-scroll");
+      show(i);
+      closeBtn.focus();
+    }
+
+    function close() {
+      lb.classList.remove("open");
+      document.body.classList.remove("no-scroll");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      setTimeout(function () {
+        if (!lb.classList.contains("open")) imgEl.removeAttribute("src");
+      }, 320);
+    }
+
+    // backdrop / image click closes; the controls handle their own clicks
+    lb.addEventListener("click", close);
+    prevBtn.addEventListener("click", function (e) { e.stopPropagation(); prev(); focusSafe(prevBtn); });
+    nextBtn.addEventListener("click", function (e) { e.stopPropagation(); next(); focusSafe(nextBtn); });
+
+    // open: delegated, survives case-study re-renders
+    document.addEventListener("click", function (e) {
+      const img = e.target.closest(".cs-figure img");
+      if (img) openFrom(img);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!lb.classList.contains("open")) {
+        // keyboard-open on a focused gallery image
+        if ((e.key === "Enter" || e.key === " ") && e.target.matches(".cs-figure img")) {
+          e.preventDefault();
+          openFrom(e.target);
+        }
+        return;
+      }
+      // lightbox is active
+      if (e.key === "Escape") { close(); return; }
+      if (e.key === "ArrowRight") { e.preventDefault(); next(); return; }
+      if (e.key === "ArrowLeft")  { e.preventDefault(); prev(); return; }
+      if (e.key === "Tab") {       // trap focus among the enabled controls
+        e.preventDefault();
+        const focusables = [prevBtn, nextBtn, closeBtn].filter(function (b) { return !b.disabled; });
+        const cur = focusables.indexOf(document.activeElement);
+        const dir = e.shiftKey ? -1 : 1;
+        focusables[(cur + dir + focusables.length) % focusables.length].focus();
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------
+     9. PAGE-TRANSITION FADE between internal pages
+     --------------------------------------------------------- */
+  function initPageFade() {
+    window.addEventListener("pageshow", function () {
+      document.body.classList.remove("page-exit");   // bfcache safety
+    });
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      const a = e.target.closest("a");
+      if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+
+      const href = a.getAttribute("href") || "";
+      if (!href || href.charAt(0) === "#" || href.indexOf("mailto:") === 0) return;
+
+      const url = new URL(a.href, window.location.href);
+      if (url.origin !== window.location.origin) return;                    // external
+      if (url.pathname === window.location.pathname && url.hash) return;    // same-page anchor
+      if (url.pathname === window.location.pathname &&
+          url.search === window.location.search && !url.hash) return;       // same page
+
+      e.preventDefault();
+      document.body.classList.add("page-exit");
+      setTimeout(function () { window.location.href = a.href; }, 220);
+    });
+  }
+
+  /* ---------------------------------------------------------
+     10. SCROLL REVEALS (Intersection Observer, staggered)
+     --------------------------------------------------------- */
+  let io;
+  function observeReveals() {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targets = document.querySelectorAll(".reveal:not(.in-view), .project-card:not(.in-view)");
+
+    if (prefersReduced || !("IntersectionObserver" in window)) {
+      targets.forEach(function (el) { el.classList.add("in-view"); });
+      return;
+    }
+
+    if (!io) {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const siblings = Array.from(el.parentElement ? el.parentElement.children : []);
+          const idx = el.classList.contains("project-card") ? siblings.indexOf(el) : 0;
+          el.style.transitionDelay = ((idx % 2 === 0 ? 0 : 80) + (idx > 1 ? 40 : 0)) + "ms";
+          el.classList.add("in-view");
+          io.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    }
+    targets.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------------------------------------------------------
+     11. Header border on scroll + footer year
+     --------------------------------------------------------- */
+  function initChrome() {
+    const header = document.getElementById("header");
+    const onScroll = function () {
+      header.classList.toggle("scrolled", window.scrollY > 8);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  }
+
+  /* ---------------------------------------------------------
+     Boot
+     --------------------------------------------------------- */
+  function init() {
+    initTheme();
+    initLang();      // triggers the first render pass + builds the hero letters
+    initFilters();
+    initCursor();
+    initHero();      // hero repel: resize/font re-fit (letters built via initLang)
+    initMarquee();   // skills loop (homepage only)
+    initMenu();
+    initAvatar();
+    initLightbox();
+    initPageFade();
+    initChrome();
+    observeReveals();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case Study — Bohdan Savchenko</title>
+  <meta name="description" content="UX/UI case study by Bohdan Savchenko." />
+
+  <!-- Fonts: Funnel Sans (matches the live Framer site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="header">
+    <div class="header-inner">
+      <a href="./index.html" class="logo">Bohdan Savchenko</a>
+
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+        <span class="lang-sep">/</span>
+        <button type="button" class="lang-btn" data-lang="de">DE</button>
+      </div>
+
+      <button type="button" id="themeToggle" class="theme-toggle" aria-label="Toggle color theme">
+        <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+        </svg>
+        <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+        </svg>
+      </button>
+
+      <nav class="main-nav" id="mainNav" aria-label="Primary">
+        <a href="./index.html" data-i18n="nav.work">work</a>
+        <a href="./about.html" data-i18n="nav.about">about me</a>
+      </nav>
+
+      <button type="button" class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Menu">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ CASE STUDY (populated from data.js by app.js) ============ -->
+  <main class="case-study" id="caseStudy">
+    <a class="cs-back" href="./index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span data-i18n="cs.back">all projects</span>
+    </a>
+
+    <h1 class="cs-title reveal" id="csTitle"></h1>
+
+    <!-- Large hero image -->
+    <figure class="cs-figure cs-hero-media reveal" id="csCover"></figure>
+
+    <!-- project overview: label + lead text, spanning the full width -->
+    <section class="cs-overview reveal">
+      <p class="cs-label" data-i18n="cs.overview">project overview</p>
+      <p class="cs-lead" id="cs_overview"></p>
+    </section>
+
+    <!-- project details: 4 items in a single horizontal row (4 columns) -->
+    <dl class="cs-meta-row reveal" aria-label="Project details">
+      <div class="cs-meta-item">
+        <dt data-i18n="cs.type">project type</dt>
+        <dd id="csType"></dd>
+      </div>
+      <div class="cs-meta-item">
+        <dt data-i18n="cs.year">year</dt>
+        <dd id="csYear"></dd>
+      </div>
+      <div class="cs-meta-item">
+        <dt data-i18n="cs.role">my role</dt>
+        <dd id="csRole"></dd>
+      </div>
+      <div class="cs-meta-item">
+        <dt data-i18n="cs.client">client</dt>
+        <dd id="csClient"></dd>
+      </div>
+    </dl>
+
+    <!-- remaining content sections, full width -->
+    <div class="cs-sections reveal">
+      <section class="cs-section">
+        <h2 data-i18n="cs.problem">the problem</h2>
+        <p class="cs-text" id="cs_problem"></p>
+      </section>
+      <section class="cs-section">
+        <h2 data-i18n="cs.research">user research &amp; wireframes</h2>
+        <p class="cs-text" id="cs_research"></p>
+      </section>
+      <section class="cs-section">
+        <h2 data-i18n="cs.final">final ui</h2>
+        <p class="cs-text" id="cs_final"></p>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Auto-collected gallery: <folder>/1…9.webp|.gif (app.js).
+       Placed OUTSIDE <main> so it freely expands to 1440px. -->
+  <div class="cs-gallery reveal" id="csGallery" aria-label="Project gallery"></div>
+
+  <!-- Other projects -->
+  <section class="cs-other reveal">
+    <h2 class="display-title" data-i18n="cs.other">other projects</h2>
+    <div class="project-grid" id="otherProjects"></div>
+  </section>
+
+  <!-- ============ FOOTER (3 tiers) ============ -->
+  <footer class="site-footer reveal" id="contact">
+    <!-- tier 1: get in — [Let's Go! gif] — touch -->
+    <div class="footer-top">
+      <span class="footer-word" data-i18n="footer.get">get in</span>
+      <a class="footer-go" href="mailto:savchenko.body@gmail.com" aria-label="Email me — Let's Go!">
+        <img class="footer-go-gif" src="./Lets go.gif" alt="" aria-hidden="true"
+             onerror="this.closest('.footer-go').classList.add('no-gif'); this.remove();" />
+        <span class="footer-go-text">Let's Go! &rarr;</span>
+      </a>
+      <span class="footer-word" data-i18n="footer.touch">touch</span>
+    </div>
+
+    <!-- tier 2: meta (left) + social (right) -->
+    <div class="footer-mid">
+      <div class="footer-meta">
+        <p><span data-i18n="footer.emailLabel">email:</span> <a href="mailto:savchenko.body@gmail.com">savchenko.body@gmail.com</a></p>
+        <p data-i18n="footer.based">Based in: Leipzig, Germany</p>
+        <p data-i18n="footer.available">available for: freelance projects &amp; full-time</p>
+      </div>
+      <nav class="footer-social" aria-label="Social">
+        <a href="https://www.linkedin.com/in/savchenkobohdan/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://www.behance.net/savchenkob5285" target="_blank" rel="noopener noreferrer">Behance</a>
+        <a href="https://www.youtube.com/@HardBitEasy" target="_blank" rel="noopener noreferrer">Youtube</a>
+      </nav>
+    </div>
+
+    <!-- tier 3: giant name touching the bottom edge -->
+    <div class="footer-bottom">
+      <span class="footer-name">Bohdan Savchenko</span>
+    </div>
+  </footer>
+
+  <!-- floating contact button -->
+  <a class="contact-fab" href="mailto:savchenko.body@gmail.com" data-i18n="footer.fab">contact me</a>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

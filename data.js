@@ -236,7 +236,7 @@ const SITE = {
       category: { en: "mobile app", de: "mobile app" },
       folder: "./in-car",
       image: "./in-car/0.webp",
-      link: "./case-study.html?project=incar",
+      link: "./case-study.html?project=in-car",
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
         role: { en: "ux/ui designer", de: "ux/ui designer" },
@@ -267,7 +267,7 @@ const SITE = {
       category: { en: "mobile app", de: "mobile app" },
       folder: "./trip-go",
       image: "./trip-go/0.webp",
-      link: "./case-study.html?project=tripgo",
+      link: "./case-study.html?project=trip-go",
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
         role: { en: "ux/ui designer", de: "ux/ui designer" },

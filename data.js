@@ -167,10 +167,10 @@ const SITE = {
     {
       slug: "aura",
       filter: "ux-ui",
-      title: "aura-music player",
+      title: "Aura: Music Player",
       category: { en: "mobile app", de: "mobile app" },
-      folder: "./AURA-Music Player",
-      image: "./AURA-Music Player/1.webp",
+      folder: "./aura",
+      image: "./aura/1.webp",
       link: "./case-study.html?project=aura",
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
@@ -198,10 +198,10 @@ const SITE = {
     {
       slug: "golden-draught",
       filter: "branding",
-      title: "golden draught",
+      title: "Golden Draught",
       category: { en: "brand identity & positioning", de: "markenidentität & positionierung" },
-      folder: "./Golden Draught",
-      image: "./Golden Draught/1.webp",
+      folder: "./golden-draught",
+      image: "./golden-draught/1.webp",
       link: "./case-study.html?project=golden-draught",
       /* last two gallery images side-by-side: 9.gif (left) + 8.webp (right),
          9.gif half the width of 8.webp */
@@ -230,12 +230,12 @@ const SITE = {
       }
     },
     {
-      slug: "incar",
+      slug: "in-car",
       filter: "ux-ui",
-      title: "incar: car rental app",
+      title: "Incar: car rental app",
       category: { en: "mobile app", de: "mobile app" },
-      folder: "./InCar",
-      image: "./InCar/0.webp",
+      folder: "./in-car",
+      image: "./in-car/0.webp",
       link: "./case-study.html?project=incar",
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
@@ -243,8 +243,8 @@ const SITE = {
         client: { en: "concept project", de: "konzeptprojekt" },
         year: "2024",
         overview: {
-          en: "InCar is a car rental app concept that turns a stressful booking process into a three-step flow.",
-          de: "InCar ist ein App-Konzept für Autovermietung, das einen stressigen Buchungsprozess in einen Flow mit drei Schritten verwandelt."
+          en: "Incar is a car rental app concept that turns a stressful booking process into a three-step flow.",
+          de: "Incar ist ein App-Konzept für Autovermietung, das einen stressigen Buchungsprozess in einen Flow mit drei Schritten verwandelt."
         },
         problem: {
           en: "Rental services hide fees and bury insurance details, eroding user trust exactly at checkout.",
@@ -261,12 +261,12 @@ const SITE = {
       }
     },
     {
-      slug: "tripgo",
+      slug: "trip-go",
       filter: "ux-ui",
-      title: "tripgo",
+      title: "Tripgo",
       category: { en: "mobile app", de: "mobile app" },
-      folder: "./TripGo",
-      image: "./TripGo/0.webp",
+      folder: "./trip-go",
+      image: "./trip-go/0.webp",
       link: "./case-study.html?project=tripgo",
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
@@ -294,10 +294,10 @@ const SITE = {
     {
       slug: "habit-tracker",
       filter: "ux-ui",
-      title: "habit tracker",
+      title: "Habit tracker",
       category: { en: "mobile app", de: "mobile app" },
-      folder: "./Habit Tracker",
-      image: "./Habit Tracker/0.webp",
+      folder: "./habit-tracker",
+      image: "./habit-tracker/0.webp",
       link: "./case-study.html?project=habit-tracker",
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
@@ -305,7 +305,7 @@ const SITE = {
         client: { en: "concept project", de: "konzeptprojekt" },
         year: "2025",
         overview: {
-          en: "A habit tracking app concept built around gentle consistency instead of streak anxiety.",
+          en: "A Habit tracking app concept built around gentle consistency instead of streak anxiety.",
           de: "Ein Habit-Tracker-Konzept, das auf sanfte Konstanz statt Streak-Druck setzt."
         },
         problem: {

@@ -411,6 +411,11 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
     min-height: 0;
     /* img already uses object-fit: cover, so every shape is filled cleanly */
   }
+  #projectGrid .project-media img {
+    object-fit: cover;              /* fill the card — no blank background */
+    width: 100%;
+    height: 100%;
+  }
 
   /* pin the columns so the tall/short pattern stays consistent side-to-side */
   #projectGrid .project-card:nth-child(odd)  { grid-column: 1; }   /* left  */
@@ -619,15 +624,15 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   cursor: zoom-in;
 }
 
-/* horizontal pair row (e.g. Golden Draught: 9.gif + 8.webp side by side,
-   column ratio set inline per project — default 1fr 2fr).
-   The wider image (.pair-tall) sets the row height at its natural ratio;
-   the narrower one (.pair-fill) matches that exact height. */
+/* horizontal group row (2–3 images side by side). Columns/gap/ratio are set
+   inline per project. MOBILE: stacked, natural height (default gallery flow).
+   DESKTOP (≥768px): a real horizontal row. Two modes:
+     • .is-equal  → every block identical (shared aspect-ratio) + object-fit cover
+     • default    → widest column (.pair-tall) drives height, others (.pair-fill) match */
 .cs-gallery-pair {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 40px;            /* equal gap between the two */
-  align-items: stretch;  /* both figures share the same height */
+  display: flex;                 /* mobile: plain vertical stack */
+  flex-direction: column;
+  gap: 40px;
   width: 100%;
 }
 .cs-gallery-pair .cs-figure {
@@ -636,19 +641,24 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   border-radius: 16px;
   overflow: hidden;
 }
-/* height driver — renders at its natural aspect ratio */
-.cs-gallery-pair .pair-tall img { width: 100%; height: auto; display: block; }
-/* matches the driver's height exactly, filling its column (crops to fit) */
-.cs-gallery-pair .pair-fill img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-}
-/* stack on mobile so the narrow gif isn't squished */
-@media (max-width: 640px) {
-  .cs-gallery-pair { grid-template-columns: 1fr; align-items: start; }
-  .cs-gallery-pair .pair-fill img { position: static; height: auto; object-fit: contain; }
+.cs-gallery-pair .cs-figure img { width: 100%; height: auto; object-fit: contain; display: block; }
+
+@media (min-width: 768px) {
+  .cs-gallery-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;    /* overridden inline (e.g. "1fr 2fr", "1fr 1fr 1fr") */
+    gap: var(--pair-gap, 40px);        /* uniform gap, set inline per project */
+    align-items: stretch;              /* all blocks share the same height */
+  }
+  /* tall/fill mode */
+  .cs-gallery-pair .pair-tall img { width: 100%; height: auto; object-fit: contain; }
+  .cs-gallery-pair .pair-fill img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* equal mode — identical dimensions via a shared aspect-ratio + cover */
+  .cs-gallery-pair.is-equal .cs-figure { aspect-ratio: var(--pair-ratio, 4 / 3); }
+  .cs-gallery-pair.is-equal .cs-figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* contain mode — side by side, whole image shown (no crop) */
+  .cs-gallery-pair.is-contain { align-items: start; }   /* size to content, no stretch gaps */
+  .cs-gallery-pair.is-contain .cs-figure img { object-fit: contain; width: 100%; height: auto; }
 }
 
 /* lives outside <main> (after the full-width gallery), so it carries

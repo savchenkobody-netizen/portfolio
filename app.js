@@ -612,10 +612,21 @@
     if (!grid) return;
     grid.innerHTML = "";
 
-    // optional per-project horizontal pair: p.pair = { nums:[9,8], cols:"1fr 2fr" }
-    const pair = p.pair || null;
-    const pairNums = pair ? pair.nums : [];
-    const pairFigs = {};                    // n -> figure, held out of the normal flow
+    /* optional per-project horizontal groups (each becomes a side-by-side row,
+       inserted in place at its lowest image number). Supports the legacy
+       single `pair` too.
+         { nums:[3,4], cols:"1fr 1fr", gap:"16px", ratio:"4 / 3" }  → equal blocks
+         { nums:[9,8], cols:"1fr 2fr", gap:"40px" }                 → tall/fill    */
+    const groups = p.groups || (p.pair ? [p.pair] : []);
+    const numToGroup = {};       // image n -> group index
+    const groupFigs = {};        // group index -> { n: figure }
+    const groupRows = {};        // group index -> row element (placed in flow)
+    const groupFirst = {};       // group index -> lowest n (insertion point)
+    groups.forEach(function (g, gi) {
+      groupFigs[gi] = {};
+      groupFirst[gi] = Math.min.apply(null, g.nums);
+      g.nums.forEach(function (n) { numToGroup[n] = gi; });
+    });
 
     for (let n = 1; n <= GALLERY_MAX; n++) {
       const webp = p.folder + "/" + n + ".webp";
@@ -640,8 +651,20 @@
 
       fig.appendChild(img);
 
-      if (pairNums.indexOf(n) !== -1) {
-        pairFigs[n] = fig;                  // keep for the horizontal row
+      const gi = numToGroup[n];
+      if (gi !== undefined) {
+        groupFigs[gi][n] = fig;             // held for its horizontal row
+        if (n === groupFirst[gi]) {         // place the (empty) row here, in order
+          const row = document.createElement("div");
+          row.className = "cs-gallery-pair";
+          const g = groups[gi];
+          if (g.cols) row.style.gridTemplateColumns = g.cols;
+          if (g.gap) row.style.setProperty("--pair-gap", g.gap);
+          if (g.ratio) { row.classList.add("is-equal"); row.style.setProperty("--pair-ratio", g.ratio); }
+          else if (g.fit === "contain") { row.classList.add("is-contain"); }
+          groupRows[gi] = row;
+          grid.appendChild(row);
+        }
       } else {
         grid.appendChild(fig);
       }
@@ -659,25 +682,23 @@
         .catch(function () {});
     }
 
-    // build the horizontal pair row (in the configured order + column ratio)
-    if (pair && pairNums.some(function (n) { return pairFigs[n]; })) {
-      const row = document.createElement("div");
-      row.className = "cs-gallery-pair";
-      if (pair.cols) row.style.gridTemplateColumns = pair.cols;   // e.g. "1fr 2fr"
-
-      // the widest column drives the row height; the others fill to match it
-      let driverIdx = pairNums.length - 1;
-      if (pair.cols) {
-        const fr = pair.cols.split(/\s+/).map(function (v) { return parseFloat(v) || 0; });
+    // fill each group's row in its configured order
+    groups.forEach(function (g, gi) {
+      const row = groupRows[gi];
+      if (!row) return;
+      let driverIdx = g.nums.length - 1;    // tall/fill mode: widest column drives height
+      if (!g.ratio && g.cols) {
+        const fr = g.cols.split(/\s+/).map(function (v) { return parseFloat(v) || 0; });
         driverIdx = fr.indexOf(Math.max.apply(null, fr));
       }
-      pairNums.forEach(function (n, i) {
-        if (!pairFigs[n]) return;
-        pairFigs[n].classList.add(i === driverIdx ? "pair-tall" : "pair-fill");
-        row.appendChild(pairFigs[n]);
+      g.nums.forEach(function (n, i) {
+        const fig = groupFigs[gi][n];
+        if (!fig) return;
+        // tall/fill classes only for the default mode (not equal, not contain)
+        if (!g.ratio && g.fit !== "contain") fig.classList.add(i === driverIdx ? "pair-tall" : "pair-fill");
+        row.appendChild(fig);
       });
-      grid.appendChild(row);
-    }
+    });
   }
 
   /* "other projects" — up to 3 cards, excluding the current one */

@@ -141,6 +141,8 @@ const SITE = {
       folder: "./audiophil",
       image: "./audiophil/1.webp",
       link: "./case-study.html?project=audiophil",
+      /* desktop: images 3 + 4 side by side, shown in full (contain, no crop) */
+      groups: [ { nums: [3, 4], cols: "1fr 1fr", gap: "16px", fit: "contain" } ],
       caseStudy: {
         type: { en: "mobile app design", de: "mobile app design" },
         role: { en: "ux/ui designer", de: "ux/ui designer" },
@@ -172,6 +174,8 @@ const SITE = {
       folder: "./aura",
       image: "./aura/1.webp",
       link: "./case-study.html?project=aura",
+      /* desktop: images 7, 9, 8 in one equal 3-up horizontal row (that order) */
+      groups: [ { nums: [7, 9, 8], cols: "1fr 1fr 1fr", gap: "16px", ratio: "4 / 3" } ],
       caseStudy: {
         type: { en: "mobile app", de: "mobile app" },
         role: { en: "ux/ui designer", de: "ux/ui designer" },
@@ -203,9 +207,13 @@ const SITE = {
       folder: "./golden-draught",
       image: "./golden-draught/1.webp",
       link: "./case-study.html?project=golden-draught",
-      /* last two gallery images side-by-side: 9.gif (left) + 8.webp (right),
-         9.gif half the width of 8.webp */
-      pair: { nums: [9, 8], cols: "1fr 2fr" },
+      /* desktop rows:
+         • images 6 + 7 as an equal pair
+         • images 9.gif + 8.webp — 9.gif half the width of 8.webp (tall/fill) */
+      groups: [
+        { nums: [6, 7], cols: "1fr 1fr", gap: "16px", ratio: "4 / 3" },
+        { nums: [9, 8], cols: "1fr 2fr", gap: "40px" }
+      ],
       caseStudy: {
         type: { en: "brand identity & positioning", de: "markenidentität & positionierung" },
         role: { en: "brand identity, art direction", de: "markenidentität, art direction" },

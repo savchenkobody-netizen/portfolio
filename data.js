@@ -114,13 +114,41 @@ const SITE = {
 
   /* about.html — experience timeline (top = most recent) */
   experience: [
-    { company: "neue fische | bootcamp",  role: { en: "ux/ui design & ai student",        de: "ux/ui design & ki student" },          period: "2026 " },
-    { company: "werbeagentur wurzen",     role: { en: "digital & print media designer",   de: "digital- & printmediengestalter" },    period: "2024 – 2025" },
-    { company: "freelance",               role: { en: "media designer",                   de: "mediengestalter" },                    period: "2018 – 2022" },
-    { company: "w. l. anczyca sa",        role: { en: "print & graphic designer",         de: "print- & grafikdesigner" },            period: "2017" },
-    { company: "self-education",          role: { en: "design student",                   de: "design-student" },                     period: "2016" },
-    { company: "w. l. anczyca sa",        role: { en: "post-press operator",              de: "post-press operator" },                period: "2015" },
-    { company: "lviv polytechnic",        role: { en: "post-press operator",              de: "post-press operator" },                period: "2010 – 2015" }
+    { company: "neue fische | bootcamp",  role: { en: "ux/ui design & ai student",        de: "ux/ui design & ki student" },
+      description: {
+        en: "advancing digital skills in a specialized bootcamp, focusing on user-centric product development, wireframing, and figma prototyping",
+        de: "Ausbau digitaler Fähigkeiten in einem spezialisierten Bootcamp mit Fokus auf nutzerzentrierte Produktentwicklung, Wireframing und Figma-Prototyping"
+      }, period: "2026" },
+    { company: "werbeagentur wurzen",     role: { en: "digital & print media designer",   de: "digital- & printmediengestalter" },
+      description: {
+        en: "developed concepts and designs for diverse print and digital media, managed professional prepress data creation and coordinated directly with printing companies",
+        de: "Entwicklung von Konzepten und Designs für vielfältige Print- und Digitalmedien, professionelle Druckvorstufe und direkte Abstimmung mit Druckereien"
+      }, period: "2024 – 2025" },
+    { company: "freelance",               role: { en: "media designer",                   de: "mediengestalter" },
+      description: {
+        en: "independently managed design projects for small businesses and startups",
+        de: "eigenständige Betreuung von Designprojekten für kleine Unternehmen und Startups"
+      }, period: "2018 – 2022" },
+    { company: "w. l. anczyca sa",        role: { en: "print & graphic designer",         de: "print- & grafikdesigner" },
+      description: {
+        en: "designed and prepared various print products for production, worked directly with production data",
+        de: "Gestaltung und Vorbereitung verschiedener Druckprodukte für die Produktion, direkte Arbeit mit Produktionsdaten"
+      }, period: "2017" },
+    { company: "independent study",       role: { en: "design student",                   de: "design-student" },
+      description: {
+        en: "deepened professional knowledge in typography, layout, and fundamental design principles through dedicated self-study",
+        de: "Vertiefung fachlicher Kenntnisse in Typografie, Layout und grundlegenden Gestaltungsprinzipien im Selbststudium"
+      }, period: "2016" },
+    { company: "w. l. anczyca sa",        role: { en: "post-press operator",              de: "post-press operator" },
+      description: {
+        en: "managed print finishing operations, including cutting, folding, and packaging of printed materials",
+        de: "Verantwortung für die Druckweiterverarbeitung, einschließlich Schneiden, Falzen und Verpacken von Druckerzeugnissen"
+      }, period: "2015" },
+    { company: "lviv polytechnic",        role: { en: "post-press operator",              de: "post-press operator" },
+      description: {
+        en: "gained hands-on experience in post-press production workflows and physical print finishing processes",
+        de: "praktische Erfahrung in Workflows der Druckweiterverarbeitung und physischen Endfertigungsprozessen"
+      }, period: "2010 – 2015" }
   ],
 
   /* homepage skills marquee (loops between the hero and the work grid) */

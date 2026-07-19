@@ -506,16 +506,18 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   display: grid;
   /* fixed last column so every row shares the same track widths — otherwise
      the auto period column varies per row and shifts the middle column */
-  grid-template-columns: 1.2fr 1fr 160px;
-  gap: 16px 24px;
-  align-items: baseline;
-  padding: 20px 0;
+  grid-template-columns: 1fr 1.4fr 200px;
+  gap: 16px 32px;
+  align-items: center;
+  padding: 24px 0;
   border-top: 1px solid var(--border);
 }
 .exp-row:last-child { border-bottom: 1px solid var(--border); }
-.exp-company { font-size: 1rem; font-weight: 500; }
+.exp-who { display: flex; flex-direction: column; gap: 4px; }
+.exp-company { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); }
 .exp-role { font-size: .875rem; font-weight: 400; color: var(--text-muted); text-align: left; }
-.exp-period { font-size: 1rem; font-weight: 500; color: var(--text); white-space: nowrap; text-align: right; }
+.exp-description { font-size: .875rem; font-weight: 400; line-height: 1.5; color: var(--text-muted); margin: 0; }
+.exp-period { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); white-space: nowrap; text-align: right; }
 
 /* =========================================================
    CASE STUDY PAGE
@@ -939,8 +941,12 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none; }
   .main-nav a { font-size: 1.15rem; font-weight: 600; color: var(--text); padding: 14px 0; width: 100%; }
   .main-nav a::after { display: none; }
 
-  .exp-row { grid-template-columns: 1fr auto; }
-  .exp-role { grid-column: 1 / -1; margin-top: -10px; }
+  .exp-row { grid-template-columns: 1fr auto; row-gap: 4px; align-items: start; }
+  .exp-who { display: contents; }
+  .exp-company { grid-column: 1; grid-row: 1; }
+  .exp-role { grid-column: 1; grid-row: 2; }
+  .exp-period { grid-column: 2; grid-row: 1; }
+  .exp-description { grid-column: 1 / -1; grid-row: 3; margin-top: 12px; }
   .about-cols, .about-cols.no-avatar { grid-template-columns: 1fr; }
   .about-cols .about-portrait { aspect-ratio: 4 / 5; }
   /* footer CTA stacks: get in / button / touch */

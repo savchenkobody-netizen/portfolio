@@ -512,7 +512,7 @@
 
     /* real file first ("Photo Avatar.webp" in the site root),
        then generic fallbacks */
-    const sources = ["./Photo Avatar.webp", "./avatar.webp", "./avatar.jpg"];
+    const sources = ["/Photo Avatar.webp", "/avatar.webp", "/avatar.jpg"];
     let i = 0;
 
     const img = document.createElement("img");
@@ -542,6 +542,9 @@
       const li = document.createElement("li");
       li.className = "exp-row";
 
+      const who = document.createElement("div");
+      who.className = "exp-who";
+
       const company = document.createElement("span");
       company.className = "exp-company";
       company.textContent = job.company;
@@ -550,12 +553,19 @@
       role.className = "exp-role";
       role.textContent = pick(job.role);
 
+      who.appendChild(company);
+      who.appendChild(role);
+
+      const description = document.createElement("p");
+      description.className = "exp-description";
+      description.textContent = pick(job.description);
+
       const period = document.createElement("span");
       period.className = "exp-period";
       period.textContent = job.period;
 
-      li.appendChild(company);
-      li.appendChild(role);
+      li.appendChild(who);
+      li.appendChild(description);
       li.appendChild(period);
       list.appendChild(li);
     });
@@ -574,7 +584,7 @@
     if (idx === -1) {
       page.innerHTML =
         '<p class="cs-notfound">' + t("cs.notfound") + "</p>" +
-        '<a class="cs-back" href="./index.html">← ' + t("cs.back") + "</a>";
+        '<a class="cs-back" href="/">← ' + t("cs.back") + "</a>";
       return;
     }
 

@@ -405,7 +405,10 @@
     return range.getBoundingClientRect().width;
   }
 
-  /* scale the font-size so the title fills the full available width */
+  /* scale the font-size to fill the available text-column width, capped so
+     the title stays balanced next to the hero photo (never stretches past
+     HERO_MAX_FONT even though the text column itself is much wider) */
+  const HERO_MAX_FONT = 96;   // px — matches .hero-title's CSS clamp() max
   function fitHeroTitle() {
     if (!heroEl) return;
     heroLetters.forEach(function (L) { L.x = L.y = L.vx = L.vy = 0; L.el.style.transform = ""; });
@@ -414,10 +417,10 @@
     let cur = parseFloat(getComputedStyle(heroEl).fontSize) || 100;
     let w = heroTextWidth();
     if (!w) return;
-    let next = cur * (avail / w);
+    let next = Math.min(cur * (avail / w), HERO_MAX_FONT);
     heroEl.style.fontSize = next + "px";
-    w = heroTextWidth();                      // one refinement pass for precision
-    if (w) heroEl.style.fontSize = (next * (avail / w)) + "px";
+    w = heroTextWidth();
+    if (w > avail) heroEl.style.fontSize = (next * (avail / w)) + "px";   // narrow mobile column: shrink below the cap to avoid overflow
     measureHeroOrigins();
   }
 

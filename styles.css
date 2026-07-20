@@ -248,9 +248,30 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 /* =========================================================
    HOME — HERO
    ========================================================= */
-.hero { padding-block: clamp(140px, 24vh, 220px) clamp(40px, 6vw, 72px); }
+.hero {
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  padding-block: clamp(140px, 24vh, 220px) clamp(40px, 6vw, 72px);
+}
+/* profile photo — fixed circular size, never shrinks */
+.hero-photo {
+  flex: 0 0 auto;
+  width: clamp(120px, 12vw, 200px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
+.hero-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* text column — takes the remaining width; min-width:0 lets the flex item
+   shrink below the nowrap title's natural width so fitHeroTitle() (app.js)
+   can scale the font down to exactly this column's width */
+.hero-text { flex: 1 1 auto; min-width: 0; text-align: left; }
+
 .hero-title {
-  font-size: clamp(40px, 8vw, 130px);        /* fallback; JS fits it to the full 1440 width */
+  font-size: clamp(32px, 6vw, 96px);         /* fallback; JS fits it to the text column's width */
   letter-spacing: -0.06em;
   line-height: 1.1;
   color: var(--text-bright);
@@ -272,6 +293,17 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   font-weight: 600;
   color: var(--text-muted);
   text-align: left;                          /* aligned to the left edge, in line with the rest */
+}
+
+@media (max-width: 720px) {
+  .hero { flex-direction: column; align-items: center; text-align: center; }
+  /* width:100% is required here: in a column flex container, align-items:center
+     shrinks cross-axis (width) items to fit their content — without an explicit
+     width, .hero-text (and the nowrap .hero-title inside it) would grow to the
+     text's natural width instead of being constrained to the viewport, which
+     breaks fitHeroTitle()'s available-width measurement in app.js. */
+  .hero-text { width: 100%; text-align: center; }
+  .hero-eyebrow { text-align: center; }
 }
 
 /* =========================================================

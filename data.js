@@ -20,6 +20,7 @@ const SITE = {
       hero: { title: "Hi, I'm Bohdan", eyebrow: "Junior UX/UI Designer / Media Designer" },
       work: { title: "selected work" },
       filter: { all: "all", uxui: "ux/ui design", branding: "branding" },
+      testimonials: { title: "client reviews", more: "More Upwork reviews" },
       home: {
         statement: "I'm Bohdan Savchenko, a Junior UX/UI Designer based in Germany. I combine over 5 years of visual design expertise with user-centered product development.",
         why: {
@@ -68,6 +69,7 @@ const SITE = {
       hero: { title: "Hi, ich bin Bohdan", eyebrow: "Junior UX/UI Designer / Mediengestalter" },
       work: { title: "ausgewählte projekte" },
       filter: { all: "alle", uxui: "ux/ui design", branding: "branding" },
+      testimonials: { title: "kundenbewertungen", more: "Weitere Upwork-Bewertungen" },
       home: {
         statement: "Ich bin Bohdan Savchenko, Junior UX/UI Designer mit Sitz in Deutschland. Ich verbinde über 5 Jahre Erfahrung im visuellen Design mit nutzerzentrierter Produktentwicklung.",
         why: {
@@ -149,6 +151,52 @@ const SITE = {
         en: "gained hands-on experience in post-press production workflows and physical print finishing processes",
         de: "praktische Erfahrung in Workflows der Druckweiterverarbeitung und physischen Endfertigungsprozessen"
       }, period: "2010 – 2015" }
+  ],
+
+  /* homepage — Upwork client reviews (authentic quotes, not translated) */
+  testimonials: [
+    {
+      project: "Image Design",
+      date: "Dec 8, 2020 - Jan 7, 2021",
+      rating: "5.0",
+      review: "Bohdan is a very nice and professional designer. He's been very patient with us with all the change requests and the final product was more than we expected. Thanks"
+    },
+    {
+      project: "URGENT-Graphic designer",
+      date: "Aug 14, 2021",
+      rating: "5.0",
+      review: "Very responsive, quick to understand the requirements, delivers work with utmost quality. I would definitely recommend Bogdan for any designing needs. You can sit back and relax and you will get more..."
+    },
+    {
+      project: "Design a Course Certificate",
+      date: "Nov 21, 2022 - Dec 25, 2022",
+      rating: "5.0",
+      review: "Bohdan provided quality work within promised timeline. Happy to work with him"
+    },
+    {
+      project: "Add product packages",
+      date: "Jun 4, 2020 - Jun 10, 2020",
+      rating: "5.0",
+      review: "Prompt communications. Good attention to details. Awesome time management. High level of responsibility"
+    },
+    {
+      project: "Promotion image",
+      date: "Sep 17, 2022",
+      rating: "5.0",
+      review: "Professional and very good job. He was very responsive and responded to all my requests. Delivered within a day! I would be happy to recommend"
+    },
+    {
+      project: "Website banners",
+      date: "Jun 8, 2023 - Jun 23, 2023",
+      rating: "5.0",
+      review: "Great, clean work. Talented and easy to work with, highly recommended"
+    },
+    {
+      project: "Photoshop Assistance on Photograph",
+      date: "Apr 11, 2022 - Apr 12, 2022",
+      rating: "5.0",
+      review: "Great experience working with Bohdan, highly recommend and will hire again"
+    }
   ],
 
   /* homepage skills marquee (loops between the hero and the work grid) */

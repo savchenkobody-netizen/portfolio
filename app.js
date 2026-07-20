@@ -73,6 +73,7 @@
     renderProjects();       // index page      (no-op elsewhere)
     renderExperience();     // about page      (no-op elsewhere)
     renderCaseStudy();      // case-study page (no-op elsewhere)
+    renderTestimonials();   // index page      (no-op elsewhere)
     buildHeroRepel();       // re-split the (just-updated) hero title into letters
     buildWordReveal();      // re-split scroll-reveal text into words
     try { localStorage.setItem(STORE.lang, currentLang); } catch (e) {}
@@ -191,6 +192,28 @@
     });
   }
 
+  /* Lightweight 3D tilt for the desktop testimonial fan.
+     Unlike attachTilt it never writes `transform` directly — it only feeds
+     --tilt-x / --tilt-y custom properties, so the CSS keeps full control of the
+     card's base fan rotation, arc offset, hover lift and scale. */
+  function attachDeckTilt(el) {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const TILT = 8;
+    el.addEventListener("pointermove", function (e) {
+      if (!window.matchMedia("(min-width: 901px)").matches) return;   // fan is desktop-only
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      el.style.setProperty("--tilt-x", ((py - 0.5) * -(TILT * 2)) + "deg");
+      el.style.setProperty("--tilt-y", ((px - 0.5) * (TILT * 2)) + "deg");
+    });
+    el.addEventListener("pointerleave", function () {
+      el.style.removeProperty("--tilt-x");
+      el.style.removeProperty("--tilt-y");
+    });
+  }
+
   /* fill a figure with an image; hide the figure if the file is missing */
   function setMedia(container, src, alt) {
     if (!container) return;
@@ -235,6 +258,66 @@
         buttons.forEach(function (b) { b.classList.toggle("is-active", b === btn); });
         renderProjects();                 // cards re-enter with the reveal animation
       });
+    });
+  }
+
+  /* ---------------------------------------------------------
+     4b. TESTIMONIALS  (homepage — Upwork client reviews)
+     --------------------------------------------------------- */
+  function buildTestimonialCard(item) {
+    const card = document.createElement("article");
+    card.className = "testimonial-card";
+
+    const head = document.createElement("div");
+    head.className = "tc-head";
+    const badge = document.createElement("img");
+    badge.className = "tc-badge";
+    badge.src = "/review/Up.svg";
+    badge.alt = "";
+    badge.setAttribute("aria-hidden", "true");
+    const project = document.createElement("span");
+    project.className = "tc-project";
+    project.textContent = item.project;
+    head.appendChild(badge);
+    head.appendChild(project);
+
+    const meta = document.createElement("div");
+    meta.className = "tc-meta";
+    const stars = document.createElement("img");
+    stars.className = "tc-stars";
+    stars.src = "/review/stars.svg";
+    stars.alt = item.rating + " out of 5 stars";
+    const rating = document.createElement("span");
+    rating.className = "tc-rating";
+    rating.textContent = item.rating;
+    const sep = document.createElement("span");
+    sep.className = "tc-sep";
+    sep.textContent = "|";
+    const date = document.createElement("span");
+    date.className = "tc-date";
+    date.textContent = item.date;
+    meta.appendChild(stars);
+    meta.appendChild(rating);
+    meta.appendChild(sep);
+    meta.appendChild(date);
+
+    const review = document.createElement("p");
+    review.className = "tc-review";
+    review.textContent = "“" + item.review + "”";
+
+    card.appendChild(head);
+    card.appendChild(meta);
+    card.appendChild(review);
+    attachDeckTilt(card);
+    return card;
+  }
+
+  function renderTestimonials() {
+    const scroll = document.getElementById("testimonialScroll");
+    if (!scroll) return;
+    scroll.innerHTML = "";
+    SITE.testimonials.forEach(function (item) {
+      scroll.appendChild(buildTestimonialCard(item));
     });
   }
 

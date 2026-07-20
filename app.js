@@ -58,6 +58,20 @@
     return val[currentLang] || val.en || "";
   }
 
+  /* CV files (folder + filenames have literal spaces on disk — percent-encode
+     them in the href; `download` supplies a clean save-as name instead) */
+  const RESUME_FILES = {
+    en: { href: "/CV/ENG_CV_%20Savchenko.pdf", name: "ENG_CV_Savchenko.pdf" },
+    de: { href: "/CV/Lebenslauf_%20Savchenko%20DE.pdf", name: "Lebenslauf_Savchenko_DE.pdf" }
+  };
+  function updateResumeLink() {
+    const btn = document.getElementById("resumeBtn");
+    if (!btn) return;
+    const file = RESUME_FILES[currentLang] || RESUME_FILES.en;
+    btn.setAttribute("href", file.href);
+    btn.setAttribute("download", file.name);
+  }
+
   function applyLang(lang) {
     currentLang = SITE.text[lang] ? lang : "en";
     root.setAttribute("lang", currentLang);
@@ -74,6 +88,7 @@
     renderExperience();     // about page      (no-op elsewhere)
     renderCaseStudy();      // case-study page (no-op elsewhere)
     renderTestimonials();   // index page      (no-op elsewhere)
+    updateResumeLink();     // about page      (no-op elsewhere)
     buildHeroRepel();       // re-split the (just-updated) hero title into letters
     buildWordReveal();      // re-split scroll-reveal text into words
     try { localStorage.setItem(STORE.lang, currentLang); } catch (e) {}

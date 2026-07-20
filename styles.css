@@ -10,6 +10,43 @@
    Dark is default; [data-theme="light"] / body.light overrides.
    ========================================================= */
 
+/* ---------- Self-hosted font: Funnel Sans (GDPR — no Google Fonts request) ---------- */
+@font-face {
+  font-family: 'Funnel Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/FunnelSans-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Funnel Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/FunnelSans-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Funnel Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/FunnelSans-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Funnel Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/FunnelSans-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Funnel Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/FunnelSans-800.woff2') format('woff2');
+}
+
 /* ---------- Design tokens: DARK (default) ---------- */
 :root,
 [data-theme="dark"] {

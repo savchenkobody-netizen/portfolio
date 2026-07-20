@@ -51,9 +51,12 @@
     <section class="about-block">
       <h1 class="page-title" data-reveal-words data-i18n="about.title">about me</h1>
       <p class="about-intro" data-reveal-words data-i18n="home.statement"></p>
-      <div class="about-cols no-avatar" id="aboutGrid">
-        <!-- col 1: avatar (injected by app.js: ./Photo Avatar.webp) -->
-        <figure class="about-portrait is-hidden" id="aboutAvatar"></figure>
+      <div class="about-cols" id="aboutGrid">
+        <!-- col 1: profile photo (same source as the homepage hero) -->
+        <figure class="about-portrait">
+          <img src="/Savchenko.webp" alt="Bohdan Savchenko" width="240" height="240"
+               onerror="this.closest('.about-portrait').style.display='none';" />
+        </figure>
         <!-- col 2: why work with me + resume -->
         <div class="about-col">
           <h3 class="about-sub" data-reveal-words data-i18n="home.why.title">why work with me</h3>

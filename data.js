@@ -22,14 +22,14 @@ const SITE = {
       filter: { all: "all", uxui: "ux/ui design", branding: "branding" },
       testimonials: { title: "client reviews", more: "More Upwork reviews" },
       home: {
-        statement: "I'm Bohdan Savchenko, a Junior UX/UI Designer based in Germany. I combine over 5 years of visual design expertise with user-centered product development.",
+        statement: "I'm Bohdan Savchenko, an End-to-End UX/UI Designer based in Germany. I combine over 5 years of visual design expertise with user-centered product development and live website creation.",
         why: {
           title: "why work with me",
-          body: "My background gives me a unique advantage. Having spent years in print and digital media, I have a deeply trained eye for typography, layout, and visual balance. Moving into UX/UI, I bring this meticulous attention to detail into the digital space. Additionally, I actively leverage AI tools to optimize creative workflows, meaning you get a strategic partner who works smart and efficiently."
+          body: "My background gives me a unique advantage. Having spent years in the industry, I understand the full print production cycle\u2014from initial design to final physical installation. This deeply trained eye for typography, layout, and visual balance translates seamlessly into my digital work. Today, I bridge the gap between design and development. I actively leverage AI tools and Vibe Coding to not just design in Figma, but to build and deploy fully functional, responsive websites (HTML/CSS/JS). This means you get a strategic partner who can take a project from an initial idea to a live product efficiently."
         },
         fun: {
           title: "when i'm not designing",
-          body: "I'm passionate about continuous learning. You'll often find me diving into new design books, taking online courses, or experimenting with video editing in DaVinci Resolve. I'm always looking for inspiration in unexpected places\u2014whether that's exploring the latest AI technologies or gathering fresh ideas while traveling and discovering new places."
+          body: "I'm passionate about continuous learning and creative exploration. You'll often find me experimenting with video editing in DaVinci Resolve or producing tracks for my AI-driven music project. I'm always looking for inspiration in unexpected places\u2014whether that's exploring the latest AI technologies or gathering fresh ideas while traveling with my family."
         }
       },
       about: {
@@ -71,14 +71,14 @@ const SITE = {
       filter: { all: "alle", uxui: "ux/ui design", branding: "branding" },
       testimonials: { title: "kundenbewertungen", more: "Weitere Upwork-Bewertungen" },
       home: {
-        statement: "Ich bin Bohdan Savchenko, Junior UX/UI Designer mit Sitz in Deutschland. Ich verbinde über 5 Jahre Erfahrung im visuellen Design mit nutzerzentrierter Produktentwicklung.",
+        statement: "Ich bin Bohdan Savchenko, ein End-to-End UX/UI Designer mit Sitz in Deutschland. Ich verbinde über 5 Jahre Erfahrung im visuellen Design mit nutzerzentrierter Produktentwicklung und der Umsetzung live geschalteter Websites.",
         why: {
           title: "warum mit mir arbeiten",
-          body: "Mein Hintergrund verschafft mir einen besonderen Vorteil. Durch jahrelange Arbeit in Print- und Digitalmedien habe ich ein geschultes Auge für Typografie, Layout und visuelle Balance. Im UX/UI-Design bringe ich diese Detailgenauigkeit in den digitalen Raum. Zusätzlich nutze ich aktiv KI-Tools, um kreative Workflows zu optimieren \u2014 du bekommst einen strategischen Partner, der smart und effizient arbeitet."
+          body: "Mein Hintergrund verschafft mir einen besonderen Vorteil. Durch jahrelange Erfahrung in der Branche kenne ich den gesamten Druckproduktionszyklus \u2014 von der ersten Gestaltung bis zur finalen physischen Installation. Dieses geschulte Auge für Typografie, Layout und visuelle Balance überträgt sich nahtlos auf meine digitale Arbeit. Heute schlage ich die Brücke zwischen Design und Entwicklung. Ich nutze aktiv KI-Tools und Vibe Coding, um nicht nur in Figma zu gestalten, sondern voll funktionsfähige, responsive Websites (HTML/CSS/JS) zu bauen und zu veröffentlichen. So bekommst du einen strategischen Partner, der ein Projekt von der ersten Idee bis zum fertigen Live-Produkt effizient umsetzt."
         },
         fun: {
           title: "wenn ich nicht designe",
-          body: "Ich lerne leidenschaftlich gern. Man findet mich oft beim Lesen neuer Design-Bücher, in Online-Kursen oder beim Experimentieren mit Videoschnitt in DaVinci Resolve. Inspiration suche ich an unerwarteten Orten \u2014 beim Erkunden neuester KI-Technologien oder auf Reisen, wenn ich neue Orte entdecke."
+          body: "Ich lerne leidenschaftlich gern und liebe kreative Experimente. Man findet mich oft beim Videoschnitt in DaVinci Resolve oder beim Produzieren von Tracks für mein KI-gestütztes Musikprojekt. Inspiration suche ich an unerwarteten Orten \u2014 beim Erkunden neuester KI-Technologien oder auf Reisen mit meiner Familie, wenn ich neue Ideen sammle."
         }
       },
       about: {

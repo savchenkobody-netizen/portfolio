@@ -589,36 +589,8 @@
   }
 
   /* ---------------------------------------------------------
-     6. ABOUT — avatar + experience timeline
+     6. ABOUT — experience timeline
      --------------------------------------------------------- */
-  function initAvatar() {
-    const wrap = document.getElementById("aboutAvatar");
-    if (!wrap) return;
-    const grid = document.getElementById("aboutGrid");
-
-    /* real file first ("Photo Avatar.webp" in the site root),
-       then generic fallbacks */
-    const sources = ["/Photo Avatar.webp", "/avatar.webp", "/avatar.jpg"];
-    let i = 0;
-
-    const img = document.createElement("img");
-    img.decoding = "async";
-    img.alt = "Portrait of Bohdan Savchenko";
-
-    img.addEventListener("load", function () {
-      wrap.classList.remove("is-hidden");
-      if (grid) grid.classList.remove("no-avatar");
-    });
-    img.addEventListener("error", function () {
-      i += 1;
-      if (i < sources.length) img.src = sources[i];   // try next extension
-      // else: stays hidden, grid stays single-column
-    });
-
-    img.src = sources[0];
-    wrap.appendChild(img);
-  }
-
   function renderExperience() {
     const list = document.getElementById("expList");
     if (!list) return;
@@ -1011,7 +983,6 @@
     initHero();      // hero repel: resize/font re-fit (letters built via initLang)
     initMarquee();   // skills loop (homepage only)
     initMenu();
-    initAvatar();
     initLightbox();
     initPageFade();
     initChrome();

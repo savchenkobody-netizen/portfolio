@@ -657,55 +657,38 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 }
 .about-intro .dim { color: var(--text-faint); }
 
-/* col1 avatar · col2 why + resume · col3 when */
+/* col1 circular photo (fixed, small) · col2 why + resume · col3 when.
+   Photo column is sized to the photo itself, not a flexible track —
+   the two text columns share the width it frees up. */
 .about-cols {
   margin-top: clamp(32px, 5vw, 64px);
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) 1fr 1fr;
+  grid-template-columns: clamp(180px, 17vw, 240px) 1fr 1fr;
   gap: clamp(28px, 4vw, 56px);
   align-items: start;
 }
-.about-cols.no-avatar { grid-template-columns: 1fr 1fr; }
 .about-portrait {
-  border-radius: var(--radius-media);
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
 }
-.about-portrait img { width: 100%; height: 100%; object-fit: cover; }
+.about-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .about-col { display: grid; gap: 20px; justify-items: start; align-content: start; }
 .about-sub {
   font-size: .95rem; font-weight: 400;
   color: var(--text-muted);
 }
-.about-col p { font-size: 1.05rem; line-height: 1.6; color: var(--text); }
+.about-col p { font-size: 1.15rem; line-height: 1.75; color: var(--text); }
 .about-col .btn-pill { margin-top: 4px; }
 
 /* =========================================================
    ABOUT PAGE
    ========================================================= */
 .about-page { padding-top: clamp(120px, 18vh, 180px); }
-.about-grid {
-  margin-top: clamp(32px, 5vw, 56px);
-  display: grid;
-  grid-template-columns: 1fr minmax(280px, 424px);
-  gap: clamp(32px, 6vw, 80px);
-  align-items: start;
-}
-.about-grid.no-avatar { grid-template-columns: 1fr; }
-.about-copy { display: grid; gap: 24px; justify-items: start; max-width: 640px; }
-.about-copy p { font-size: clamp(1.1rem, 1.8vw, 1.25rem); font-weight: 500; line-height: 1.55; color: var(--text); }
-.about-copy .btn-pill { margin-top: 8px; }
-
-.about-portrait {
-  border-radius: var(--radius-media);
-  overflow: hidden;
-  aspect-ratio: 1 / 1;                        /* 548x545 natural (measured) */
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-}
-.about-portrait img { width: 100%; height: 100%; object-fit: cover; }
 
 .experience { padding-block: clamp(64px, 10vw, 140px); }
 .exp-list { margin-top: clamp(32px, 5vw, 56px); }
@@ -1162,12 +1145,9 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none; }
    ========================================================= */
 @media (max-width: 900px) {
   .cs-meta-row { grid-template-columns: repeat(2, 1fr); }   /* 4 → 2 columns */
-  /* homepage about block: avatar full-width on top, why/when below */
-  .about-cols, .about-cols.no-avatar { grid-template-columns: 1fr 1fr; }
-  .about-cols .about-portrait { grid-column: 1 / -1; max-width: 424px; aspect-ratio: 16 / 10; }
-  /* dedicated about page */
-  .about-grid { grid-template-columns: 1fr; }
-  .about-grid .about-portrait { max-width: 424px; order: -1; }
+  /* about block: circular photo centered on top, why/when below */
+  .about-cols { grid-template-columns: 1fr 1fr; }
+  .about-cols .about-portrait { grid-column: 1 / -1; margin-inline: auto; }
 }
 @media (max-width: 860px) {
   .main-nav { gap: 18px; }
@@ -1210,8 +1190,9 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none; }
   .exp-role { grid-column: 1; grid-row: 2; }
   .exp-period { grid-column: 2; grid-row: 1; }
   .exp-description { grid-column: 1 / -1; grid-row: 3; margin-top: 12px; }
-  .about-cols, .about-cols.no-avatar { grid-template-columns: 1fr; }
-  .about-cols .about-portrait { aspect-ratio: 4 / 5; }
+  .about-cols { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .about-cols .about-portrait { margin-inline: auto; }
+  .about-col { justify-items: center; text-align: center; }
   /* footer CTA stacks: get in / button / touch */
   .footer-top { flex-direction: column; align-items: center; text-align: center; }
   .footer-mid { grid-template-columns: 1fr; }

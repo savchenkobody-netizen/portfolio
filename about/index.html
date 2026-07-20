@@ -72,11 +72,15 @@
       </div>
     </section>
 
-    <!-- ============ EXPERIENCE ============ -->
+    <!-- ============ EXPERIENCE (animated alternating timeline) ============ -->
     <section class="experience">
       <h2 class="display-title" data-reveal-words data-i18n="about.exp">my experience</h2>
-      <!-- rows injected by app.js from SITE.experience -->
-      <ol class="exp-list" id="expList"></ol>
+      <div class="timeline" id="expTimeline">
+        <div class="timeline-line"></div>
+        <div class="timeline-line-fill" id="timelineFill"></div>
+        <!-- items injected by app.js from SITE.experience -->
+        <ol class="timeline-items" id="timelineItems"></ol>
+      </div>
     </section>
   </main>
 

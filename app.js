@@ -607,41 +607,101 @@
      6. ABOUT — experience timeline
      --------------------------------------------------------- */
   function renderExperience() {
-    const list = document.getElementById("expList");
-    if (!list) return;
-    list.innerHTML = "";
+    const items = document.getElementById("timelineItems");
+    if (!items) return;
+    items.innerHTML = "";
 
-    SITE.experience.forEach(function (job) {
+    SITE.experience.forEach(function (job, i) {
       const li = document.createElement("li");
-      li.className = "exp-row";
+      li.className = "timeline-item reveal " + (i % 2 === 0 ? "timeline-item--left" : "timeline-item--right");
 
-      const who = document.createElement("div");
-      who.className = "exp-who";
+      const dot = document.createElement("div");
+      dot.className = "timeline-dot";
 
-      const company = document.createElement("span");
-      company.className = "exp-company";
-      company.textContent = job.company;
+      const content = document.createElement("div");
+      content.className = "timeline-content";
 
-      const role = document.createElement("span");
-      role.className = "exp-role";
+      const year = document.createElement("span");
+      year.className = "timeline-year";
+      year.textContent = job.period;
+
+      const role = document.createElement("h3");
+      role.className = "timeline-role";
       role.textContent = pick(job.role);
 
-      who.appendChild(company);
-      who.appendChild(role);
+      const company = document.createElement("p");
+      company.className = "timeline-company";
+      company.textContent = job.company;
 
       const description = document.createElement("p");
-      description.className = "exp-description";
+      description.className = "timeline-description";
       description.textContent = pick(job.description);
 
-      const period = document.createElement("span");
-      period.className = "exp-period";
-      period.textContent = job.period;
+      content.appendChild(year);
+      content.appendChild(role);
+      content.appendChild(company);
+      content.appendChild(description);
 
-      li.appendChild(who);
-      li.appendChild(description);
-      li.appendChild(period);
-      list.appendChild(li);
+      li.appendChild(dot);
+      li.appendChild(content);
+      items.appendChild(li);
     });
+
+    observeReveals();     // fade-in each item, same as the rest of the site
+    initTimelineScroll();
+  }
+
+  /* ---------------------------------------------------------
+     6b. EXPERIENCE TIMELINE — scroll-linked fill line
+         A fixed reference point (40% down the viewport) sweeps
+         through the timeline as the page scrolls; the colored
+         line's height tracks how far it has travelled, and each
+         dot lights up once the fill line reaches it.
+     --------------------------------------------------------- */
+  let timelineBound = false;
+  function updateTimelineFill() {
+    const container = document.getElementById("expTimeline");
+    const fill = document.getElementById("timelineFill");
+    if (!container || !fill) return;
+
+    const rect = container.getBoundingClientRect();
+    const revealY = window.innerHeight * 0.4;
+    const progress = Math.min(1, Math.max(0, (revealY - rect.top) / rect.height));
+    fill.style.height = (progress * 100) + "%";
+
+    const fillPx = progress * rect.height;
+    document.querySelectorAll(".timeline-dot").forEach(function (dot) {
+      const dotRect = dot.getBoundingClientRect();
+      const dotOffset = (dotRect.top - rect.top) + dotRect.height / 2;
+      dot.classList.toggle("is-active", fillPx >= dotOffset);
+    });
+  }
+
+  function initTimelineScroll() {
+    if (!document.getElementById("expTimeline")) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const fill = document.getElementById("timelineFill");
+      if (fill) fill.style.height = "100%";
+      document.querySelectorAll(".timeline-dot").forEach(function (dot) {
+        dot.classList.add("is-active");
+      });
+      return;
+    }
+
+    updateTimelineFill();
+    if (timelineBound) return;
+    timelineBound = true;
+    let ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        updateTimelineFill();
+        ticking = false;
+      });
+    }, { passive: true });
+    window.addEventListener("resize", updateTimelineFill);
   }
 
   /* ---------------------------------------------------------

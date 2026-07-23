@@ -326,7 +326,11 @@ const SITE = {
       blocks: [
         { type: "video-row", nums: [2, 3, 4, 5], ratio: "894 / 1080" },
         { type: "image", num: 6 },
-        { type: "image-row", nums: [7, 8] }
+        { type: "image-row", nums: [7, 8] },
+        { type: "image", num: 9 },
+        { type: "image", num: 10 },
+        { type: "image", num: 11 },
+        { type: "image", num: 12 }
       ],
       caseStudy: {
         type: { en: "mobile app design", de: "mobile app design" },

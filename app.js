@@ -743,6 +743,156 @@
     renderOtherProjects(idx);
   }
 
+  /* build one still <figure> for the explicit-blocks gallery (lightbox-enabled) */
+  function galleryFigure(p, n) {
+    const fig = document.createElement("figure");
+    fig.className = "cs-figure";
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.alt = p.title + " — gallery image " + n;
+    img.src = p.folder + "/" + n + ".webp";
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
+    img.addEventListener("error", function () { fig.remove(); });
+    fig.appendChild(img);
+    return fig;
+  }
+
+  /* explicit gallery for projects that declare `blocks` (e.g. dawdle):
+     renders the given sequence of image / video-row / image-row blocks.
+     Videos autoplay muted+looped inline and carry a small pause badge;
+     they are intentionally NOT lightbox targets (only .cs-figure img is). */
+  function renderGalleryBlocks(p, grid) {
+    p.blocks.forEach(function (block) {
+      if (block.type === "image") {
+        grid.appendChild(galleryFigure(p, block.num));
+        return;
+      }
+
+      if (block.type === "video-row") {
+        const row = document.createElement("div");
+        row.className = "dawdle-video-row";
+        block.nums.forEach(function (n) {
+          const cell = document.createElement("div");
+          cell.className = "dawdle-video";
+          if (block.ratio) cell.style.setProperty("--video-ratio", block.ratio);
+
+          const video = document.createElement("video");
+          video.src = p.folder + "/" + n + ".mp4";
+          video.autoplay = true;
+          video.loop = true;
+          video.muted = true;              // property form: required for programmatic autoplay
+          video.defaultMuted = true;
+          video.setAttribute("muted", "");
+          video.setAttribute("autoplay", "");
+          video.setAttribute("loop", "");
+          video.setAttribute("playsinline", "");     // iOS Safari: play inline, not fullscreen
+          video.setAttribute("webkit-playsinline", "");
+          video.setAttribute("aria-label", p.title + " — demo clip " + n);
+          video.addEventListener("error", function () { cell.remove(); });
+
+          /* interactive control: grey disc + circular progress ring + play/pause
+             icon. The ring's circumference is set as stroke-dasharray; timeupdate
+             drives stroke-dashoffset so it fills as the clip plays. */
+          const R = 16;
+          const CIRC = 2 * Math.PI * R;               // ≈ 100.53
+          const ctrl = document.createElement("button");
+          ctrl.type = "button";
+          ctrl.className = "dawdle-video-ctrl";
+          ctrl.setAttribute("aria-label", "Play or pause " + p.title + " clip " + n);
+          ctrl.innerHTML =
+            '<svg viewBox="0 0 40 40" aria-hidden="true">' +
+              '<circle class="dvc-track" cx="20" cy="20" r="' + R + '"/>' +
+              '<circle class="dvc-progress" cx="20" cy="20" r="' + R + '" ' +
+                'stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + CIRC + '"/>' +
+              '<g class="dvc-icon dvc-pause">' +
+                '<rect x="16" y="14.5" width="2.8" height="11" rx="1"/>' +
+                '<rect x="21.2" y="14.5" width="2.8" height="11" rx="1"/>' +
+              '</g>' +
+              '<path class="dvc-icon dvc-play" d="M16.5 13.5 L27 20 L16.5 26.5 Z"/>' +
+            "</svg>";
+          const progress = ctrl.querySelector(".dvc-progress");
+
+          let userPaused = false;                     // manual pause overrides auto-play
+
+          function syncIcon() { ctrl.classList.toggle("is-playing", !video.paused); }
+          function toggle() {
+            if (video.paused) { userPaused = false; video.play().catch(function () {}); }
+            else { userPaused = true; video.pause(); }
+          }
+
+          video.addEventListener("play", syncIcon);
+          video.addEventListener("pause", syncIcon);
+          video.addEventListener("timeupdate", function () {
+            if (!video.duration) return;
+            const pct = video.currentTime / video.duration;
+            progress.style.strokeDashoffset = CIRC * (1 - pct);
+          });
+          ctrl.addEventListener("click", function (e) { e.stopPropagation(); toggle(); });
+          video.addEventListener("click", toggle);
+
+          // autoplay nudges (some engines defer JS-inserted muted autoplay).
+          // Auto-play only when the user hasn't explicitly paused the clip;
+          // always pause when scrolled off-screen to save resources.
+          video.addEventListener("canplay", function () { if (!userPaused) video.play().catch(function () {}); });
+          if ("IntersectionObserver" in window) {
+            new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) { if (!userPaused) video.play().catch(function () {}); }
+                else video.pause();
+              });
+            }, { threshold: 0.25 }).observe(video);
+          }
+
+          cell.appendChild(video);
+          cell.appendChild(ctrl);
+          row.appendChild(cell);
+        });
+        grid.appendChild(row);
+        return;
+      }
+
+      if (block.type === "image-row") {
+        const row = document.createElement("div");
+        row.className = "dawdle-img-row";
+        block.nums.forEach(function (n) { row.appendChild(galleryFigure(p, n)); });
+        grid.appendChild(row);
+        fitImageRow(row);
+        return;
+      }
+    });
+  }
+
+  /* Solve for the ONE shared row height at which every image's own
+     (uncropped) proportional width — naturalWidth * (h / naturalHeight) —
+     sums exactly to the row's available width. This guarantees full-width
+     fill + equal height + zero cropping simultaneously, no matter what the
+     images' actual dimensions are (they don't need to share a native height). */
+  function fitImageRow(row) {
+    const imgs = Array.prototype.slice.call(row.querySelectorAll("img"));
+    if (!imgs.length) return;
+
+    function apply() {
+      if (!window.matchMedia("(min-width: 768px)").matches) {
+        row.style.height = "";                    // mobile: stacked, natural height
+        return;
+      }
+      if (!imgs.every(function (i) { return i.naturalWidth; })) return;   // wait for all to load
+      const cs = getComputedStyle(row);
+      const gap = parseFloat(cs.columnGap) || 0;
+      const availW = row.clientWidth - gap * (imgs.length - 1);
+      const sumRatio = imgs.reduce(function (s, i) { return s + i.naturalWidth / i.naturalHeight; }, 0);
+      if (availW > 0 && sumRatio > 0) row.style.height = (availW / sumRatio) + "px";
+    }
+
+    imgs.forEach(function (img) {
+      if (img.complete) apply();
+      else img.addEventListener("load", apply);
+    });
+    window.addEventListener("resize", apply);
+  }
+
   /* automated gallery: collects <folder>/1.webp … 9.webp (falling
      back to .gif per slot — e.g. Golden Draught ships 9.gif).
      Candidates are appended optimistically (keeps DOM order) and
@@ -754,6 +904,10 @@
     const grid = document.getElementById("csGallery");
     if (!grid) return;
     grid.innerHTML = "";
+
+    // projects can opt into a fully explicit block sequence (images + videos)
+    // instead of the automatic 1…9 collector — see renderGalleryBlocks().
+    if (p.blocks) { renderGalleryBlocks(p, grid); return; }
 
     /* optional per-project horizontal groups (each becomes a side-by-side row,
        inserted in place at its lowest image number). Supports the legacy

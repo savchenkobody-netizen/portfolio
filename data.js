@@ -314,33 +314,40 @@ const SITE = {
       }
     },
     {
-      slug: "in-car",
+      slug: "dawdle",
       filter: "ux-ui",
-      title: "Incar: car rental app",
-      category: { en: "mobile app", de: "mobile app" },
-      folder: "./in-car",
-      image: "./in-car/0.webp",
-      link: "./case-study.html?project=in-car",
+      title: "dawdle",
+      category: { en: "mobile app design", de: "mobile app design" },
+      folder: "./dawdle",
+      image: "./dawdle/1.webp",
+      link: "./case-study.html?project=dawdle",
+      /* explicit gallery sequence (hero 1.webp shown separately as the cover):
+         a 4-up autoplay video row, a full-width image, then a same-height image pair */
+      blocks: [
+        { type: "video-row", nums: [2, 3, 4, 5], ratio: "894 / 1080" },
+        { type: "image", num: 6 },
+        { type: "image-row", nums: [7, 8] }
+      ],
       caseStudy: {
-        type: { en: "mobile app", de: "mobile app" },
+        type: { en: "mobile app design", de: "mobile app design" },
         role: { en: "ux/ui designer", de: "ux/ui designer" },
-        client: { en: "concept project", de: "konzeptprojekt" },
-        year: "2024",
+        client: { en: "concept project / capstone", de: "konzeptprojekt / capstone" },
+        year: "2026",
         overview: {
-          en: "Incar is a car rental app concept that turns a stressful booking process into a three-step flow.",
-          de: "Incar ist ein App-Konzept für Autovermietung, das einen stressigen Buchungsprozess in einen Flow mit drei Schritten verwandelt."
+          en: "dawdle is an edutainment app that brings local history to life through AI-generated audio stories. By combining location tracking with synchronized audio sharing, it allows users to experience historical sites together, completely hands-free and without the need for extensive prior research.",
+          de: "dawdle ist eine Edutainment-App, die lokale Geschichte durch KI-generierte Audio-Geschichten zum Leben erweckt. Durch die Kombination von Standort-Tracking mit synchronisiertem Audio-Sharing können Nutzer historische Orte gemeinsam erleben — komplett freihändig und ohne aufwändige Vorab-Recherche."
         },
         problem: {
-          en: "Rental services hide fees and bury insurance details, eroding user trust exactly at checkout.",
-          de: "Mietservices verstecken Gebühren und Versicherungsdetails — und verspielen damit Vertrauen genau im Checkout."
+          en: "Discovering local history is often tedious, requiring extensive online research or reading dry texts on-site, which distracts from the actual experience. Users want a spontaneous way to explore together without constantly looking at their screens.",
+          de: "Lokale Geschichte zu entdecken ist oft mühsam — es erfordert aufwändige Online-Recherche oder das Lesen trockener Texte vor Ort, was vom eigentlichen Erlebnis ablenkt. Nutzer wünschen sich einen spontanen Weg, gemeinsam zu erkunden, ohne ständig aufs Display zu schauen."
         },
         research: {
-          en: "User journey mapping and wireframe iterations focused on transparency at every step of the booking.",
-          de: "User Journey Mapping und Wireframe-Iterationen fokussierten Transparenz in jedem Schritt der Buchung."
+          en: "Surveys and interviews revealed a strong desire for audio content, though past experiences were mixed. We found that users rarely explore alone, making shared experiences crucial. Wireframing focused on creating a clean, one-handed UI that prioritizes audio over text.",
+          de: "Umfragen und Interviews zeigten einen starken Wunsch nach Audio-Inhalten, auch wenn frühere Erfahrungen gemischt waren. Wir stellten fest, dass Nutzer selten allein erkunden — gemeinsame Erlebnisse sind entscheidend. Das Wireframing konzentrierte sich auf ein klares, einhändig bedienbares UI, das Audio über Text stellt."
         },
         final: {
-          en: "A clean interface with upfront pricing, clear car comparisons and a checkout that fits on one screen.",
-          de: "Ein klares Interface mit transparenten Preisen, verständlichen Fahrzeugvergleichen und einem Checkout auf einem Screen."
+          en: "The final design features a highly contrasting, bento-box layout tailored for outdoor use. Key features include a map for spontaneous discovery, shared audio playback, and distinct visual modes for short location-based snippets versus in-depth storytelling podcasts.",
+          de: "Das finale Design setzt auf ein kontrastreiches Bento-Box-Layout, das für die Nutzung im Freien optimiert ist. Zentrale Funktionen sind eine Karte für spontane Entdeckungen, gemeinsames Audio-Playback und eigene visuelle Modi für kurze standortbasierte Snippets gegenüber tiefgehenden Storytelling-Podcasts."
         }
       }
     },

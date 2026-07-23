@@ -1024,6 +1024,126 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .cs-gallery-pair.is-contain .cs-figure img { object-fit: contain; width: 100%; height: auto; }
 }
 
+/* =========================================================
+   DAWDLE — explicit gallery blocks
+   Two matching 2-column grids (videos, then the image pair):
+   max-width 1440, centered, gap; both collapse to 1 column on mobile.
+   ========================================================= */
+.dawdle-video-row,
+.dawdle-img-row {
+  display: grid;
+  grid-template-columns: 1fr;               /* mobile: single column */
+  gap: clamp(16px, 2vw, 28px);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+@media (min-width: 768px) {
+  .dawdle-video-row { grid-template-columns: repeat(2, 1fr); }   /* videos: 2 equal */
+}
+
+/* --- video cell --- */
+.dawdle-video {
+  position: relative;
+  aspect-ratio: var(--video-ratio, 894 / 1080);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+.dawdle-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+}
+
+/* --- interactive play/pause + progress-ring control (bottom-left) --- */
+.dawdle-video-ctrl {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 200ms var(--ease-out);
+}
+.dawdle-video-ctrl:hover { transform: scale(1.06); }
+.dawdle-video-ctrl:focus-visible { outline: 2px solid var(--timeline-accent, #DFFF3C); outline-offset: 3px; border-radius: 50%; }
+.dawdle-video-ctrl svg { width: 100%; height: 100%; display: block; overflow: visible; }
+/* grey disc + subtle track */
+.dvc-track {
+  fill: rgba(24, 24, 24, 0.55);
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 2.4;
+}
+/* progress ring — starts at 12 o'clock, fills clockwise as the clip plays */
+.dvc-progress {
+  fill: none;
+  stroke: #9e9e9e;                 /* soft light-grey progress stroke */
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: stroke-dashoffset 140ms linear;
+}
+.dvc-icon { fill: #fff; }
+.dvc-pause { display: none; }
+.dvc-play  { display: block; }
+.dawdle-video-ctrl.is-playing .dvc-play  { display: none; }
+.dawdle-video-ctrl.is-playing .dvc-pause { display: block; }
+
+/* --- image cell (7.webp / 8.webp) --- */
+.dawdle-img-row .cs-figure { width: 100%; border-radius: 16px; overflow: hidden; }
+.dawdle-img-row .cs-figure img { width: 100%; height: auto; display: block; }
+
+/* DESKTOP: the pair fills the full content band edge-to-edge (same 1440px
+   band as the hero image / video row), both EXACTLY the same height, with
+   ZERO cropping. Each figure sizes to its image's own intrinsic aspect ratio
+   (width:auto + height:100%, no object-fit needed — nothing is ever cut).
+   fitImageRow() in app.js computes the exact shared height at which both
+   images' natural widths add up to the row's full available width; the
+   clamp() below is only the fallback shown before that JS measurement runs. */
+@media (min-width: 768px) {
+  .dawdle-img-row {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: clamp(16px, 2vw, 28px);
+    height: clamp(360px, 40vw, 560px);
+  }
+  .dawdle-img-row .cs-figure { flex: 0 0 auto; width: auto; height: 100%; }
+  .dawdle-img-row .cs-figure img { width: auto; height: 100%; display: block; }
+}
+
+/* MOBILE: both grids collapse to a single full-width column; every video and
+   every image stacks vertically at 100% width (overrides the desktop rules at
+   the 768 boundary since it comes later in the cascade). */
+@media (max-width: 768px) {
+  .dawdle-video-row,
+  .dawdle-img-row {
+    grid-template-columns: 1fr;
+    height: auto;                 /* drop the desktop fixed row height */
+  }
+  .dawdle-video,
+  .dawdle-img-row .cs-figure { width: 100%; }
+  /* stacked images show their full natural height — no crop */
+  .dawdle-img-row .cs-figure { height: auto; }
+  .dawdle-img-row .cs-figure img { height: auto; object-fit: initial; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dawdle-video-ctrl, .dvc-progress { transition: none; }
+}
+
 /* lives outside <main> (after the full-width gallery), so it carries
    the page column constraint itself */
 .cs-other {

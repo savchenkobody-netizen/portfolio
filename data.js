@@ -330,7 +330,8 @@ const SITE = {
         { type: "image", num: 9 },
         { type: "image", num: 10 },
         { type: "image", num: 11 },
-        { type: "image", num: 12 }
+        { type: "image", num: 12 },
+        { type: "bento-columns", columns: [[13, 14], [15, 16, 17, 18], [19, 20, 21]] }
       ],
       caseStudy: {
         type: { en: "mobile app design", de: "mobile app design" },

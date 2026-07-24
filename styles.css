@@ -1145,6 +1145,53 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .dawdle-img-row .cs-figure img { height: auto; object-fit: initial; }
 }
 
+/* =========================================================
+   DAWDLE — "final UI components" masonry bento (13.webp … 21.webp)
+   Three vertical columns built in the markup (app.js):
+     col 1 — 13, 14      col 2 — 15, 16, 17, 18      col 3 — 19, 20, 21
+   Mobile-first: the base rule stacks everything into one column in flat
+   numerical order (13 → 21); the ≥768px query puts the columns side by side.
+   ========================================================= */
+.dawdle-bento {
+  display: flex;
+  flex-direction: column;              /* mobile: one column, 13 → 21 in order */
+  gap: 24px;
+  width: 100%;
+  max-width: 1440px;                   /* same band as every other project block */
+  margin: 0 auto;
+}
+.dawdle-bento-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* fallback share before fitBentoColumns() measures the images; it then sets
+     each column's exact flex-basis so every column ends on the same bottom line */
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* no padding, no background, radius on the wrapper + overflow:hidden so the
+   image sits perfectly flush inside the rounded corners (zero white edges) */
+.dawdle-bento .cs-figure {
+  width: 100%;
+  border: 0;
+  background: none;
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  line-height: 0;                      /* kills the inline-descender gap under the img */
+}
+.dawdle-bento .cs-figure img {
+  width: 100%;
+  height: auto;                        /* natural height → nothing cropped, nothing letterboxed */
+  object-fit: cover;
+  display: block;
+  border-radius: 0;                    /* the wrapper owns the radius */
+}
+
+@media (min-width: 768px) {
+  .dawdle-bento { flex-direction: row; align-items: flex-start; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dawdle-video-ctrl, .dvc-progress { transition: none; }
 }

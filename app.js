@@ -743,10 +743,13 @@
     renderOtherProjects(idx);
   }
 
-  /* build one still <figure> for the explicit-blocks gallery (lightbox-enabled) */
-  function galleryFigure(p, n) {
+  /* build one still <figure> for the explicit-blocks gallery (lightbox-enabled).
+     opaque:true gives the figure a solid backdrop — for source files that have
+     transparency (alpha channel), so empty areas render as a solid card rather
+     than letting the page background show through. */
+  function galleryFigure(p, n, opaque) {
     const fig = document.createElement("figure");
-    fig.className = "cs-figure";
+    fig.className = "cs-figure" + (opaque ? " is-opaque" : "");
     const img = document.createElement("img");
     img.loading = "lazy";
     img.decoding = "async";
@@ -766,7 +769,7 @@
   function renderGalleryBlocks(p, grid) {
     p.blocks.forEach(function (block) {
       if (block.type === "image") {
-        grid.appendChild(galleryFigure(p, block.num));
+        grid.appendChild(galleryFigure(p, block.num, block.opaque));
         return;
       }
 
@@ -861,7 +864,77 @@
         fitImageRow(row);
         return;
       }
+
+      /* masonry "bento" block: an array of vertical columns, each holding its
+         own ordered list of images (desktop shows the columns side by side;
+         CSS stacks everything into one column on mobile, which keeps the flat
+         numerical order). Tiles reuse galleryFigure(), so every image gets the
+         exact same click-to-enlarge lightbox behavior as the rest of the
+         gallery (the lightbox delegates to any ".cs-figure img"). */
+      if (block.type === "bento-columns") {
+        const bento = document.createElement("div");
+        bento.className = "dawdle-bento";
+        block.columns.forEach(function (nums) {
+          const col = document.createElement("div");
+          col.className = "dawdle-bento-col";
+          nums.forEach(function (n) { col.appendChild(galleryFigure(p, n)); });
+          bento.appendChild(col);
+        });
+        grid.appendChild(bento);
+        fitBentoColumns(bento);
+        return;
+      }
     });
+  }
+
+  /* Justified masonry: give each column the width at which its own stack of
+     natural-ratio images adds up to the SAME total height, so all columns end
+     flush on one bottom line — with zero cropping.
+
+     For column i, with K_i = Σ(naturalHeight / naturalWidth) and G_i = its row
+     gaps, a column of width w_i is H = w_i * K_i + G_i tall. Setting every
+     column to a common H and requiring Σw_i = the available width gives
+       H = (availW + Σ(G_i / K_i)) / Σ(1 / K_i),
+     and then w_i = (H - G_i) / K_i. */
+  function fitBentoColumns(bento) {
+    const cols = Array.prototype.slice.call(bento.querySelectorAll(".dawdle-bento-col"));
+    if (!cols.length) return;
+    const imgs = Array.prototype.slice.call(bento.querySelectorAll("img"));
+    if (!imgs.length) return;
+
+    function apply() {
+      if (!window.matchMedia("(min-width: 768px)").matches) {
+        cols.forEach(function (c) { c.style.flex = ""; });   // mobile: single stacked column
+        return;
+      }
+      if (!imgs.every(function (i) { return i.naturalWidth; })) return;   // wait for all to load
+
+      const colGap = parseFloat(getComputedStyle(bento).columnGap) || 0;
+      const availW = bento.clientWidth - colGap * (cols.length - 1);
+      if (availW <= 0) return;
+
+      const data = cols.map(function (col) {
+        const cimgs = Array.prototype.slice.call(col.querySelectorAll("img"));
+        const rowGap = parseFloat(getComputedStyle(col).rowGap) || 0;
+        const K = cimgs.reduce(function (s, i) { return s + i.naturalHeight / i.naturalWidth; }, 0);
+        return { col: col, K: K, gaps: rowGap * Math.max(0, cimgs.length - 1) };
+      });
+      if (!data.every(function (d) { return d.K > 0; })) return;
+
+      let sumInvK = 0, sumGapOverK = 0;
+      data.forEach(function (d) { sumInvK += 1 / d.K; sumGapOverK += d.gaps / d.K; });
+      const H = (availW + sumGapOverK) / sumInvK;
+
+      data.forEach(function (d) {
+        d.col.style.flex = "0 0 " + ((H - d.gaps) / d.K) + "px";
+      });
+    }
+
+    imgs.forEach(function (img) {
+      if (img.complete) apply();
+      else img.addEventListener("load", apply);
+    });
+    window.addEventListener("resize", apply);
   }
 
   /* Solve for the ONE shared row height at which every image's own

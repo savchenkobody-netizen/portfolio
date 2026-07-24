@@ -1197,6 +1197,14 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
+    // expose the fixed header's real height so anchor targets (e.g. #work)
+    // can offset their scroll position and not land hidden underneath it
+    const setHeaderHeight = function () {
+      document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+    };
+    setHeaderHeight();
+    window.addEventListener("resize", setHeaderHeight);
+
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
@@ -1204,6 +1212,23 @@
   /* ---------------------------------------------------------
      Boot
      --------------------------------------------------------- */
+  /* Landing with a URL hash (e.g. "/#work", reached from the nav "work" link
+     on another page) needs a manual scroll: the browser's native fragment-jump
+     fires before renderProjects()/initMarquee() have stretched the page to its
+     real height, so it lands nowhere near the actual target. Two rAFs let that
+     layout settle first; scroll-margin-top on the target still applies. */
+  function scrollToHash() {
+    if (!window.location.hash) return;
+    let target;
+    try { target = document.querySelector(window.location.hash); } catch (e) { return; }
+    if (!target) return;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        target.scrollIntoView({ behavior: "auto", block: "start" });
+      });
+    });
+  }
+
   function init() {
     initTheme();
     initLang();      // triggers the first render pass + builds the hero letters
@@ -1216,6 +1241,7 @@
     initPageFade();
     initChrome();
     observeReveals();
+    scrollToHash();
   }
 
   if (document.readyState === "loading") {

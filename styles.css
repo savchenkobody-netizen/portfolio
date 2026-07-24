@@ -423,7 +423,12 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 /* =========================================================
    HOME — PROJECT GRID (2-col, image 8px radius, text below)
    ========================================================= */
-.work { padding-block: clamp(24px, 4vw, 56px) clamp(60px, 9vw, 120px); }
+.work {
+  padding-block: clamp(24px, 4vw, 56px) clamp(60px, 9vw, 120px);
+  /* the "work" nav link jumps straight here (/#work); offset by the fixed
+     header's real height (set in app.js) so the section isn't hidden under it */
+  scroll-margin-top: var(--header-h, 90px);
+}
 
 /* "selected work" head + filter bar */
 .work-head {

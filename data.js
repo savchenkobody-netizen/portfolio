@@ -243,35 +243,43 @@ const SITE = {
       }
     },
     {
-      slug: "aura",
-      filter: "ux-ui",
-      title: "Aura: Music Player",
-      category: { en: "mobile app", de: "mobile app" },
-      folder: "./aura",
-      image: "./aura/1.webp",
-      link: "./case-study.html?project=aura",
-      /* desktop: images 7, 9, 8 in one equal 3-up horizontal row (that order) */
-      groups: [ { nums: [7, 9, 8], cols: "1fr 1fr 1fr", gap: "16px", ratio: "4 / 3" } ],
+      slug: "stomatino",
+      filter: "branding",
+      title: "Stomatino",
+      category: { en: "brand identity & logo design", de: "markenidentität & logodesign" },
+      folder: "./stomatino",
+      image: "./stomatino/1.webp",
+      link: "./case-study.html?project=stomatino",
+      /* 1.webp is the hero/cover; the local clip plays full-width beneath it */
+      blocks: [
+        { type: "video-full", num: 2 }
+      ],
       caseStudy: {
-        type: { en: "mobile app", de: "mobile app" },
-        role: { en: "ux/ui designer", de: "ux/ui designer" },
-        client: { en: "concept project", de: "konzeptprojekt" },
-        year: "2025",
+        type: { en: "brand identity & logo design", de: "markenidentität & logodesign" },
+        role: { en: "brand designer", de: "brand designer" },
+        client: { en: "stomatino.pl", de: "stomatino.pl" },
+        year: "2021",
+        /* branding project: its own section labels instead of the UX defaults */
+        headings: {
+          problem:  { en: "the challenge",    de: "die herausforderung" },
+          research: { en: "the logo concept", de: "das logo-konzept" },
+          final:    { en: "final identity",   de: "finale identität" }
+        },
         overview: {
-          en: "AURA is a music player concept focused on mood-based listening — playlists that adapt to time of day and activity.",
-          de: "AURA ist ein Musikplayer-Konzept für stimmungsbasiertes Hören — Playlists, die sich an Tageszeit und Aktivität anpassen."
+          en: "Stomatino is a modern online store dedicated to high-quality dental care products. The brand identity was designed to evoke friendliness, trust, and expertise, transforming the often-clinical perception of dentistry into an approachable and positive experience for everyday customers.",
+          de: "Stomatino ist ein moderner Online-Shop für hochwertige Zahnpflegeprodukte. Die Markenidentität wurde entwickelt, um Freundlichkeit, Vertrauen und Kompetenz zu vermitteln und die oft klinische Wahrnehmung von Zahnmedizin in ein zugängliches, positives Erlebnis für alltägliche Kunden zu verwandeln."
         },
         problem: {
-          en: "Standard players bury discovery behind endless lists. AURA explores how a player can feel calm and personal instead of crowded.",
-          de: "Klassische Player verstecken Entdeckung hinter endlosen Listen. AURA untersucht, wie sich ein Player ruhig und persönlich statt überladen anfühlen kann."
+          en: "E-commerce platforms for dental supplies often feel overly sterile and intimidating. The goal was to create a vibrant, welcoming brand identity that highlights a passion for oral health and beauty, bridging the gap between professional dental care and consumer lifestyle.",
+          de: "E-Commerce-Plattformen für Dentalbedarf wirken häufig übermäßig steril und einschüchternd. Ziel war eine lebendige, einladende Markenidentität, die die Leidenschaft für Mundgesundheit und Schönheit betont und die Lücke zwischen professioneller Zahnpflege und Consumer-Lifestyle schließt."
         },
         research: {
-          en: "Competitive analysis and quick usability tests on paper prototypes defined the gesture-driven navigation model.",
-          de: "Wettbewerbsanalyse und schnelle Usability-Tests mit Papier-Prototypen definierten das gestenbasierte Navigationsmodell."
+          en: "At the heart of the visual identity is a clever typographic mark. By seamlessly combining the lowercase letters 't' and 'i' with a bright magenta dot, the logo forms a friendly, abstract smile. This visual metaphor perfectly captures the brand's core mission: inspiring beautiful, healthy smiles.",
+          de: "Im Zentrum der visuellen Identität steht eine durchdachte typografische Marke: Die Kleinbuchstaben 't' und 'i' verschmelzen mit einem leuchtenden Magenta-Punkt zu einem freundlichen, abstrakten Lächeln. Diese visuelle Metapher bringt die Kernmission der Marke auf den Punkt: schöne, gesunde Lächeln zu inspirieren."
         },
         final: {
-          en: "A minimal, gradient-tinted UI with an oversized now-playing screen and fluid transitions between moods.",
-          de: "Ein minimalistisches UI mit sanften Verläufen, großem Now-Playing-Screen und fließenden Übergängen zwischen Stimmungen."
+          en: "The visual system features a striking color palette of cyan and magenta, breaking away from traditional medical branding. This fresh aesthetic is consistently applied across digital storefronts, bold outdoor advertising, and corporate stationery to ensure maximum brand recognition.",
+          de: "Das visuelle System setzt auf eine markante Farbpalette aus Cyan und Magenta und bricht damit mit traditionellem Medical-Branding. Diese frische Ästhetik wird konsequent über digitale Storefronts, plakative Außenwerbung und Geschäftsausstattung hinweg angewendet, um maximale Markenwiedererkennung zu sichern."
         }
       }
     },
@@ -358,43 +366,35 @@ const SITE = {
       }
     },
     {
-      slug: "stomatino",
-      filter: "branding",
-      title: "Stomatino",
-      category: { en: "brand identity & logo design", de: "markenidentität & logodesign" },
-      folder: "./stomatino",
-      image: "./stomatino/1.webp",
-      link: "./case-study.html?project=stomatino",
-      /* 1.webp is the hero/cover; the local clip plays full-width beneath it */
-      blocks: [
-        { type: "video-full", num: 2 }
-      ],
+      slug: "aura",
+      filter: "ux-ui",
+      title: "Aura: Music Player",
+      category: { en: "mobile app", de: "mobile app" },
+      folder: "./aura",
+      image: "./aura/1.webp",
+      link: "./case-study.html?project=aura",
+      /* desktop: images 7, 9, 8 in one equal 3-up horizontal row (that order) */
+      groups: [ { nums: [7, 9, 8], cols: "1fr 1fr 1fr", gap: "16px", ratio: "4 / 3" } ],
       caseStudy: {
-        type: { en: "brand identity & logo design", de: "markenidentität & logodesign" },
-        role: { en: "brand designer", de: "brand designer" },
-        client: { en: "stomatino.pl", de: "stomatino.pl" },
-        year: "2021",
-        /* branding project: its own section labels instead of the UX defaults */
-        headings: {
-          problem:  { en: "the challenge",    de: "die herausforderung" },
-          research: { en: "the logo concept", de: "das logo-konzept" },
-          final:    { en: "final identity",   de: "finale identität" }
-        },
+        type: { en: "mobile app", de: "mobile app" },
+        role: { en: "ux/ui designer", de: "ux/ui designer" },
+        client: { en: "concept project", de: "konzeptprojekt" },
+        year: "2025",
         overview: {
-          en: "Stomatino is a modern online store dedicated to high-quality dental care products. The brand identity was designed to evoke friendliness, trust, and expertise, transforming the often-clinical perception of dentistry into an approachable and positive experience for everyday customers.",
-          de: "Stomatino ist ein moderner Online-Shop für hochwertige Zahnpflegeprodukte. Die Markenidentität wurde entwickelt, um Freundlichkeit, Vertrauen und Kompetenz zu vermitteln und die oft klinische Wahrnehmung von Zahnmedizin in ein zugängliches, positives Erlebnis für alltägliche Kunden zu verwandeln."
+          en: "AURA is a music player concept focused on mood-based listening — playlists that adapt to time of day and activity.",
+          de: "AURA ist ein Musikplayer-Konzept für stimmungsbasiertes Hören — Playlists, die sich an Tageszeit und Aktivität anpassen."
         },
         problem: {
-          en: "E-commerce platforms for dental supplies often feel overly sterile and intimidating. The goal was to create a vibrant, welcoming brand identity that highlights a passion for oral health and beauty, bridging the gap between professional dental care and consumer lifestyle.",
-          de: "E-Commerce-Plattformen für Dentalbedarf wirken häufig übermäßig steril und einschüchternd. Ziel war eine lebendige, einladende Markenidentität, die die Leidenschaft für Mundgesundheit und Schönheit betont und die Lücke zwischen professioneller Zahnpflege und Consumer-Lifestyle schließt."
+          en: "Standard players bury discovery behind endless lists. AURA explores how a player can feel calm and personal instead of crowded.",
+          de: "Klassische Player verstecken Entdeckung hinter endlosen Listen. AURA untersucht, wie sich ein Player ruhig und persönlich statt überladen anfühlen kann."
         },
         research: {
-          en: "At the heart of the visual identity is a clever typographic mark. By seamlessly combining the lowercase letters 't' and 'i' with a bright magenta dot, the logo forms a friendly, abstract smile. This visual metaphor perfectly captures the brand's core mission: inspiring beautiful, healthy smiles.",
-          de: "Im Zentrum der visuellen Identität steht eine durchdachte typografische Marke: Die Kleinbuchstaben 't' und 'i' verschmelzen mit einem leuchtenden Magenta-Punkt zu einem freundlichen, abstrakten Lächeln. Diese visuelle Metapher bringt die Kernmission der Marke auf den Punkt: schöne, gesunde Lächeln zu inspirieren."
+          en: "Competitive analysis and quick usability tests on paper prototypes defined the gesture-driven navigation model.",
+          de: "Wettbewerbsanalyse und schnelle Usability-Tests mit Papier-Prototypen definierten das gestenbasierte Navigationsmodell."
         },
         final: {
-          en: "The visual system features a striking color palette of cyan and magenta, breaking away from traditional medical branding. This fresh aesthetic is consistently applied across digital storefronts, bold outdoor advertising, and corporate stationery to ensure maximum brand recognition.",
-          de: "Das visuelle System setzt auf eine markante Farbpalette aus Cyan und Magenta und bricht damit mit traditionellem Medical-Branding. Diese frische Ästhetik wird konsequent über digitale Storefronts, plakative Außenwerbung und Geschäftsausstattung hinweg angewendet, um maximale Markenwiedererkennung zu sichern."
+          en: "A minimal, gradient-tinted UI with an oversized now-playing screen and fluid transitions between moods.",
+          de: "Ein minimalistisches UI mit sanften Verläufen, großem Now-Playing-Screen und fließenden Übergängen zwischen Stimmungen."
         }
       }
     },

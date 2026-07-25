@@ -884,6 +884,23 @@
         fitBentoColumns(bento);
         return;
       }
+
+      /* full-width responsive Vimeo embed (16:9), placed exactly where it
+         appears in the blocks sequence — used here as the final block */
+      if (block.type === "vimeo") {
+        const wrap = document.createElement("div");
+        wrap.className = "dawdle-video-embed";
+        const iframe = document.createElement("iframe");
+        iframe.src = "https://player.vimeo.com/video/" + block.id;
+        iframe.loading = "lazy";
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allow", "autoplay; fullscreen; picture-in-picture");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.title = p.title + " — video walkthrough";
+        wrap.appendChild(iframe);
+        grid.appendChild(wrap);
+        return;
+      }
     });
   }
 

@@ -1192,6 +1192,23 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .dawdle-bento { flex-direction: row; align-items: flex-start; }
 }
 
+/* final block: full-width responsive Vimeo embed, same 1440px band + radius
+   as every other project block */
+.dawdle-video-embed {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.dawdle-video-embed iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dawdle-video-ctrl, .dvc-progress { transition: none; }
 }

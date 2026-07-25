@@ -1192,6 +1192,22 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .dawdle-bento { flex-direction: row; align-items: flex-start; }
 }
 
+/* full-width local <video> block — same 1440px band + radius as the images */
+.cs-video-full {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  line-height: 0;                      /* no inline-descender gap under the video */
+  background: var(--bg-elevated);
+}
+.cs-video-full video {
+  display: block;
+  width: 100%;
+  height: auto;                        /* keeps the file's own aspect ratio */
+}
+
 /* final block: full-width responsive Vimeo embed, same 1440px band + radius
    as every other project block */
 .dawdle-video-embed {

@@ -736,6 +736,17 @@
       if (el) el.textContent = pick(cs[key]);
     });
 
+    /* optional per-project section headings — branding projects use their own
+       labels ("the challenge" / "the logo concept" / "final identity") instead
+       of the default UX ones. Runs after applyLang()'s [data-i18n] pass, so
+       these overrides win; without `headings` the i18n defaults stay. */
+    const heads = cs.headings || {};
+    [["problem", "csHeadProblem"], ["research", "csHeadResearch"], ["final", "csHeadFinal"]]
+      .forEach(function (pair) {
+        const el = document.getElementById(pair[1]);
+        if (el && heads[pair[0]]) el.textContent = pick(heads[pair[0]]);
+      });
+
     // large hero image
     setMedia(document.getElementById("csCover"), p.image, p.title + " cover");
 
@@ -882,6 +893,40 @@
         });
         grid.appendChild(bento);
         fitBentoColumns(bento);
+        return;
+      }
+
+      /* full-width local <video>: autoplays muted+looped inline, sized to the
+         same 1440px band as the images. Pauses when scrolled out of view. */
+      if (block.type === "video-full") {
+        const wrap = document.createElement("div");
+        wrap.className = "cs-video-full";
+
+        const video = document.createElement("video");
+        video.src = p.folder + "/" + block.num + ".mp4";
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;              // property form: required for programmatic autoplay
+        video.defaultMuted = true;
+        video.setAttribute("autoplay", "");
+        video.setAttribute("loop", "");
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");        // iOS Safari: inline, not fullscreen
+        video.setAttribute("webkit-playsinline", "");
+        video.setAttribute("aria-label", p.title + " — project video");
+        video.addEventListener("error", function () { wrap.remove(); });
+        video.addEventListener("canplay", function () { video.play().catch(function () {}); });
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) video.play().catch(function () {});
+              else video.pause();
+            });
+          }, { threshold: 0.25 }).observe(video);
+        }
+
+        wrap.appendChild(video);
+        grid.appendChild(wrap);
         return;
       }
 

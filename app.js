@@ -896,6 +896,55 @@
         return;
       }
 
+      /* simple responsive grid: an ordered list of rows, each either a pair of
+         images (50/50 desktop columns, stacked full-width on mobile) or a
+         single full-width item — images use galleryFigure() (lightbox-enabled),
+         a row flagged `video:true` renders a plain autoplaying local clip
+         instead (for source files that are .mp4, not .webp). */
+      if (block.type === "image-grid") {
+        const wrap = document.createElement("div");
+        wrap.className = "stomatino-grid";
+        block.rows.forEach(function (row) {
+          const rowEl = document.createElement("div");
+          rowEl.className = "stomatino-grid-row" + (row.nums.length === 2 ? " cols-2" : "");
+          row.nums.forEach(function (n) {
+            if (row.video) {
+              const cell = document.createElement("div");
+              cell.className = "stomatino-grid-video";
+              const video = document.createElement("video");
+              video.src = p.folder + "/" + n + ".mp4";
+              video.autoplay = true;
+              video.loop = true;
+              video.muted = true;
+              video.defaultMuted = true;
+              video.setAttribute("autoplay", "");
+              video.setAttribute("loop", "");
+              video.setAttribute("muted", "");
+              video.setAttribute("playsinline", "");
+              video.setAttribute("webkit-playsinline", "");
+              video.setAttribute("aria-label", p.title + " — clip " + n);
+              video.addEventListener("error", function () { cell.remove(); });
+              video.addEventListener("canplay", function () { video.play().catch(function () {}); });
+              if ("IntersectionObserver" in window) {
+                new IntersectionObserver(function (entries) {
+                  entries.forEach(function (e) {
+                    if (e.isIntersecting) video.play().catch(function () {});
+                    else video.pause();
+                  });
+                }, { threshold: 0.25 }).observe(video);
+              }
+              cell.appendChild(video);
+              rowEl.appendChild(cell);
+            } else {
+              rowEl.appendChild(galleryFigure(p, n));
+            }
+          });
+          wrap.appendChild(rowEl);
+        });
+        grid.appendChild(wrap);
+        return;
+      }
+
       /* full-width local <video>: autoplays muted+looped inline, sized to the
          same 1440px band as the images. Pauses when scrolled out of view. */
       if (block.type === "video-full") {

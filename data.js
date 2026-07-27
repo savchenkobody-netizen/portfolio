@@ -250,9 +250,15 @@ const SITE = {
       folder: "./stomatino",
       image: "./stomatino/1.webp",
       link: "./case-study.html?project=stomatino",
-      /* 1.webp is the hero/cover; the local clip plays full-width beneath it */
+      /* 1.webp is the hero/cover; the local clip plays full-width beneath it,
+         then a responsive grid: 3+4 paired, 5+6 paired, 7 (a clip) full-width */
       blocks: [
-        { type: "video-full", num: 2 }
+        { type: "video-full", num: 2 },
+        { type: "image-grid", rows: [
+          { nums: [3, 4] },
+          { nums: [5, 6] },
+          { nums: [7], video: true }
+        ] }
       ],
       caseStudy: {
         type: { en: "brand identity & logo design", de: "markenidentität & logodesign" },

@@ -1193,6 +1193,58 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .dawdle-bento { flex-direction: row; align-items: flex-start; }
 }
 
+/* =========================================================
+   STOMATINO — simple responsive image grid (3+4 paired, 5+6 paired,
+   7 full-width). Mobile: every row is a single column, all items
+   stacked 100% width. Desktop: a 2-image row splits 50/50; a
+   1-image row spans the full band. Consistent 24px gap throughout.
+   ========================================================= */
+.stomatino-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+.stomatino-grid-row {
+  display: grid;
+  grid-template-columns: 1fr;          /* mobile: single column */
+  gap: 24px;
+}
+@media (min-width: 768px) {
+  .stomatino-grid-row.cols-2 { grid-template-columns: repeat(2, 1fr); }
+}
+/* standard portfolio image styling: no padding/background, radius on the
+   wrapper + overflow:hidden so the image sits flush inside the corners */
+.stomatino-grid-row .cs-figure {
+  width: 100%;
+  border: 0;
+  background: none;
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  line-height: 0;
+}
+.stomatino-grid-row .cs-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0;                    /* the wrapper owns the radius */
+}
+.stomatino-grid-video {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  line-height: 0;
+  background: var(--bg-elevated);
+}
+.stomatino-grid-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* full-width local <video> block — same var(--maxw) band + radius as the images */
 .cs-video-full {
   width: 100%;

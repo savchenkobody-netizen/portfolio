@@ -70,7 +70,7 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur: 400ms;
 
-  --maxw: 1440px;
+  --maxw: 1728px;
   --gutter: clamp(20px, 5vw, 64px);
 
   /* button glow — warm halo, tuned per theme below */
@@ -633,7 +633,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 }
 
 /* ---- DESKTOP: overlapping "fanned deck" of all 7 cards across the full
-   1440px content width (mobile keeps the horizontal scroll above) ---- */
+   content width (mobile keeps the horizontal scroll above) ---- */
 @media (min-width: 901px) {
   .testimonial-scroll {
     justify-content: center;
@@ -712,6 +712,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   letter-spacing: -0.03em;
   line-height: 1.2;
   color: var(--text-bright);
+  max-width: 900px;
 }
 .about-intro .dim { color: var(--text-faint); }
 
@@ -740,7 +741,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   font-size: .95rem; font-weight: 400;
   color: var(--text-muted);
 }
-.about-col p { font-size: 1.15rem; line-height: 1.75; color: var(--text); }
+.about-col p { font-size: 1.15rem; line-height: 1.75; color: var(--text); max-width: 65ch; }
 .about-col .btn-pill { margin-top: 4px; }
 
 /* =========================================================
@@ -793,7 +794,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   grid-template-columns: 1fr 44px 1fr;
   align-items: start;
   gap: 0 clamp(24px, 4vw, 56px);
-  padding-block: clamp(28px, 4.5vw, 52px);
+  padding-block: clamp(40px, 6.5vw, 100px);
 }
 
 .timeline-dot {
@@ -838,32 +839,32 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 
 .timeline-year {
   display: block;
-  font-size: .85rem;
+  font-size: clamp(.95rem, .8vw + .75rem, 1.15rem);
   font-weight: 700;
   letter-spacing: .06em;
   color: var(--timeline-accent);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .timeline-role {
-  font-size: clamp(1.25rem, 2.3vw, 1.85rem);
+  font-size: clamp(1.3rem, 2.4vw, 2.1rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: var(--text-bright);
-  margin: 0 0 8px;
-}
-.timeline-company {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text);
   margin: 0 0 10px;
 }
+.timeline-company {
+  font-size: clamp(1.05rem, 1vw + .85rem, 1.3rem);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 14px;
+}
 .timeline-description {
-  font-size: .95rem;
-  line-height: 1.65;
+  font-size: 1.125rem;
+  line-height: 1.7;
   color: var(--text-muted);
   margin: 0;
-  max-width: 40ch;
+  max-width: 42ch;
 }
 .timeline-item .timeline-content { margin-left: auto; }
 .timeline-item--right .timeline-content { margin-left: 0; margin-right: auto; }
@@ -913,10 +914,10 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 }
 .cs-figure img { width: 100%; height: 100%; object-fit: cover; }
 
-/* hero breaks out into the same centered 1440px band as the gallery */
+/* hero breaks out into the same centered var(--maxw) band as the gallery */
 .cs-hero-media {
-  width: min(1440px, calc(100vw - 2 * var(--gutter)));
-  margin-inline: calc((100% - min(1440px, calc(100vw - 2 * var(--gutter)))) / 2);
+  width: min(var(--maxw), calc(100vw - 2 * var(--gutter)));
+  margin-inline: calc((100% - min(var(--maxw), calc(100vw - 2 * var(--gutter)))) / 2);
   margin-top: clamp(24px, 4vw, 40px);
   border: 0;                 /* no border → image edges match the gallery exactly */
   background: none;
@@ -964,13 +965,13 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 .cs-text { font-size: 1.05rem; line-height: 1.65; color: var(--text-muted); }
 
 /* gallery: auto-collected 1…9.webp|.gif — stacked vertically, massive,
-   NEVER cropped. Same 1440px band as the hero image so every big image
+   NEVER cropped. Same var(--maxw) band as the hero image so every big image
    lines up on the exact same left/right edges. */
 .cs-gallery {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: min(1440px, calc(100vw - 2 * var(--gutter)));   /* identical to .cs-hero-media */
+  width: min(var(--maxw), calc(100vw - 2 * var(--gutter)));   /* identical to .cs-hero-media */
   margin: 80px auto;
 }
 
@@ -1032,7 +1033,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 /* =========================================================
    DAWDLE — explicit gallery blocks
    Two matching 2-column grids (videos, then the image pair):
-   max-width 1440, centered, gap; both collapse to 1 column on mobile.
+   max-width var(--maxw), centered, gap; both collapse to 1 column on mobile.
    ========================================================= */
 .dawdle-video-row,
 .dawdle-img-row {
@@ -1040,7 +1041,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   grid-template-columns: 1fr;               /* mobile: single column */
   gap: clamp(16px, 2vw, 28px);
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--maxw);
   margin: 0 auto;
 }
 @media (min-width: 768px) {
@@ -1110,7 +1111,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 .dawdle-img-row .cs-figure { width: 100%; border-radius: 16px; overflow: hidden; }
 .dawdle-img-row .cs-figure img { width: 100%; height: auto; display: block; }
 
-/* DESKTOP: the pair fills the full content band edge-to-edge (same 1440px
+/* DESKTOP: the pair fills the full content band edge-to-edge (same var(--maxw)
    band as the hero image / video row), both EXACTLY the same height, with
    ZERO cropping. Each figure sizes to its image's own intrinsic aspect ratio
    (width:auto + height:100%, no object-fit needed — nothing is ever cut).
@@ -1157,7 +1158,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   flex-direction: column;              /* mobile: one column, 13 → 21 in order */
   gap: 24px;
   width: 100%;
-  max-width: 1440px;                   /* same band as every other project block */
+  max-width: var(--maxw);               /* same band as every other project block */
   margin: 0 auto;
 }
 .dawdle-bento-col {
@@ -1192,10 +1193,10 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .dawdle-bento { flex-direction: row; align-items: flex-start; }
 }
 
-/* full-width local <video> block — same 1440px band + radius as the images */
+/* full-width local <video> block — same var(--maxw) band + radius as the images */
 .cs-video-full {
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--maxw);
   margin: 0 auto;
   border-radius: 16px;
   overflow: hidden;
@@ -1208,11 +1209,11 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   height: auto;                        /* keeps the file's own aspect ratio */
 }
 
-/* final block: full-width responsive Vimeo embed, same 1440px band + radius
+/* final block: full-width responsive Vimeo embed, same var(--maxw) band + radius
    as every other project block */
 .dawdle-video-embed {
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--maxw);
   margin: 0 auto;
   border-radius: 16px;
   overflow: hidden;
@@ -1247,7 +1248,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
    ========================================================= */
 .site-footer {
   width: 100%;
-  max-width: var(--maxw);            /* same 1440px container as <main> */
+  max-width: var(--maxw);            /* same container as <main> */
   margin: 0 auto;                    /* centered */
   /* SAME horizontal gutter as the rest of the site so all edges line up */
   padding: clamp(60px, 9vw, 110px) var(--gutter) clamp(20px, 2.5vw, 40px);

@@ -698,6 +698,12 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  /* narrow fanned cards (viewport just past the 901px breakpoint): the
+     rating + separator + date no longer fit on one line — let the date
+     wrap onto its own line instead of overflowing past the card edge */
+  .tc-meta { flex-wrap: wrap; row-gap: 2px; }
+  .tc-date { white-space: normal; }
 }
 
 /* =========================================================

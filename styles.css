@@ -81,6 +81,9 @@
   /* experience timeline — bright lime accent + its glow */
   --timeline-accent:      #DFFF3C;
   --timeline-accent-glow: rgba(223, 255, 60, 0.55);
+
+  /* clickable gallery image hover — a light lift reads best on the dark bg */
+  --img-hover-brightness: 1.07;
 }
 
 /* ---------- Design tokens: LIGHT (warm inverse) ---------- */
@@ -103,6 +106,9 @@
   /* darker, more saturated lime holds contrast on the light background */
   --timeline-accent:      #7A9A00;
   --timeline-accent-glow: rgba(122, 154, 0, 0.35);
+
+  /* on the light background a brighten washes out — dim very slightly instead */
+  --img-hover-brightness: 0.94;
 }
 
 /* ---------- Reset ---------- */
@@ -920,6 +926,31 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 }
 .cs-figure img { width: 100%; height: 100%; object-fit: cover; }
 
+/* ---- clickable gallery images: zoom affordance + subtle hover ----
+   `.cs-figure img` is the exact selector the lightbox delegates on (app.js),
+   so this covers every enlargeable image site-wide — the case-study hero and
+   every gallery block (plain, pair, dawdle row/bento, stomatino grid) — while
+   correctly excluding homepage project cards, which navigate instead of zoom.
+   Only transform+filter are transitioned (not `all`): several of these figures
+   have their width/height set by JS on resize, and transitioning those would
+   make the masonry/row fitters visibly lag. */
+.cs-figure img {
+  cursor: zoom-in;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+/* hover-capable pointers only — on touch, :hover sticks after a tap */
+@media (hover: hover) and (pointer: fine) {
+  .cs-figure img:hover {
+    transform: scale(1.02);
+    filter: brightness(var(--img-hover-brightness, 1.07));
+  }
+}
+/* keyboard parity: the images are focusable lightbox triggers (tabIndex=0) */
+.cs-figure img:focus-visible {
+  transform: scale(1.02);
+  filter: brightness(var(--img-hover-brightness, 1.07));
+}
+
 /* hero breaks out into the same centered var(--maxw) band as the gallery */
 .cs-hero-media {
   width: min(var(--maxw), calc(100vw - 2 * var(--gutter)));
@@ -995,8 +1026,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   max-width: 100%;      /* fills the container; never constrained smaller */
   height: auto;         /* keeps aspect ratio, no cropping */
   display: block;
-  border-radius: 16px;
-  cursor: zoom-in;
+  border-radius: 16px;  /* cursor + hover: see the global .cs-figure img rule */
 }
 
 /* horizontal group row (2–3 images side by side). Columns/gap/ratio are set
@@ -1488,6 +1518,12 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 
 /* hide the native cursor while the follower is active */
 body.has-custom-cursor, body.has-custom-cursor * { cursor: none; }
+/* …except enlargeable gallery images: there the native zoom-in magnifier IS
+   the affordance, so let it through (higher specificity than the `*` above)
+   and hide the dot/ring while it shows, so only one cursor is ever visible */
+body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
+.cursor-follower { transition: opacity 160ms var(--ease-out); }
+.cursor-follower.is-over-zoomable { opacity: 0; }
 
 /* =========================================================
    LIGHTBOX
@@ -1653,6 +1689,8 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none; }
   .marquee-track { animation: none !important; }
   .timeline-dot.is-active::after { animation: none !important; opacity: 0; }
   .project-card:hover .project-media img { transform: none; }
+  .cs-figure img { transition: none !important; }
+  .cs-figure img:hover, .cs-figure img:focus-visible { transform: none; filter: none; }
   .btn-pill:hover, .footer-cta:hover, .cs-back:hover { transform: none; }
   .theme-toggle .icon { transition: opacity 120ms linear; }
   body { animation: none; }

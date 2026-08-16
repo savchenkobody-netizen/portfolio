@@ -372,14 +372,24 @@
       mouse.x = e.clientX; mouse.y = e.clientY;
     }, { passive: true });
 
+    // enlargeable gallery images show the native zoom-in magnifier instead of
+    // the follower (see styles.css) — hide the dot/ring while over one so the
+    // two cursors never overlap
+    const ZOOMABLE = ".cs-figure img";
+
     // event-delegated hover so it survives re-rendered cards / galleries
     document.addEventListener("mouseover", function (e) {
       if (e.target.closest(INTERACTIVE)) hovering = true;
+      if (e.target.closest(ZOOMABLE)) wrap.classList.add("is-over-zoomable");
     });
     document.addEventListener("mouseout", function (e) {
       if (e.target.closest(INTERACTIVE) &&
           !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(INTERACTIVE))) {
         hovering = false;
+      }
+      if (e.target.closest(ZOOMABLE) &&
+          !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(ZOOMABLE))) {
+        wrap.classList.remove("is-over-zoomable");
       }
     });
 

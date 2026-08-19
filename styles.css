@@ -571,7 +571,12 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 /* =========================================================
    HOME — TESTIMONIALS (Upwork client reviews, horizontal scroll)
    ========================================================= */
-.testimonials { padding-block: 0 clamp(60px, 9vw, 120px); }
+.testimonials {
+  padding-block: 0 clamp(60px, 9vw, 120px);
+  /* the "reviews" nav link jumps straight here (/#reviews) — same fixed-header
+     offset as .work so the section isn't hidden under it */
+  scroll-margin-top: var(--header-h, 90px);
+}
 
 .testimonial-scroll {
   display: flex;

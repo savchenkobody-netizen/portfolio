@@ -663,7 +663,11 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
 }
 
 .testimonials {
-  padding-block: 0 clamp(60px, 9vw, 120px);
+  /* top value matches .work's (which sits under the marquee's border) so the
+     heading clears the stats section's bottom line with the same rhythm as
+     "selected work" clears the marquee's — was 0 back when the section above
+     this one had no border */
+  padding-block: clamp(24px, 4vw, 56px) clamp(60px, 9vw, 120px);
   /* the "reviews" nav link jumps straight here (/#reviews) — same fixed-header
      offset as .work so the section isn't hidden under it */
   scroll-margin-top: var(--header-h, 90px);

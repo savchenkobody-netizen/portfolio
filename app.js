@@ -1381,6 +1381,66 @@
   }
 
   /* ---------------------------------------------------------
+     10b. STAT COUNTERS — each .stat-num counts 0 -> data-count-to
+          once the section scrolls into view (homepage only).
+          Only the digits animate: "%" lives in its own sibling
+          span, and the decimal place comes from data-decimals,
+          so the "." never moves. Counts once, never on re-entry.
+     --------------------------------------------------------- */
+  const COUNT_MS = 2000;                       // ~2s per the design
+
+  function initCounters() {
+    const section = document.querySelector(".stats");
+    if (!section) return;                      // homepage only
+
+    const nums = Array.from(section.querySelectorAll(".stat-num[data-count-to]"));
+    if (!nums.length) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // "5" + data-decimals="1" -> "5.0"; "128" -> "128"
+    function format(el, value) {
+      return value.toFixed(parseInt(el.dataset.decimals || "0", 10));
+    }
+    // ease-out cubic: quick off the mark, gentle landing
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function countUp(el) {
+      const target = parseFloat(el.dataset.countTo);
+      if (!isFinite(target)) return;
+      if (prefersReduced) { el.textContent = format(el, target); return; }
+
+      const start = performance.now();
+      (function step(now) {
+        const p = Math.min((now - start) / COUNT_MS, 1);
+        if (p < 1) {
+          el.textContent = format(el, target * ease(p));
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = format(el, target);   // land exactly on the target
+        }
+      })(start);
+    }
+
+    // paint the zeroed start state up front so the row never reflows later
+    nums.forEach(function (el) { el.textContent = format(el, 0); });
+
+    function runAll() { nums.forEach(countUp); }
+
+    if (!("IntersectionObserver" in window)) { runAll(); return; }
+
+    const obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        obs.disconnect();      // fire once — not again on every scroll pass
+        runAll();
+      });
+    }, { threshold: 0.2 });
+
+    obs.observe(section);
+  }
+
+  /* ---------------------------------------------------------
      11. Header border on scroll + footer year
      --------------------------------------------------------- */
   function initChrome() {
@@ -1435,6 +1495,7 @@
     initPageFade();
     initChrome();
     observeReveals();
+    initCounters();   // homepage stat count-up (no-op elsewhere)
     scrollToHash();
   }
 

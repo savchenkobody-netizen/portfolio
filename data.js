@@ -20,6 +20,12 @@ const SITE = {
       hero: { title: "Hi, I'm Bohdan", eyebrow: "Junior UX/UI Designer / Media Designer" },
       work: { title: "selected work" },
       filter: { all: "all", uxui: "ux/ui design", branding: "branding" },
+      stats: {
+        success:   "Job Success",
+        projects:  "Projects Shipped",
+        countries: "Countries Reached",
+        rating:    "Average Rating"
+      },
       testimonials: { title: "client reviews", more: "More Upwork reviews" },
       home: {
         statement: "I'm Bohdan Savchenko, an End-to-End UX/UI Designer based in Germany. I combine over 5 years of visual design expertise with user-centered product development and live website creation.",
@@ -69,6 +75,15 @@ const SITE = {
       hero: { title: "Hi, ich bin Bohdan", eyebrow: "Junior UX/UI Designer / Mediengestalter" },
       work: { title: "ausgewählte projekte" },
       filter: { all: "alle", uxui: "ux/ui design", branding: "branding" },
+      stats: {
+        success:   "Erfolgsquote",
+        projects:  "Projekte umgesetzt",
+        countries: "Länder erreicht",
+        /* "Durchschnittsbewertung" is one unbreakable 22-char compound — it
+           overflows the narrow 4-across mobile column; "Ø" is the standard
+           German shorthand for a mean and keeps the label to two short words */
+        rating:    "Ø Bewertung"
+      },
       testimonials: { title: "kundenbewertungen", more: "Weitere Upwork-Bewertungen" },
       home: {
         statement: "Ich bin Bohdan Savchenko, ein End-to-End UX/UI Designer mit Sitz in Deutschland. Ich verbinde über 5 Jahre Erfahrung im visuellen Design mit nutzerzentrierter Produktentwicklung und der Umsetzung live geschalteter Websites.",

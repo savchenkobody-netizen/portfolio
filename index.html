@@ -82,6 +82,50 @@
       <div class="project-grid" id="projectGrid" aria-live="polite"></div>
     </section>
 
+    <!-- ============ STATS (numbers count up when scrolled into view — initCounters() in app.js).
+         Each .stat-num counts 0 -> data-count-to; symbols (%, the decimal place)
+         live outside the animated span / come from data-decimals, so they never animate. -->
+    <section class="stats reveal" aria-label="Key numbers">
+      <ul class="stats-grid">
+        <li class="stat" style="--stat-accent: var(--brand-cyan);">
+          <p class="stat-value"><span class="stat-num" data-count-to="100">0</span><span class="stat-sym">%</span></p>
+          <p class="stat-label">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="m9 11 3 3L22 4" />
+            </svg>
+            <span data-i18n="stats.success">Job Success</span>
+          </p>
+        </li>
+        <li class="stat" style="--stat-accent: var(--brand-magenta);">
+          <p class="stat-value"><span class="stat-num" data-count-to="128">0</span></p>
+          <p class="stat-label">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m7.5 4.27 9 5.15" /><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" /><path d="m3.3 7 8.7 5 8.7-5" /><path d="M12 22V12" />
+            </svg>
+            <span data-i18n="stats.projects">Projects Shipped</span>
+          </p>
+        </li>
+        <li class="stat" style="--stat-accent: var(--brand-cyan);">
+          <p class="stat-value"><span class="stat-num" data-count-to="3">0</span></p>
+          <p class="stat-label">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" />
+            </svg>
+            <span data-i18n="stats.countries">Countries Reached</span>
+          </p>
+        </li>
+        <li class="stat" style="--stat-accent: var(--brand-magenta);">
+          <p class="stat-value"><span class="stat-num" data-count-to="5" data-decimals="1">0.0</span></p>
+          <p class="stat-label">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            <span data-i18n="stats.rating">Average Rating</span>
+          </p>
+        </li>
+      </ul>
+    </section>
+
     <!-- ============ TESTIMONIALS (Upwork client reviews) ============ -->
     <section class="testimonials reveal" id="reviews" aria-label="Client reviews">
       <h2 class="display-title" data-reveal-words data-i18n="testimonials.title">client reviews</h2>

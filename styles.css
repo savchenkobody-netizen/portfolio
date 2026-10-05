@@ -1791,6 +1791,11 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
 .mixed-media-row { display: grid; grid-template-columns: minmax(0, 1122fr) minmax(0, 1402fr); gap: 24px; }
 .mixed-media-row > * { aspect-ratio: 1122 / 1402; min-width: 0; overflow: hidden; border-radius: 16px; }
 .mixed-media-row > :last-child { aspect-ratio: 1; }
-.cs-gallery .mixed-media-row .cs-figure { border-radius: 16px; }
+.cs-gallery .mixed-media-row .cs-figure { border-radius: 16px; overflow: hidden; }
 .cs-gallery .mixed-media-row img, .mixed-media-row video { width: 100%; height: 100%; object-fit: contain; display: block; }
 @media (max-width: 767px) { .mixed-media-row { grid-template-columns: 1fr; } }
+
+@media (min-width: 901px) {
+  .cs-sections { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cs-section { max-width: none; min-width: 0; }
+}

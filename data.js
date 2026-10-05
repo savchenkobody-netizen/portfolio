@@ -490,7 +490,8 @@ const SITE = {
         7
     ]
 },
-        { "type": "vimeo", "id": "1233103848" }
+        { "type": "vimeo", "id": "1233103848" },
+        { "type": "video-row", "nums": [9, 10], "extension": "mov", "ratios": ["1530 / 860", "1120 / 1402"], "columns": "minmax(0, 1.7790697674fr) minmax(0, 0.7988587732fr)" }
     ],
     "caseStudy": {
         "type": {

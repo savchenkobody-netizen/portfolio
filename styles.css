@@ -1156,7 +1156,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   margin: 0 auto;
 }
 @media (min-width: 768px) {
-  .dawdle-video-row { grid-template-columns: repeat(2, 1fr); }   /* videos: 2 equal */
+  .dawdle-video-row { grid-template-columns: var(--video-columns, repeat(2, 1fr)); }   /* videos: 2 equal */
 }
 
 /* --- video cell --- */

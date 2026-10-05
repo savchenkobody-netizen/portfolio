@@ -868,13 +868,14 @@
       if (block.type === "video-row") {
         const row = document.createElement("div");
         row.className = "dawdle-video-row";
-        block.nums.forEach(function (n) {
+        if (block.columns) row.style.setProperty("--video-columns", block.columns);
+        block.nums.forEach(function (n, i) {
           const cell = document.createElement("div");
           cell.className = "dawdle-video";
-          if (block.ratio) cell.style.setProperty("--video-ratio", block.ratio);
+          if (block.ratios || block.ratio) cell.style.setProperty("--video-ratio", block.ratios ? block.ratios[i] : block.ratio);
 
           const video = document.createElement("video");
-          video.src = p.folder + "/" + n + ".mp4";
+          video.src = p.folder + "/" + n + "." + (block.extension || "mp4");
           video.autoplay = true;
           video.loop = true;
           video.muted = true;              // property form: required for programmatic autoplay

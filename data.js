@@ -224,6 +224,7 @@ const SITE = {
   ],
 
   projects: [
+
     {
       slug: "audiophil",
       filter: "ux-ui",
@@ -421,6 +422,77 @@ const SITE = {
         }
       }
     },
+    {
+    "slug": "nucao",
+    "filter": "branding",
+    "title": "nucao — Halloween Edition",
+    "category": {
+        "en": "campaign concept & packaging design",
+        "de": "kampagnenkonzept & verpackungsdesign"
+    },
+    "folder": "./nucao",
+    "image": "./nucao/1.webp",
+    "link": "./case-study.html?project=nucao",
+    "blocks": [
+        {
+            "type": "vimeo",
+            "id": "1232805602"
+        }
+    ],
+    "caseStudy": {
+        "type": {
+            "en": "campaign concept & packaging design",
+            "de": "kampagnenkonzept & verpackungsdesign"
+        },
+        "year": "2026",
+        "role": {
+            "en": "concept · art direction · packaging adaptation · video editing",
+            "de": "konzeption · art direction · verpackungsadaption · videoschnitt"
+        },
+        "client": {
+            "en": "self-initiated project — no client commission",
+            "de": "eigeninitiative — keine auftragsarbeit"
+        },
+        "subtitle": {
+            "en": "self-initiated concept · fictional flavour",
+            "de": "freies Konzeptprojekt · fiktive Geschmacksrichtung"
+        },
+        "headings": {
+            "problem": {
+                "en": "the challenge",
+                "de": "die herausforderung"
+            },
+            "research": {
+                "en": "the creative concept",
+                "de": "die kreative idee"
+            },
+            "final": {
+                "en": "the execution",
+                "de": "die umsetzung"
+            }
+        },
+        "overview": {
+            "en": "An independent Halloween campaign concept imagining cherry and black sesame as a fictional nucao chocolate flavour. Building on the brand’s existing visual identity, the project brings together packaging design, playful character imagery and an AI-assisted advertising film in which a vampire discovers an unexpected favourite.",
+            "de": "Ein freies Halloween-Kampagnenkonzept, das Kirsche und schwarzen Sesam als fiktive Schokoladensorte für nucao interpretiert. Aufbauend auf dem bestehenden Markenauftritt verbindet das Projekt Verpackungsdesign, spielerische Charaktermotive und einen KI-gestützten Werbefilm, in dem ein Vampir einen unerwarteten neuen Lieblingsgeschmack entdeckt."
+        },
+        "problem": {
+            "en": "Develop a fictional seasonal edition that feels consistent with nucao’s existing visual language while giving it a distinctive Halloween story. The focus was on making the chocolate appetising and memorable through humour, expressive characters and a coherent visual style across packaging, film and campaign imagery.",
+            "de": "Eine fiktive saisonale Edition entwickeln, die zur bestehenden visuellen Sprache von nucao passt und zugleich eine eigenständige Halloween-Geschichte erzählt. Die Schokolade sollte durch Humor, ausdrucksstarke Figuren und eine durchgängige Gestaltung von Verpackung, Film und Kampagnenmotiven appetitlich und einprägsam präsentiert werden."
+        },
+        "research": {
+            "en": "Cherry and black sesame meet in a playful story about sharing — and wanting more. A girl offers a vampire a piece of chocolate, only to discover that one bite is not enough. Pink packaging, purple backgrounds and cherry-red accents connect the fictional flavour with the characters and the film’s comic ending.",
+            "de": "Kirsche und schwarzer Sesam treffen auf eine spielerische Geschichte über das Teilen — und den Wunsch nach mehr. Ein Mädchen bietet einem Vampir ein Stück Schokolade an und stellt fest, dass ihm ein Bissen nicht genügt. Die rosa Verpackung, violette Hintergründe und kirschrote Akzente verbinden die fiktive Sorte mit den Figuren und der humorvollen Auflösung des Films."
+        },
+        "final": {
+            "en": "The concept combines packaging visuals, product compositions, a studio-style character series and an AI-assisted advertising film. Generated images and video sequences were selected and refined for continuity. Editing, colour grading and sound design in DaVinci Resolve brought the individual scenes together into the final film.",
+            "de": "Das Konzept umfasst Verpackungsvisualisierungen, Produktinszenierungen, eine Fotoserie der Figuren im Studiolook und einen KI-gestützten Werbefilm. Generierte Bilder und Videosequenzen wurden ausgewählt und für einen konsistenten Gesamteindruck überarbeitet. Schnitt, Farbkorrektur und Sounddesign in DaVinci Resolve verbinden die einzelnen Szenen zum fertigen Film."
+        },
+        "note": {
+            "en": "This is an independent portfolio concept based on a self-defined brief, not a commissioned campaign. The featured “Kirsche × Schwarzer Sesam — Halloween Edition” was invented for this project and does not represent a real product launch. The project is not affiliated with, commissioned by or endorsed by nucao. The nucao name, logo and existing brand identity belong to their respective rights holders. Imagery and video were created with AI assistance.",
+            "de": "Dieses unabhängige Portfolioprojekt entstand auf Basis einer selbst formulierten Aufgabenstellung und ist keine Auftragsarbeit. Die gezeigte „Kirsche × Schwarzer Sesam — Halloween Edition“ wurde für dieses Projekt frei erfunden und stellt keine tatsächliche Produkteinführung dar. Das Projekt steht in keiner Verbindung zu nucao und wurde von der Marke weder beauftragt noch autorisiert oder unterstützt. Der Name nucao, das Logo und die bestehende Markenidentität gehören den jeweiligen Rechteinhabern. Bild- und Videomaterial wurden mit KI-Unterstützung erstellt."
+        }
+    }
+},
     {
       slug: "trip-go",
       filter: "ux-ui",

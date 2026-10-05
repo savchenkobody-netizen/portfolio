@@ -89,10 +89,28 @@
     renderCaseStudy();      // case-study page (no-op elsewhere)
     renderTestimonials();   // index page      (no-op elsewhere)
     updateResumeLink();     // about page      (no-op elsewhere)
+    improveDesktopWrapping();
     buildHeroRepel();       // re-split the (just-updated) hero title into letters
     buildWordReveal();      // re-split scroll-reveal text into words
     try { localStorage.setItem(STORE.lang, currentLang); } catch (e) {}
   }
+
+  // Bind short articles/prepositions to the following word on desktop only.
+  function improveDesktopWrapping() {
+    const desktop = window.matchMedia("(min-width: 901px)").matches;
+    const words = currentLang === "de"
+      ? /(^|[\s(“„])((?:der|die|das|ein|eine|einer|einem|einen|des|dem|den|im|in|am|an|auf|zu|zum|zur|mit|von|für|und|oder)) /gi
+      : /(^|[\s(“])((?:a|an|the|in|on|at|to|of|for|and|or|by|with)) /gi;
+    document.querySelectorAll("main p, main dd, .tc-review, .tc-project, .project-name, .project-cat, .timeline-content p, .legal-content p").forEach(function (el) {
+      const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walk.nextNode())) {
+        const plain = node.nodeValue.replace(/\u00a0/g, " ");
+        node.nodeValue = desktop ? plain.replace(words, "$1$2\u00a0") : plain;
+      }
+    });
+  }
+  window.matchMedia("(min-width: 901px)").addEventListener("change", improveDesktopWrapping);
 
   function initLang() {
     let saved;
@@ -757,6 +775,13 @@
         if (el && heads[pair[0]]) el.textContent = pick(heads[pair[0]]);
       });
 
+    const subtitle = document.getElementById("csSubtitle");
+    subtitle.textContent = pick(cs.subtitle);
+    subtitle.classList.toggle("is-hidden", !cs.subtitle);
+    document.getElementById("csNoteSection").classList.toggle("is-hidden", !cs.note);
+    document.getElementById("csNote").textContent = pick(cs.note);
+    document.getElementById("csNoteHeading").textContent = pick({ en: "project note", de: "projekthinweis" });
+
     // large hero image
     setMedia(document.getElementById("csCover"), p.image, p.title + " cover");
 
@@ -1000,7 +1025,7 @@
         iframe.setAttribute("frameborder", "0");
         iframe.setAttribute("allow", "autoplay; fullscreen; picture-in-picture");
         iframe.setAttribute("allowfullscreen", "");
-        iframe.title = p.title + " — video walkthrough";
+        iframe.title = p.title + " — video";
         wrap.appendChild(iframe);
         grid.appendChild(wrap);
         return;

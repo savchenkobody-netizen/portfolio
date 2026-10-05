@@ -812,6 +812,64 @@
      renders the given sequence of image / video-row / image-row blocks.
      Videos autoplay muted+looped inline and carry a small pause badge;
      they are intentionally NOT lightbox targets (only .cs-figure img is). */
+  function attachLoopControls(video, cell, label) {
+    /* interactive control: grey disc + circular progress ring + play/pause
+       icon. The ring's circumference is set as stroke-dasharray; timeupdate
+       drives stroke-dashoffset so it fills as the clip plays. */
+    const R = 16;
+    const CIRC = 2 * Math.PI * R;               // ≈ 100.53
+    const ctrl = document.createElement("button");
+    ctrl.type = "button";
+    ctrl.className = "dawdle-video-ctrl";
+    ctrl.setAttribute("aria-label", "Play or pause " + label);
+    ctrl.innerHTML =
+      '<svg viewBox="0 0 40 40" aria-hidden="true">' +
+        '<circle class="dvc-track" cx="20" cy="20" r="' + R + '"/>' +
+        '<circle class="dvc-progress" cx="20" cy="20" r="' + R + '" ' +
+          'stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + CIRC + '"/>' +
+        '<g class="dvc-icon dvc-pause">' +
+          '<rect x="16" y="14.5" width="2.8" height="11" rx="1"/>' +
+          '<rect x="21.2" y="14.5" width="2.8" height="11" rx="1"/>' +
+        '</g>' +
+        '<path class="dvc-icon dvc-play" d="M16.5 13.5 L27 20 L16.5 26.5 Z"/>' +
+      "</svg>";
+    const progress = ctrl.querySelector(".dvc-progress");
+
+    let userPaused = false;                     // manual pause overrides auto-play
+
+    function syncIcon() { ctrl.classList.toggle("is-playing", !video.paused); }
+    function toggle() {
+      if (video.paused) { userPaused = false; video.play().catch(function () {}); }
+      else { userPaused = true; video.pause(); }
+    }
+
+    video.addEventListener("play", syncIcon);
+    video.addEventListener("pause", syncIcon);
+    video.addEventListener("timeupdate", function () {
+      if (!video.duration) return;
+      const pct = video.currentTime / video.duration;
+      progress.style.strokeDashoffset = CIRC * (1 - pct);
+    });
+    ctrl.addEventListener("click", function (e) { e.stopPropagation(); toggle(); });
+    video.addEventListener("click", toggle);
+
+    // autoplay nudges (some engines defer JS-inserted muted autoplay).
+    // Auto-play only when the user hasn't explicitly paused the clip;
+    // always pause when scrolled off-screen to save resources.
+    video.addEventListener("canplay", function () { if (!userPaused) video.play().catch(function () {}); });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { if (!userPaused) video.play().catch(function () {}); }
+          else video.pause();
+        });
+      }, { threshold: 0.25 }).observe(video);
+    }
+
+    cell.appendChild(video);
+    cell.appendChild(ctrl);
+  }
+
   function renderGalleryBlocks(p, grid) {
     p.blocks.forEach(function (block) {
       if (block.type === "image") {
@@ -858,8 +916,8 @@
         video.setAttribute("muted", "");
         video.setAttribute("playsinline", "");
         video.setAttribute("aria-label", p.title + " — looping campaign clip");
-        video.controls = true;
-        cell.appendChild(video);
+        cell.className = "dawdle-video";
+        attachLoopControls(video, cell, p.title + " clip 3");
         row.appendChild(cell);
         grid.appendChild(row);
         return;
@@ -888,61 +946,7 @@
           video.setAttribute("aria-label", p.title + " — demo clip " + n);
           video.addEventListener("error", function () { cell.remove(); });
 
-          /* interactive control: grey disc + circular progress ring + play/pause
-             icon. The ring's circumference is set as stroke-dasharray; timeupdate
-             drives stroke-dashoffset so it fills as the clip plays. */
-          const R = 16;
-          const CIRC = 2 * Math.PI * R;               // ≈ 100.53
-          const ctrl = document.createElement("button");
-          ctrl.type = "button";
-          ctrl.className = "dawdle-video-ctrl";
-          ctrl.setAttribute("aria-label", "Play or pause " + p.title + " clip " + n);
-          ctrl.innerHTML =
-            '<svg viewBox="0 0 40 40" aria-hidden="true">' +
-              '<circle class="dvc-track" cx="20" cy="20" r="' + R + '"/>' +
-              '<circle class="dvc-progress" cx="20" cy="20" r="' + R + '" ' +
-                'stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + CIRC + '"/>' +
-              '<g class="dvc-icon dvc-pause">' +
-                '<rect x="16" y="14.5" width="2.8" height="11" rx="1"/>' +
-                '<rect x="21.2" y="14.5" width="2.8" height="11" rx="1"/>' +
-              '</g>' +
-              '<path class="dvc-icon dvc-play" d="M16.5 13.5 L27 20 L16.5 26.5 Z"/>' +
-            "</svg>";
-          const progress = ctrl.querySelector(".dvc-progress");
-
-          let userPaused = false;                     // manual pause overrides auto-play
-
-          function syncIcon() { ctrl.classList.toggle("is-playing", !video.paused); }
-          function toggle() {
-            if (video.paused) { userPaused = false; video.play().catch(function () {}); }
-            else { userPaused = true; video.pause(); }
-          }
-
-          video.addEventListener("play", syncIcon);
-          video.addEventListener("pause", syncIcon);
-          video.addEventListener("timeupdate", function () {
-            if (!video.duration) return;
-            const pct = video.currentTime / video.duration;
-            progress.style.strokeDashoffset = CIRC * (1 - pct);
-          });
-          ctrl.addEventListener("click", function (e) { e.stopPropagation(); toggle(); });
-          video.addEventListener("click", toggle);
-
-          // autoplay nudges (some engines defer JS-inserted muted autoplay).
-          // Auto-play only when the user hasn't explicitly paused the clip;
-          // always pause when scrolled off-screen to save resources.
-          video.addEventListener("canplay", function () { if (!userPaused) video.play().catch(function () {}); });
-          if ("IntersectionObserver" in window) {
-            new IntersectionObserver(function (entries) {
-              entries.forEach(function (e) {
-                if (e.isIntersecting) { if (!userPaused) video.play().catch(function () {}); }
-                else video.pause();
-              });
-            }, { threshold: 0.25 }).observe(video);
-          }
-
-          cell.appendChild(video);
-          cell.appendChild(ctrl);
+          attachLoopControls(video, cell, p.title + " clip " + n);
           row.appendChild(cell);
         });
         grid.appendChild(row);

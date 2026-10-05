@@ -1799,3 +1799,9 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   .cs-sections { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .cs-section { max-width: none; min-width: 0; }
 }
+
+.character-sheets h2 { font-size: clamp(1.3rem, 2.2vw, 1.6rem); margin-bottom: 16px; }
+.character-sheets > .cs-text { max-width: 90ch; margin-bottom: 32px; }
+.character-sheets-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.character-sheets-grid figcaption { padding-top: 12px; color: var(--text-muted); font-size: .9rem; line-height: 1.5; }
+@media (max-width: 767px) { .character-sheets-grid { grid-template-columns: 1fr; } }

@@ -439,7 +439,57 @@ const SITE = {
             "id": "1232805602"
         },
         { "type": "mixed-row", "image": 2, "video": "3.mov" },
-        { "type": "image", "num": 4 }
+        { "type": "image", "num": 4 },
+{
+    "type": "character-pair",
+    "heading": {
+        "en": "character development — girl",
+        "de": "charakterentwicklung — Mädchen"
+    },
+    "text": {
+        "en": "I developed AI-assisted reference sheets for the girl, exploring her appearance from multiple angles and across different expressions. These sheets served as a visual guide for keeping facial features, clothing and proportions consistent across the film and campaign imagery.",
+        "de": "Für das Mädchen entwickelte ich KI-gestützte Referenzübersichten mit verschiedenen Ansichten und Gesichtsausdrücken. Sie dienten als visuelle Grundlage, um Gesichtszüge, Kleidung und Proportionen im Film und in den Kampagnenmotiven möglichst einheitlich zu halten."
+    },
+    "labels": [
+        {
+            "en": "Full-body views",
+            "de": "Ganzkörperansichten"
+        },
+        {
+            "en": "Facial expressions",
+            "de": "Mimikstudien"
+        }
+    ],
+    "nums": [
+        6,
+        5
+    ]
+},
+{
+    "type": "character-pair",
+    "heading": {
+        "en": "character development — vampire",
+        "de": "charakterentwicklung — Vampir"
+    },
+    "text": {
+        "en": "I developed AI-assisted reference sheets for the vampire, exploring his appearance from multiple angles and across different expressions. These sheets served as a visual guide for keeping facial features, clothing and proportions consistent across the film and campaign imagery.",
+        "de": "Für den Vampir entwickelte ich KI-gestützte Referenzübersichten mit verschiedenen Ansichten und Gesichtsausdrücken. Sie dienten als visuelle Grundlage, um Gesichtszüge, Kleidung und Proportionen im Film und in den Kampagnenmotiven möglichst einheitlich zu halten."
+    },
+    "labels": [
+        {
+            "en": "Full-body views",
+            "de": "Ganzkörperansichten"
+        },
+        {
+            "en": "Facial expressions",
+            "de": "Mimikstudien"
+        }
+    ],
+    "nums": [
+        8,
+        7
+    ]
+}
     ],
     "caseStudy": {
         "type": {

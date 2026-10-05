@@ -819,6 +819,31 @@
         return;
       }
 
+      if (block.type === "character-pair") {
+        const section = document.createElement("section");
+        section.className = "character-sheets";
+        const heading = document.createElement("h2");
+        heading.textContent = pick(block.heading);
+        const intro = document.createElement("p");
+        intro.className = "cs-text";
+        intro.textContent = pick(block.text);
+        section.append(heading, intro);
+        const sheets = document.createElement("div");
+        sheets.className = "character-sheets-grid";
+        block.nums.forEach(function (num, i) {
+            const figure = galleryFigure(p, num);
+            const label = pick(block.heading) + " — " + pick(block.labels[i]);
+            figure.querySelector("img").alt = label;
+            const caption = document.createElement("figcaption");
+            caption.textContent = pick(block.labels[i]);
+            figure.appendChild(caption);
+            sheets.appendChild(figure);
+        });
+        section.appendChild(sheets);
+        grid.appendChild(section);
+        return;
+      }
+
       if (block.type === "mixed-row") {
         const row = document.createElement("div");
         row.className = "mixed-media-row";

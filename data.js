@@ -438,7 +438,8 @@ const SITE = {
             "type": "vimeo",
             "id": "1232805602"
         },
-        { "type": "mixed-row", "image": 2, "video": "3.mov" }
+        { "type": "mixed-row", "image": 2, "video": "3.mov" },
+        { "type": "image", "num": 4 }
     ],
     "caseStudy": {
         "type": {

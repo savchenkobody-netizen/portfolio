@@ -489,7 +489,8 @@ const SITE = {
         8,
         7
     ]
-}
+},
+        { "type": "vimeo", "id": "1233103848" }
     ],
     "caseStudy": {
         "type": {

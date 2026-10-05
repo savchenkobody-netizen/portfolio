@@ -106,7 +106,7 @@
       let node;
       while ((node = walk.nextNode())) {
         const plain = node.nodeValue.replace(/\u00a0/g, " ");
-        node.nodeValue = desktop ? plain.replace(words, "$1$2\u00a0") : plain;
+        node.nodeValue = desktop ? plain.replace(words, "$1$2\u00a0").replace(/with\u00a0AI assistance/g, "with\u00a0AI\u00a0assistance") : plain;
       }
     });
   }
@@ -816,6 +816,27 @@
     p.blocks.forEach(function (block) {
       if (block.type === "image") {
         grid.appendChild(galleryFigure(p, block.num, block.opaque));
+        return;
+      }
+
+      if (block.type === "mixed-row") {
+        const row = document.createElement("div");
+        row.className = "mixed-media-row";
+        row.appendChild(galleryFigure(p, block.image));
+        const cell = document.createElement("div");
+        const video = document.createElement("video");
+        video.src = p.folder + "/" + block.video;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.defaultMuted = true;
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+        video.setAttribute("aria-label", p.title + " — looping campaign clip");
+        video.controls = true;
+        cell.appendChild(video);
+        row.appendChild(cell);
+        grid.appendChild(row);
         return;
       }
 

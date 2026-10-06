@@ -1855,21 +1855,21 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   .projects-carousel .lightbox-nav { display: none; }
 }
 
-/* Ukrainian footer: CTA and social links share the same center column. */
+/* All languages share one column grid for the CTA and social links. */
 @media (min-width: 721px) {
-  html[lang="uk"] .site-footer {
+  .site-footer {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     column-gap: clamp(16px, 4vw, 56px);
   }
-  html[lang="uk"] .site-footer > * { grid-column: 1 / -1; }
-  html[lang="uk"] .footer-top,
-  html[lang="uk"] .footer-mid {
+  .site-footer > * { grid-column: 1 / -1; }
+  .footer-top,
+  .footer-mid {
     display: grid;
     grid-template-columns: subgrid;
     column-gap: inherit;
   }
-  html[lang="uk"] .footer-go { justify-self: center; max-width: 100%; }
+  .footer-go { justify-self: center; max-width: 100%; }
 }
 
 .hero-eyebrow .specialty-dot { color: #000; }

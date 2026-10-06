@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/favicon.svg" />
 
   <!-- Fonts: Funnel Sans, self-hosted in /fonts (no Google Fonts request) -->
-  <link rel="stylesheet" href="./styles.css?v=20261006-uk" />
+  <link rel="stylesheet" href="./styles.css?v=20261006-carousel" />
 </head>
 <body>
   <!-- ============ HEADER ============ -->
@@ -118,7 +118,15 @@
   <!-- Other projects -->
   <section class="cs-other reveal">
     <h2 class="display-title" data-i18n="cs.other">other projects</h2>
-    <div class="project-grid" id="otherProjects"></div>
+    <div class="projects-carousel">
+      <div class="project-grid" id="otherProjects" aria-live="polite"></div>
+      <button type="button" class="lightbox-nav lightbox-prev projects-prev" aria-label="Previous projects" aria-controls="otherProjects">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="lightbox-nav lightbox-next projects-next" aria-label="Next projects" aria-controls="otherProjects">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
   </section>
 
   <!-- ============ FOOTER (3 tiers) ============ -->
@@ -164,6 +172,6 @@
 
   <script src="./data.js?v=20261006-uk"></script>
   <script src="/data-uk.js?v=20261006-uk"></script>
-  <script src="./app.js?v=20261006-uk"></script>
+  <script src="./app.js?v=20261006-carousel"></script>
 </body>
 </html>

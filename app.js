@@ -1300,17 +1300,40 @@
     });
   }
 
-  /* "other projects" — up to 3 cards, excluding the current one */
+  /* Two-card window over all projects except the current case study. */
   function renderOtherProjects(currentIdx) {
     const grid = document.getElementById("otherProjects");
     if (!grid) return;
-    grid.innerHTML = "";
-
-    for (let step = 1; step <= 3 && step < SITE.projects.length; step++) {
-      const p = SITE.projects[(currentIdx + step) % SITE.projects.length];
-      grid.appendChild(buildCard(p));
+    const carousel = grid.parentElement;
+    const prev = carousel.querySelector(".projects-prev");
+    const next = carousel.querySelector(".projects-next");
+    const projects = Array.from({length: SITE.projects.length - 1}, (_, i) =>
+      SITE.projects[(currentIdx + i + 1) % SITE.projects.length]);
+    let position = 0;
+    prev.setAttribute("aria-label", pick({en:"Previous projects",de:"Vorherige Projekte",uk:"Попередні проєкти"}));
+    next.setAttribute("aria-label", pick({en:"Next projects",de:"Nächste Projekte",uk:"Наступні проєкти"}));
+    function show() {
+      grid.replaceChildren(...projects.slice(position, position + 2).map(project => {
+        const card = buildCard(project);
+        card.classList.add("is-visible");
+        return card;
+      }));
+      prev.disabled = position === 0;
+      next.disabled = position >= projects.length - 2;
     }
-    observeReveals();
+    function move(delta) {
+      position = Math.max(0, Math.min(Math.max(0, projects.length - 2), position + delta));
+      show();
+    }
+    prev.onclick = () => move(-1);
+    next.onclick = () => move(1);
+    carousel.onkeydown = event => {
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        move(event.key === "ArrowLeft" ? -1 : 1);
+      }
+    };
+    show();
   }
 
   /* ---------------------------------------------------------

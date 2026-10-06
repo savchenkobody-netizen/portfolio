@@ -1816,3 +1816,21 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
 }
 
 .legal-languages { margin-bottom: 32px; }
+
+/* Case-study recommendations share the gallery's circular arrow controls. */
+.projects-carousel { position: relative; }
+.projects-carousel .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.projects-carousel .project-card { min-width: 0; }
+.projects-carousel .lightbox-nav {
+  position: absolute;
+  background: rgba(35, 30, 35, .55);
+  backdrop-filter: blur(12px);
+}
+.projects-carousel .lightbox-nav:hover { background: rgba(65, 58, 65, .75); }
+.projects-carousel .project-card.is-visible { opacity: 1; transform: none; }
+@media (max-width: 560px) {
+  .projects-carousel .project-name { font-size: .9rem; }
+  .projects-carousel .project-cat { font-size: .75rem; }
+  .projects-carousel .lightbox-prev { left: 6px; }
+  .projects-carousel .lightbox-next { right: 6px; }
+}

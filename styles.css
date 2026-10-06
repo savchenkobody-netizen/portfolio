@@ -1834,3 +1834,23 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   .projects-carousel .lightbox-prev { left: 6px; }
   .projects-carousel .lightbox-next { right: 6px; }
 }
+
+/* Native touch scrolling: two recommendations remain visible on phones. */
+@media (max-width: 560px) {
+  .cs-other { padding-block: 32px; }
+  .cs-other .project-grid {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .cs-other .project-grid::-webkit-scrollbar { display: none; }
+  .projects-carousel .project-card {
+    flex: 0 0 calc((100% - 12px) / 2);
+    scroll-snap-align: start;
+  }
+  .projects-carousel .lightbox-nav { display: none; }
+}

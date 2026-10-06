@@ -1310,10 +1310,12 @@
     const projects = Array.from({length: SITE.projects.length - 1}, (_, i) =>
       SITE.projects[(currentIdx + i + 1) % SITE.projects.length]).filter(project => project.status === "ready");
     let position = 0;
+    const mobile = window.matchMedia("(max-width: 560px)");
+    if (carousel.cleanupLayout) carousel.cleanupLayout();
     prev.setAttribute("aria-label", pick({en:"Previous projects",de:"Vorherige Projekte",uk:"Попередні проєкти"}));
     next.setAttribute("aria-label", pick({en:"Next projects",de:"Nächste Projekte",uk:"Наступні проєкти"}));
     function show() {
-      grid.replaceChildren(...projects.slice(position, position + 2).map(project => {
+      grid.replaceChildren(...(mobile.matches ? projects : projects.slice(position, position + 2)).map(project => {
         const card = buildCard(project);
         card.classList.add("is-visible");
         return card;
@@ -1325,9 +1327,12 @@
       position = Math.max(0, Math.min(Math.max(0, projects.length - 2), position + delta));
       show();
     }
+    mobile.addEventListener("change", show);
+    carousel.cleanupLayout = () => mobile.removeEventListener("change", show);
     prev.onclick = () => move(-1);
     next.onclick = () => move(1);
     carousel.onkeydown = event => {
+      if (mobile.matches) return;
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();
         move(event.key === "ArrowLeft" ? -1 : 1);

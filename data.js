@@ -227,6 +227,7 @@ const SITE = {
 
     {
       slug: "audiophil",
+      status: "ready",
       filter: "ux-ui",
       title: "audiophil",
       category: { en: "mobile app design", de: "mobile app design" },
@@ -260,6 +261,7 @@ const SITE = {
     },
     {
       slug: "stomatino",
+      status: "ready",
       filter: "branding",
       title: "Stomatino",
       category: { en: "brand identity & logo design", de: "markenidentität & logodesign" },
@@ -309,6 +311,7 @@ const SITE = {
     },
     {
       slug: "golden-draught",
+      status: "ready",
       filter: "branding",
       title: "Golden Draught",
       category: { en: "brand identity & positioning", de: "markenidentität & positionierung" },
@@ -347,6 +350,7 @@ const SITE = {
     },
     {
       slug: "dawdle",
+      status: "ready",
       filter: "ux-ui",
       title: "dawdle",
       category: { en: "mobile app design", de: "mobile app design" },
@@ -391,6 +395,7 @@ const SITE = {
     },
     {
       slug: "aura",
+      status: "ready",
       filter: "ux-ui",
       title: "Aura: Music Player",
       category: { en: "mobile app", de: "mobile app" },
@@ -424,6 +429,7 @@ const SITE = {
     },
     {
     "slug": "nucao",
+    "status": "ready",
     "filter": "branding",
     "title": "nucao — Halloween Edition",
     "category": {
@@ -549,6 +555,7 @@ const SITE = {
 },
     {
       slug: "trip-go",
+      status: "coming-soon",
       filter: "ux-ui",
       title: "Tripgo",
       category: { en: "mobile app", de: "mobile app" },
@@ -580,6 +587,7 @@ const SITE = {
     },
     {
       slug: "habit-tracker",
+      status: "coming-soon",
       filter: "ux-ui",
       title: "Habit tracker",
       category: { en: "mobile app", de: "mobile app" },

@@ -1300,7 +1300,7 @@
     });
   }
 
-  /* Two-card window over all projects except the current case study. */
+  /* Two-card window over ready projects, excluding the current case study. */
   function renderOtherProjects(currentIdx) {
     const grid = document.getElementById("otherProjects");
     if (!grid) return;
@@ -1308,7 +1308,7 @@
     const prev = carousel.querySelector(".projects-prev");
     const next = carousel.querySelector(".projects-next");
     const projects = Array.from({length: SITE.projects.length - 1}, (_, i) =>
-      SITE.projects[(currentIdx + i + 1) % SITE.projects.length]);
+      SITE.projects[(currentIdx + i + 1) % SITE.projects.length]).filter(project => project.status === "ready");
     let position = 0;
     prev.setAttribute("aria-label", pick({en:"Previous projects",de:"Vorherige Projekte",uk:"Попередні проєкти"}));
     next.setAttribute("aria-label", pick({en:"Next projects",de:"Nächste Projekte",uk:"Наступні проєкти"}));

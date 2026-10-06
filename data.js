@@ -440,6 +440,8 @@ const SITE = {
         },
         { "type": "mixed-row", "image": 2, "video": "3.mov" },
         { "type": "image", "num": 4 },
+        { "type": "vimeo", "id": "1233103848" },
+        { "type": "video-row", "nums": [9, 10], "extension": "mov", "ratios": ["1530 / 860", "1120 / 1402"], "columns": "minmax(0, 1.7790697674fr) minmax(0, 0.7988587732fr)" },
 {
     "type": "character-pair",
     "heading": {
@@ -489,9 +491,7 @@ const SITE = {
         8,
         7
     ]
-},
-        { "type": "vimeo", "id": "1233103848" },
-        { "type": "video-row", "nums": [9, 10], "extension": "mov", "ratios": ["1530 / 860", "1120 / 1402"], "columns": "minmax(0, 1.7790697674fr) minmax(0, 0.7988587732fr)" }
+}
     ],
     "caseStudy": {
         "type": {

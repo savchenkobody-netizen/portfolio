@@ -1581,8 +1581,21 @@
      --------------------------------------------------------- */
   function initChrome() {
     const header = document.getElementById("header");
+    const reviews = document.getElementById("reviews");
+    const navLinks = Array.from(document.querySelectorAll("#mainNav a[data-i18n]"));
+    function setActiveNav(key) {
+      navLinks.forEach(function (link) {
+        if (link.dataset.i18n === key) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      });
+    }
     const onScroll = function () {
       header.classList.toggle("scrolled", window.scrollY > 8);
+      // On the homepage, follow the section currently reached in the viewport.
+      if (reviews) {
+        const marker = header.offsetHeight + window.innerHeight * 0.3;
+        setActiveNav(reviews.getBoundingClientRect().top <= marker ? "nav.reviews" : "nav.work");
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -1593,7 +1606,12 @@
       document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
     };
     setHeaderHeight();
-    window.addEventListener("resize", setHeaderHeight);
+    window.addEventListener("resize", function () { setHeaderHeight(); onScroll(); });
+    window.addEventListener("hashchange", function () {
+      if (reviews && ["#reviews", "#work"].includes(window.location.hash)) {
+        setActiveNav(window.location.hash === "#reviews" ? "nav.reviews" : "nav.work");
+      }
+    });
 
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();

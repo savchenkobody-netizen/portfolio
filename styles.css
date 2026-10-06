@@ -1871,3 +1871,5 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   }
   html[lang="uk"] .footer-go { justify-self: center; max-width: 100%; }
 }
+
+.hero-eyebrow .specialty-dot { color: #000; }

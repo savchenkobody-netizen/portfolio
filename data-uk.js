@@ -7,7 +7,7 @@ SITE.text.uk = {
   },
   "hero": {
     "title": "Привіт, я Богдан",
-    "eyebrow": "UX/UI дизайнер / медіадизайнер / AI Enthusiast"
+    "eyebrow": "UX/UI Designer · Media Designer · AI Enthusiast"
   },
   "work": {
     "title": "вибрані роботи"

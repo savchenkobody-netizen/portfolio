@@ -17,7 +17,7 @@ const SITE = {
        (e.g. "home.why.title") which t() resolves through these objects. */
     en: {
       nav: { work: "work", reviews: "reviews", about: "about me" },
-      hero: { title: "Hi, I'm Bohdan", eyebrow: "UX/UI Designer / Media Designer / AI Enthusiast" },
+      hero: { title: "Hi, I'm Bohdan", eyebrow: "UX/UI Designer · Media Designer · AI Enthusiast" },
       work: { title: "selected work" },
       filter: { all: "all", uxui: "ux/ui design", branding: "branding" },
       stats: {
@@ -72,7 +72,7 @@ const SITE = {
 
     de: {
       nav: { work: "projekte", reviews: "bewertungen", about: "über mich" },
-      hero: { title: "Hi, ich bin Bohdan", eyebrow: "UX/UI Designer / Mediengestalter / AI Enthusiast" },
+      hero: { title: "Hi, ich bin Bohdan", eyebrow: "UX/UI Designer · Media Designer · AI Enthusiast" },
       work: { title: "ausgewählte projekte" },
       filter: { all: "alle", uxui: "ux/ui design", branding: "branding" },
       stats: {

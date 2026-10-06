@@ -17,7 +17,7 @@ const SITE = {
        (e.g. "home.why.title") which t() resolves through these objects. */
     en: {
       nav: { work: "work", reviews: "reviews", about: "about me" },
-      hero: { title: "Hi, I'm Bohdan", eyebrow: "Junior UX/UI Designer / Media Designer" },
+      hero: { title: "Hi, I'm Bohdan", eyebrow: "UX/UI Designer / Media Designer / AI Enthusiast" },
       work: { title: "selected work" },
       filter: { all: "all", uxui: "ux/ui design", branding: "branding" },
       stats: {
@@ -40,7 +40,7 @@ const SITE = {
       },
       about: {
         title: "about me",
-        p1: "I'm a Junior UX/UI Designer based in Germany, bridging the gap between strong visual aesthetics and seamless usability.",
+        p1: "I'm a UX/UI Designer based in Germany, bridging the gap between strong visual aesthetics and seamless usability.",
         p2: "+ 5 years of Visual Design experience across Ukraine, Poland, and Germany, combined with a background in Print & Media Technology, I know how to deliver pixel-perfect and engaging digital experiences.",
         exp: "my experience"
       },
@@ -72,7 +72,7 @@ const SITE = {
 
     de: {
       nav: { work: "projekte", reviews: "bewertungen", about: "über mich" },
-      hero: { title: "Hi, ich bin Bohdan", eyebrow: "Junior UX/UI Designer / Mediengestalter" },
+      hero: { title: "Hi, ich bin Bohdan", eyebrow: "UX/UI Designer / Mediengestalter / AI Enthusiast" },
       work: { title: "ausgewählte projekte" },
       filter: { all: "alle", uxui: "ux/ui design", branding: "branding" },
       stats: {
@@ -98,7 +98,7 @@ const SITE = {
       },
       about: {
         title: "über mich",
-        p1: "Ich bin Junior UX/UI Designer in Deutschland und schlage die Brücke zwischen starker visueller Ästhetik und reibungsloser Usability.",
+        p1: "Ich bin UX/UI Designer in Deutschland und schlage die Brücke zwischen starker visueller Ästhetik und reibungsloser Usability.",
         p2: "Über 5 Jahre Erfahrung im visuellen Design in der Ukraine, Polen und Deutschland, kombiniert mit einem Hintergrund in Print- und Medientechnik \u2014 ich weiß, wie man pixelgenaue und fesselnde digitale Erlebnisse liefert.",
         exp: "meine erfahrung"
       },

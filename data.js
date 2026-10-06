@@ -497,7 +497,8 @@ const SITE = {
         8,
         7
     ]
-}
+},
+        { "type": "image-row", "nums": [11, 12] }
     ],
     "caseStudy": {
         "type": {

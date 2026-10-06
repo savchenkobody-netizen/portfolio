@@ -88,6 +88,8 @@
     renderExperience();     // about page      (no-op elsewhere)
     renderCaseStudy();      // case-study page (no-op elsewhere)
     renderTestimonials();   // index page      (no-op elsewhere)
+    initMarquee();
+    localizeInterface();
     updateResumeLink();     // about page      (no-op elsewhere)
     improveDesktopWrapping();
     buildHeroRepel();       // re-split the (just-updated) hero title into letters
@@ -98,10 +100,12 @@
   // Bind short articles/prepositions to the following word on desktop only.
   function improveDesktopWrapping() {
     const desktop = window.matchMedia("(min-width: 901px)").matches;
-    const words = currentLang === "de"
+    const words = currentLang === "uk"
+      ? /(^|[\s(«])((?:і|й|та|а|у|в|з|із|зі|до|на|за|не|що|для|від|про)) /gi
+      : currentLang === "de"
       ? /(^|[\s(“„])((?:der|die|das|ein|eine|einer|einem|einen|des|dem|den|im|in|am|an|auf|zu|zum|zur|mit|von|für|und|oder)) /gi
       : /(^|[\s(“])((?:a|an|the|in|on|at|to|of|for|and|or|by|with)) /gi;
-    document.querySelectorAll("main p, main dd, .tc-review, .tc-project, .project-name, .project-cat, .timeline-content p, .legal-content p").forEach(function (el) {
+    document.querySelectorAll("main p, main dd, .character-sheets p, .tc-review, .tc-project, .project-name, .project-cat, .timeline-content p, .legal-content p").forEach(function (el) {
       const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       let node;
       while ((node = walk.nextNode())) {
@@ -112,10 +116,37 @@
   }
   window.matchMedia("(min-width: 901px)").addEventListener("change", improveDesktopWrapping);
 
+  function localizeInterface() {
+    const labels = {
+      "Language": ["Sprache", "Мова"], "Toggle color theme": ["Farbschema wechseln", "Змінити тему"],
+      "Menu": ["Menü", "Меню"], "Primary": ["Hauptnavigation", "Основна навігація"],
+      "Skills": ["Kompetenzen", "Навички"], "Selected work": ["Ausgewählte Projekte", "Вибрані роботи"],
+      "Filter projects": ["Projekte filtern", "Фільтр проєктів"], "Project details": ["Projektdetails", "Дані проєкту"],
+      "Project gallery": ["Projektgalerie", "Галерея проєкту"], "Client reviews": ["Kundenbewertungen", "Відгуки клієнтів"],
+      "Key numbers": ["Kennzahlen", "Основні показники"], "Social": ["Soziale Netzwerke", "Соціальні мережі"],
+      "Image preview": ["Bildvorschau", "Перегляд зображення"], "Close image preview": ["Bildvorschau schließen", "Закрити зображення"],
+      "Previous image": ["Vorheriges Bild", "Попереднє зображення"], "Next image": ["Nächstes Bild", "Наступне зображення"],
+      "Email me — Let's Go!": ["E-Mail schreiben", "Написати мені"]
+    };
+    document.querySelectorAll("[aria-label]").forEach(el => {
+      const original = el.dataset.originalLabel || el.getAttribute("aria-label");
+      el.dataset.originalLabel = original;
+      if (labels[original]) el.setAttribute("aria-label", currentLang === "uk" ? labels[original][1] : currentLang === "de" ? labels[original][0] : original);
+      if (original.startsWith("Play or pause ")) el.setAttribute("aria-label", (currentLang === "uk" ? "Відтворити або призупинити " : currentLang === "de" ? "Abspielen oder pausieren: " : "Play or pause ") + original.slice(14));
+    });
+    document.querySelectorAll(".lang-btn").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.lang === currentLang)));
+    document.querySelectorAll('a[href$="impressum.html"]').forEach(el=>el.textContent=pick({en:"Imprint",de:"Impressum",uk:"Відомості про власника"}));
+    document.querySelectorAll('a[href$="datenschutz.html"]').forEach(el=>el.textContent=pick({en:"Privacy policy",de:"Datenschutz",uk:"Конфіденційність"}));
+    document.querySelectorAll(".logo").forEach(el=>el.textContent=currentLang === "uk" ? "Богдан Савченко" : "Bohdan Savchenko");
+    document.querySelectorAll(".legal-footer > span:first-child").forEach(el=>el.textContent=pick({en:"© 2026 Bohdan Savchenko. All rights reserved.",de:"© 2026 Bohdan Savchenko. Alle Rechte vorbehalten.",uk:"© 2026 Богдан Савченко. Усі права захищено."}));
+    if (!document.querySelector("#csTitle")) document.title = pick({en:"Bohdan Savchenko — UX/UI & Media Designer",de:"Bohdan Savchenko — UX/UI Designer & Mediengestalter",uk:"Богдан Савченко — UX/UI та медіадизайнер"});
+  }
+
   function initLang() {
     let saved;
     try { saved = localStorage.getItem(STORE.lang); } catch (e) {}
-    const browser = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
+    const detected = (navigator.language || "en").toLowerCase().split("-")[0];
+    const browser = SITE.text[detected] ? detected : "en";
     applyLang(saved || browser);
 
     document.querySelectorAll(".lang-btn").forEach(function (b) {
@@ -167,7 +198,7 @@
     const img = document.createElement("img");
     img.loading = "lazy";
     img.decoding = "async";
-    img.alt = p.title + " project cover";
+    img.alt = p.title + pick({en:" project cover",de:" — Projektcover",uk:" — обкладинка проєкту"});
     img.src = p.image;
     img.addEventListener("error", function () {
       img.remove();
@@ -310,7 +341,7 @@
     badge.setAttribute("aria-hidden", "true");
     const project = document.createElement("span");
     project.className = "tc-project";
-    project.textContent = item.project;
+    project.textContent = pick(item.project);
     head.appendChild(badge);
     head.appendChild(project);
 
@@ -319,7 +350,7 @@
     const stars = document.createElement("img");
     stars.className = "tc-stars";
     stars.src = "/review/stars.svg";
-    stars.alt = item.rating + " out of 5 stars";
+    stars.alt = item.rating + pick({en:" out of 5 stars",de:" von 5 Sternen",uk:" із 5 зірок"});
     const rating = document.createElement("span");
     rating.className = "tc-rating";
     rating.textContent = item.rating;
@@ -328,7 +359,7 @@
     sep.textContent = "|";
     const date = document.createElement("span");
     date.className = "tc-date";
-    date.textContent = item.date;
+    date.textContent = currentLang === "uk" ? item.date.replace(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d+), (\d{4})/g, (_,month,day,year)=> day + " " + ({Jan:"січ.",Feb:"лют.",Mar:"бер.",Apr:"квіт.",May:"трав.",Jun:"черв.",Jul:"лип.",Aug:"серп.",Sep:"вер.",Oct:"жовт.",Nov:"лист.",Dec:"груд."})[month] + " " + year) : item.date;
     meta.appendChild(stars);
     meta.appendChild(rating);
     meta.appendChild(sep);
@@ -336,11 +367,12 @@
 
     const review = document.createElement("p");
     review.className = "tc-review";
-    review.textContent = "“" + item.review + "”";
+    review.textContent = "“" + pick(item.review) + "”";
 
     card.appendChild(head);
     card.appendChild(meta);
     card.appendChild(review);
+    if (currentLang === "uk") { const note = document.createElement("small"); note.className = "tc-translation"; note.textContent = "Переклад з англійської"; card.appendChild(note); }
     attachDeckTilt(card);
     return card;
   }
@@ -562,7 +594,7 @@
       SITE.marquee.forEach(function (item) {
         const label = document.createElement("span");
         label.className = "marquee-item";
-        label.textContent = item;
+        label.textContent = pick(item);
         group.appendChild(label);
         const sep = document.createElement("span");
         sep.className = "marquee-sep";
@@ -659,7 +691,7 @@
 
       const company = document.createElement("p");
       company.className = "timeline-company";
-      company.textContent = job.company;
+      company.textContent = pick(job.company);
 
       const description = document.createElement("p");
       description.className = "timeline-description";
@@ -780,10 +812,10 @@
     subtitle.classList.toggle("is-hidden", !cs.subtitle);
     document.getElementById("csNoteSection").classList.toggle("is-hidden", !cs.note);
     document.getElementById("csNote").textContent = pick(cs.note);
-    document.getElementById("csNoteHeading").textContent = pick({ en: "project note", de: "projekthinweis" });
+    document.getElementById("csNoteHeading").textContent = pick({ en: "project note", de: "projekthinweis", uk: "примітка до проєкту" });
 
     // large hero image
-    setMedia(document.getElementById("csCover"), p.image, p.title + " cover");
+    setMedia(document.getElementById("csCover"), p.image, p.title + pick({en:" cover",de:" — Titelbild",uk:" — обкладинка"}));
 
     renderGallery(p);
     renderOtherProjects(idx);
@@ -799,7 +831,7 @@
     const img = document.createElement("img");
     img.loading = "lazy";
     img.decoding = "async";
-    img.alt = p.title + " — gallery image " + n;
+    img.alt = p.title + pick({en:" — gallery image ",de:" — Galeriebild ",uk:" — зображення "}) + n;
     img.src = p.folder + "/" + n + ".webp";
     img.tabIndex = 0;
     img.setAttribute("role", "button");
@@ -1206,7 +1238,7 @@
       const img = document.createElement("img");
       img.loading = "lazy";
       img.decoding = "async";
-      img.alt = p.title + " — gallery image " + n;
+      img.alt = p.title + pick({en:" — gallery image ",de:" — Galeriebild ",uk:" — зображення "}) + n;
       img.src = webp;
       img.tabIndex = 0;                     // lightbox: keyboard-operable
       img.setAttribute("role", "button");
@@ -1568,6 +1600,7 @@
     initMarquee();   // skills loop (homepage only)
     initMenu();
     initLightbox();
+    localizeInterface();
     initPageFade();
     initChrome();
     observeReveals();

@@ -1805,3 +1805,14 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
 .character-sheets-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .character-sheets-grid figcaption { padding-top: 12px; color: var(--text-muted); font-size: .9rem; line-height: 1.5; }
 @media (max-width: 767px) { .character-sheets-grid { grid-template-columns: 1fr; } }
+
+.tc-translation { font-size: .72rem; color: var(--text-muted); }
+@media (max-width: 480px) {
+ .header-inner { gap: 8px; flex-wrap: wrap; }
+ .header-inner .logo { font-size: .85rem; }
+ .lang-switch { gap: 4px; }
+ .lang-btn { font-size: .75rem; }
+ .theme-toggle { width: 30px; flex-shrink: 0; }
+}
+
+.legal-languages { margin-bottom: 32px; }

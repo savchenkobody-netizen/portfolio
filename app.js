@@ -307,6 +307,7 @@
     if (!grid) return;
     grid.innerHTML = "";
     SITE.projects
+      .slice().reverse() // New projects are appended to data.js; show newest first.
       .filter(function (p) { return currentFilter === "all" || p.filter === currentFilter; })
       .forEach(function (p) { grid.appendChild(buildCard(p)); });
     observeReveals();

@@ -185,20 +185,21 @@
   /* project card (used by the home grid and "other projects") */
   function buildCard(p) {
     const cat = pick(p.category);
+    const title = p.cardTitle || p.title;
 
     const card = document.createElement("a");
     card.className = "project-card";
     card.href = p.link || "#";
-    card.setAttribute("aria-label", p.title + " — " + cat);
+    card.setAttribute("aria-label", title + " — " + cat);
 
     const media = document.createElement("div");
     media.className = "project-media";
-    media.dataset.label = p.title;
+    media.dataset.label = title;
 
     const img = document.createElement("img");
     img.loading = "lazy";
     img.decoding = "async";
-    img.alt = p.title + pick({en:" project cover",de:" — Projektcover",uk:" — обкладинка проєкту"});
+    img.alt = title + pick({en:" project cover",de:" — Projektcover",uk:" — обкладинка проєкту"});
     img.src = p.image;
     img.addEventListener("error", function () {
       img.remove();
@@ -210,7 +211,7 @@
     info.className = "project-info";
     const name = document.createElement("span");
     name.className = "project-name";
-    name.textContent = p.title;
+    name.textContent = title;
     const catEl = document.createElement("span");
     catEl.className = "project-cat";
     catEl.textContent = cat;

@@ -553,6 +553,70 @@ const SITE = {
             "de": "Dieses unabhängige Portfolioprojekt entstand auf Basis einer selbst formulierten Aufgabenstellung und ist keine Auftragsarbeit. Die gezeigte „Kirsche × Schwarzer Sesam — Halloween Edition“ wurde für dieses Projekt frei erfunden und stellt keine tatsächliche Produkteinführung dar. Das Projekt steht in keiner Verbindung zu nucao und wurde von der Marke weder beauftragt noch autorisiert oder unterstützt. Der Name nucao, das Logo und die bestehende Markenidentität gehören den jeweiligen Rechteinhabern. Bild- und Videomaterial wurden mit KI-Unterstützung erstellt."
         }
     }
+},
+{
+    "slug": "car-wrapping",
+    "status": "ready",
+    "filter": "branding",
+    "title": "Sven Griesche — Car Wrapping",
+    "cardTitle": "Küchen- und Möbelmontage",
+    "category": {
+        "en": "vehicle graphics & wrap design",
+        "de": "fahrzeugbeschriftung & folierungsdesign"
+    },
+    "folder": "./Car wrapping",
+    "image": "./Car wrapping/1.webp",
+    "link": "./case-study.html?project=car-wrapping",
+    "caseStudy": {
+        "type": {
+            "en": "vehicle graphics & wrap design",
+            "de": "fahrzeugbeschriftung & folierungsdesign"
+        },
+        "year": "2025",
+        "role": {
+            "en": "graphic design · vehicle graphics",
+            "de": "grafikdesign · fahrzeugbeschriftung"
+        },
+        "client": {
+            "en": "Sven Griesche",
+            "de": "Sven Griesche"
+        },
+        "subtitle": {
+            "en": "Küchen- und Möbelmontage · Güter- und Möbeltaxi",
+            "de": "Küchen- und Möbelmontage · Güter- und Möbeltaxi",
+            "uk": "Küchen- und Möbelmontage · Güter- und Möbeltaxi"
+        },
+        "overview": {
+            "en": "Vehicle wrap design for Sven Griesche, a Leipzig-based entrepreneur offering kitchen selection, kitchen and furniture transport, and installation. Created in 2025 during my employment at Werbeagentur Wurzen.",
+            "de": "Fahrzeuggestaltung für Sven Griesche aus Leipzig: Küchenauswahl, Küchen- und Möbeltransport sowie Montage. Das Projekt entstand 2025 während meiner Tätigkeit bei Werbeagentur Wurzen."
+        },
+        "headings": {
+            "problem": {
+                "en": "the brief",
+                "de": "die aufgabe"
+            },
+            "research": {
+                "en": "the design concept",
+                "de": "das gestaltungskonzept"
+            },
+            "final": {
+                "en": "the vehicle graphics",
+                "de": "die fahrzeuggestaltung"
+            }
+        },
+        "problem": {
+            "en": "Present the services and contact details clearly on a van, making the business easy to recognise on the road.",
+            "de": "Leistungen und Kontaktdaten auf einem Transporter klar vermitteln und den Betrieb unterwegs erkennbar machen."
+        },
+        "research": {
+            "en": "Bold yellow typography on black, a large kitchen image and flowing graphic elements connect the service offering with the shape of the vehicle.",
+            "de": "Markante gelbe Typografie auf Schwarz, ein großflächiges Küchenmotiv und geschwungene Grafikelemente verbinden das Leistungsangebot mit der Fahrzeugform."
+        },
+        "final": {
+            "en": "A coordinated vehicle design with a clear hierarchy for services, client name and contact details.",
+            "de": "Eine abgestimmte Fahrzeuggestaltung mit klarer Hierarchie für Leistungen, Namen und Kontaktdaten."
+        }
+    }
 }
   ]
 };

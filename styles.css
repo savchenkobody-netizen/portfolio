@@ -1872,7 +1872,16 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   .footer-go { justify-self: center; max-width: 100%; }
 }
 
-.hero-eyebrow .specialty-dot { color: #000; }
+.hero-eyebrow .specialty-dot {
+  display: inline-block;
+  width: .3em;
+  height: .3em;
+  margin-inline: .12em;
+  border-radius: 50%;
+  color: inherit;
+  background: currentColor;
+  vertical-align: .2em;
+}
 
 /* Balance the short paragraphs in the vehicle-wrap case study. */
 @media (min-width: 901px) {

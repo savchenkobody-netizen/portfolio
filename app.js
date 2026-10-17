@@ -918,7 +918,8 @@
 
     function picture(file, label, className) {
       const img = document.createElement("img");
-      img.src = p.folder + "/" + file;
+      const version = p.imageVersions && p.imageVersions[file];
+      img.src = p.folder + "/" + file + (version ? "?v=" + encodeURIComponent(version) : "");
       img.alt = p.title + " — " + view + " — " + label;
       img.className = className;
       img.loading = "lazy";

@@ -566,7 +566,7 @@ const SITE = {
     },
     "folder": "./Car wrapping",
     "image": "./Car wrapping/1.webp",
-    "imageVersions": {"3": "5c30adca399a", "5": "13818cfb6760"},
+    "imageVersions": {"3": "5c30adca399a", "5": "13818cfb6760", "6b.webp": "2f43a94ba333", "7b.webp": "e11c00adf6c9"},
     "link": "./case-study.html?project=car-wrapping",
     "blocks": [{"type": "image-row", "nums": [2, 3]}, {"type": "image-row", "nums": [5, 4]}, {"type": "comparison", "before": "6a.webp", "after": "6b.webp", "label": {"en": "Side view", "de": "Seitenansicht", "uk": "Вигляд збоку"}}, {"type": "comparison", "before": "7a.webp", "after": "7b.webp", "label": {"en": "Rear view", "de": "Heckansicht", "uk": "Вигляд ззаду"}}, {"type": "image-pair", "nums": [8, 9], "heading": {"en": "visibility in the city", "de": "sichtbarkeit im stadtbild", "uk": "помітність у місті"}, "text": {"en": "Yellow typography and a large kitchen image contrast with the black bodywork, helping the vehicle stand out in a busy cityscape and making its services immediately recognisable.", "de": "Gelbe Typografie und ein großflächiges Küchenmotiv setzen sich deutlich von der schwarzen Karosserie ab. So fällt das Fahrzeug im belebten Stadtbild auf und vermittelt sein Angebot auf einen Blick.", "uk": "Жовта типографіка та велике зображення кухні контрастують із чорним кузовом, виділяючи авто в міському середовищі й роблячи його послуги зрозумілими з першого погляду."}}],
     "caseStudy": {

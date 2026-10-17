@@ -1074,7 +1074,7 @@
         wrap.className = "cs-video-full";
 
         const video = document.createElement("video");
-        video.src = p.folder + "/" + block.num + ".mp4";
+        video.src = p.folder + "/" + block.num + "." + (block.extension || "mp4");
         video.autoplay = true;
         video.loop = true;
         video.muted = true;              // property form: required for programmatic autoplay
@@ -1086,6 +1086,10 @@
         video.setAttribute("webkit-playsinline", "");
         video.setAttribute("aria-label", p.title + " — project video");
         video.addEventListener("error", function () { wrap.remove(); });
+        if (block.controls) {
+          wrap.classList.add("has-loop-controls");
+          attachLoopControls(video, wrap, p.title + " clip " + block.num);
+        } else {
         video.addEventListener("canplay", function () { video.play().catch(function () {}); });
         if ("IntersectionObserver" in window) {
           new IntersectionObserver(function (entries) {
@@ -1097,6 +1101,7 @@
         }
 
         wrap.appendChild(video);
+        }
         grid.appendChild(wrap);
         return;
       }

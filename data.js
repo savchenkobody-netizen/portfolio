@@ -568,7 +568,7 @@ const SITE = {
     "image": "./Car wrapping/1.webp",
     "imageVersions": {"3": "5c30adca399a", "5": "13818cfb6760"},
     "link": "./case-study.html?project=car-wrapping",
-    "blocks": [{ "type": "image-row", "nums": [2, 3] }, { "type": "image-row", "nums": [5, 4] }],
+    "blocks": [{ "type": "image-row", "nums": [2, 3] }, { "type": "image-row", "nums": [5, 4] }, { "type": "video-full", "num": 6, "extension": "mov", "controls": true }],
     "caseStudy": {
         "type": {
             "en": "vehicle graphics & wrap design",

@@ -1889,3 +1889,5 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
     gap: 16px;
   }
 }
+
+.cs-video-full.has-loop-controls { position: relative; }

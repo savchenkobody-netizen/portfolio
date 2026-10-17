@@ -906,8 +906,91 @@
     cell.appendChild(ctrl);
   }
 
+  /* Two full-size, aligned images; the before layer is revealed on the left. */
+  function buildComparison(p, block) {
+    const beforeLabel = pick({en: "Before", de: "Vorher", uk: "До"});
+    const afterLabel = pick({en: "After", de: "Nachher", uk: "Після"});
+    const view = pick(block.label);
+    const comparison = document.createElement("div");
+    comparison.className = "image-comparison";
+    comparison.setAttribute("role", "group");
+    comparison.setAttribute("aria-label", p.title + " — " + view);
+
+    function picture(file, label, className) {
+      const img = document.createElement("img");
+      img.src = p.folder + "/" + file;
+      img.alt = p.title + " — " + view + " — " + label;
+      img.className = className;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.draggable = false;
+      return img;
+    }
+    comparison.appendChild(picture(block.after, afterLabel, "comparison-after"));
+    comparison.appendChild(picture(block.before, beforeLabel, "comparison-before"));
+    [[beforeLabel, "before"], [afterLabel, "after"]].forEach(function (entry) {
+      const label = document.createElement("span");
+      label.className = "comparison-label comparison-label--" + entry[1];
+      label.textContent = entry[0];
+      label.setAttribute("aria-hidden", "true");
+      comparison.appendChild(label);
+    });
+    const divider = document.createElement("span");
+    divider.className = "comparison-divider";
+    divider.setAttribute("aria-hidden", "true");
+    divider.innerHTML = '<span class="comparison-handle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8-4 4 4 4m8-8 4 4-4 4"/></svg></span>';
+    comparison.appendChild(divider);
+
+    const slider = document.createElement("input");
+    slider.className = "comparison-range";
+    slider.type = "range";
+    slider.min = "0";
+    slider.max = "100";
+    slider.step = "1";
+    slider.value = "50";
+    slider.setAttribute("aria-label", pick({en:"Before and after comparison",de:"Vorher-Nachher-Vergleich",uk:"Порівняння до і після"}) + " — " + view);
+    function update() {
+      const value = Number(slider.value);
+      comparison.style.setProperty("--compare-position", value + "%");
+      slider.setAttribute("aria-valuetext", beforeLabel + " " + value + "%, " + afterLabel + " " + (100 - value) + "%");
+    }
+    slider.addEventListener("input", update);
+    comparison.appendChild(slider);
+    let pointer = null;
+    function move(event) {
+      const bounds = comparison.getBoundingClientRect();
+      if (!bounds.width) return;
+      slider.value = String(Math.max(0, Math.min(100, (event.clientX - bounds.left) / bounds.width * 100)));
+      update();
+    }
+    comparison.addEventListener("pointerdown", function (event) {
+      if (!event.isPrimary || event.button !== 0) return;
+      pointer = event.pointerId;
+      comparison.setPointerCapture(pointer);
+      slider.focus({preventScroll: true});
+      move(event);
+    });
+    comparison.addEventListener("pointermove", function (event) {
+      if (event.pointerId === pointer) move(event);
+    });
+    function release(event) {
+      if (event.pointerId !== pointer) return;
+      pointer = null;
+      if (comparison.hasPointerCapture(event.pointerId)) comparison.releasePointerCapture(event.pointerId);
+    }
+    comparison.addEventListener("pointerup", release);
+    comparison.addEventListener("pointercancel", release);
+    comparison.addEventListener("lostpointercapture", function () { pointer = null; });
+    update();
+    return comparison;
+  }
+
   function renderGalleryBlocks(p, grid) {
     p.blocks.forEach(function (block) {
+      if (block.type === "comparison") {
+        grid.appendChild(buildComparison(p, block));
+        return;
+      }
       if (block.type === "image") {
         grid.appendChild(galleryFigure(p, block.num, block.opaque));
         return;

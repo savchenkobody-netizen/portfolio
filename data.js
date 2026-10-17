@@ -568,7 +568,7 @@ const SITE = {
     "image": "./Car wrapping/1.webp",
     "imageVersions": {"3": "5c30adca399a", "5": "13818cfb6760"},
     "link": "./case-study.html?project=car-wrapping",
-    "blocks": [{ "type": "image-row", "nums": [2, 3] }, { "type": "image-row", "nums": [5, 4] }, { "type": "video-full", "num": 6, "extension": "mov", "controls": true }],
+    "blocks": [{ "type": "image-row", "nums": [2, 3] }, { "type": "image-row", "nums": [5, 4] }, { "type": "comparison", "before": "6a.webp", "after": "6b.webp", "label": { "en": "Side view", "de": "Seitenansicht", "uk": "Вигляд збоку" } }, { "type": "comparison", "before": "7a.webp", "after": "7b.webp", "label": { "en": "Rear view", "de": "Heckansicht", "uk": "Вигляд ззаду" } }],
     "caseStudy": {
         "type": {
             "en": "vehicle graphics & wrap design",

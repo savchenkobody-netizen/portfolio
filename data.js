@@ -587,8 +587,8 @@ const SITE = {
             "uk": "Küchen- und Möbelmontage · Güter- und Möbeltaxi"
         },
         "overview": {
-            "en": "Vehicle wrap design for Sven Griesche, a Leipzig-based entrepreneur offering kitchen selection, kitchen and furniture transport, and installation. Created in 2025 during my employment at Werbeagentur Wurzen.",
-            "de": "Fahrzeuggestaltung für Sven Griesche aus Leipzig: Küchenauswahl, Küchen- und Möbeltransport sowie Montage. Das Projekt entstand 2025 während meiner Tätigkeit bei Werbeagentur Wurzen."
+            "en": "Vehicle wrap design for Sven Griesche’s Citroën Jumper. The client is a Leipzig-based entrepreneur offering kitchen selection, kitchen and furniture transport, and installation. Created in 2025 during my employment at Werbeagentur Wurzen.",
+            "de": "Gestaltung eines Citroën Jumper für Sven Griesche aus Leipzig: Küchenauswahl, Küchen- und Möbeltransport sowie Montage. Das Projekt entstand 2025 während meiner Tätigkeit bei Werbeagentur Wurzen."
         },
         "headings": {
             "problem": {

@@ -835,7 +835,8 @@
     img.loading = "lazy";
     img.decoding = "async";
     img.alt = p.title + pick({en:" — gallery image ",de:" — Galeriebild ",uk:" — зображення "}) + n;
-    img.src = p.folder + "/" + n + ".webp";
+    const version = p.imageVersions && p.imageVersions[n];
+    img.src = p.folder + "/" + n + ".webp" + (version ? "?v=" + encodeURIComponent(version) : "");
     img.tabIndex = 0;
     img.setAttribute("role", "button");
     img.addEventListener("error", function () { fig.remove(); });

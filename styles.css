@@ -1877,6 +1877,7 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
 /* Balance the short paragraphs in the vehicle-wrap case study. */
 @media (min-width: 901px) {
   #caseStudy[data-project="car-wrapping"] .cs-sections .cs-text {
+    max-inline-size: 58ch;
     text-wrap: balance;
   }
 }

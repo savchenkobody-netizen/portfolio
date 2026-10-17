@@ -1885,7 +1885,8 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
 /* Vehicle photos form one continuous stack on mobile. */
 @media (max-width: 767px) {
   #caseStudy[data-project="car-wrapping"] + #csGallery,
-  #caseStudy[data-project="car-wrapping"] + #csGallery .dawdle-img-row {
+  #caseStudy[data-project="car-wrapping"] + #csGallery .dawdle-img-row,
+  #caseStudy[data-project="car-wrapping"] + #csGallery .character-sheets-grid {
     gap: 16px;
   }
 }

@@ -566,7 +566,7 @@ const SITE = {
     },
     "folder": "./Car wrapping",
     "image": "./Car wrapping/1.webp",
-    "imageVersions": { "5": "1f510d5391a3" },
+    "imageVersions": {"3": "5c30adca399a", "5": "13818cfb6760"},
     "link": "./case-study.html?project=car-wrapping",
     "blocks": [{ "type": "image-row", "nums": [2, 3] }, { "type": "image-row", "nums": [5, 4] }],
     "caseStudy": {

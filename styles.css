@@ -1873,3 +1873,10 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
 }
 
 .hero-eyebrow .specialty-dot { color: #000; }
+
+/* Balance the short paragraphs in the vehicle-wrap case study. */
+@media (min-width: 901px) {
+  #caseStudy[data-project="car-wrapping"] .cs-sections .cs-text {
+    text-wrap: balance;
+  }
+}

@@ -784,6 +784,7 @@
     }
 
     const p = SITE.projects[idx];
+    page.dataset.project = p.slug;
     const cs = p.caseStudy || {};
     document.title = p.title + " — Bohdan Savchenko";
 

@@ -1195,6 +1195,7 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   -webkit-tap-highlight-color: transparent;
   transition: transform 200ms var(--ease-out);
 }
+.dawdle-video.ctrl-right .dawdle-video-ctrl { left: auto; right: 14px; }
 .dawdle-video-ctrl:hover { transform: scale(1.06); }
 .dawdle-video-ctrl:focus-visible { outline: 2px solid var(--timeline-accent, #DFFF3C); outline-offset: 3px; border-radius: 50%; }
 .dawdle-video-ctrl svg { width: 100%; height: 100%; display: block; overflow: visible; }

@@ -1098,6 +1098,7 @@
             video.style.top = (-100 * crop[1] / ch) + "%";
           }
 
+          if (block.controlsRight) cell.classList.add("ctrl-right");   // pause button bottom-right
           attachLoopControls(video, cell, p.title + " clip " + n);
           row.appendChild(cell);
         });

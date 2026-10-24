@@ -1888,11 +1888,14 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   vertical-align: .2em;
 }
 
-/* Balance the short paragraphs in the vehicle-wrap case study. */
+/* Vehicle-wrap case study: the three paragraphs are short, so they don't fill
+   their columns. Give all three the SAME text measure and fill lines greedily
+   (no balancing, which shrinks each block by a different amount per language),
+   so the empty space between neighbouring text blocks stays equal in EN/DE/UA. */
 @media (min-width: 901px) {
   #caseStudy[data-project="car-wrapping"] .cs-sections .cs-text {
-    max-inline-size: 58ch;
-    text-wrap: balance;
+    max-inline-size: 36ch;
+    text-wrap: wrap;
   }
 }
 

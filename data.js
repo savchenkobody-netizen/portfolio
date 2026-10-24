@@ -619,6 +619,72 @@ const SITE = {
             "de": "Eine abgestimmte Fahrzeuggestaltung mit klarer Hierarchie für Leistungen, Namen und Kontaktdaten."
         }
     }
-}
+},
+    {
+        "slug": "savechain",
+        "status": "ready",
+        "filter": "branding",
+        "title": "SaveChain",
+        "category": {"en": "online banking", "de": "online-banking", "uk": "онлайн-банкінг"},
+        "folder": "./SaveChain",
+        "image": "./SaveChain/1.webp",
+        "link": "./case-study.html?project=savechain",
+    "blocks": [{"type": "image-row", "nums": [2, 3]}, {"type": "video-row", "nums": [4, "Logo"], "extensions": ["webm", "mp4"], "transparent": [true, false], "posters": ["4-poster.webp", null], "crops": [[0.025, 0.0333333, 0.975, 0.9666667], null], "ratios": ["3648 / 2688", "2560 / 1440"], "columns": "minmax(0, 1.3571429fr) minmax(0, 1.7777778fr)"}, {"type": "image", "num": 5}, {"type": "image-row", "nums": [6, 7]}],
+        "caseStudy": {
+            "type": {
+                "en": "logo design & brand identity",
+                "de": "logodesign & markenidentität",
+                "uk": "дизайн логотипу та айдентики"
+            },
+            "role": {
+                "en": "brand designer",
+                "de": "brand designer",
+                "uk": "бренд-дизайнер"
+            },
+            "client": {
+                "en": "SaveChain (online bank)",
+                "de": "SaveChain (Online-Bank)",
+                "uk": "SaveChain (онлайн-банк)"
+            },
+            "year": "2021",
+            "headings": {
+                "problem": {
+                    "en": "the competition",
+                    "de": "der wettbewerb",
+                    "uk": "конкурс"
+                },
+                "research": {
+                    "en": "the logo concept",
+                    "de": "das logo-konzept",
+                    "uk": "концепція логотипу"
+                },
+                "final": {
+                    "en": "colour & the aftermath",
+                    "de": "farbwelt & nachspiel",
+                    "uk": "колір і розв’язка"
+                }
+            },
+            "overview": {
+                "en": "SaveChain is an online bank built for fast money transfers and cryptocurrency. I designed its logo in 2021 as a competition entry on Freelancehunt, Ukraine's largest freelance marketplace, with no fixed brief and more than 100 designers competing. The goal was a mark that feels as secure as a bank and as quick as a digital product.",
+                "de": "SaveChain ist eine Online-Bank für schnelle Geldüberweisungen und Kryptowährungen. Das Logo entstand 2021 als Wettbewerbsbeitrag auf Freelancehunt, der größten ukrainischen Freelance-Plattform – ohne festes Briefing und gegen mehr als 100 teilnehmende Designer. Ziel war ein Zeichen, das so sicher wirkt wie eine Bank und so schnell wie ein digitales Produkt.",
+                "uk": "SaveChain — це онлайн-банк для швидких переказів коштів і криптовалюти. Логотип я розробив у 2021 році як конкурсну роботу на Freelancehunt, найбільшій українській фріланс-біржі: без чіткого технічного завдання та серед понад 100 учасників. Мета — створити знак, який виглядає так само надійно, як банк, і так само швидко, як цифровий продукт."
+            },
+            "problem": {
+                "en": "This was a contest, not a commissioned job: no brief to follow, just a name, a field and a crowd of competitors. The challenge was to stand out in a category full of generic blue shields and coins, and to say 'banking' and 'crypto' at once without a single cliché.",
+                "de": "Es war ein Wettbewerb und kein Auftrag: kein Briefing, nur ein Name, eine Branche und eine Menge Mitbewerber. Die Herausforderung bestand darin, sich in einer Kategorie voller blauer Schilde und Münzen abzuheben und 'Banking' und 'Krypto' zugleich zu vermitteln – ohne ein einziges Klischee.",
+                "uk": "Це був конкурс, а не замовлення: жодного брифу, лише назва, сфера та десятки конкурентів. Завдання — виділитися в ніші, повній шаблонних синіх щитів і монет, і передати водночас «банк» та «крипто» без жодного кліше."
+            },
+            "research": {
+                "en": "The icon comes straight from the name: two interlocked chain links, a nod to both 'save' and 'chain'. The links read as a secure connection between people and as the linked blocks of a blockchain. The rounded-rectangle links are drawn with the same stroke and corner radius as the wide, technical wordmark, so symbol and lettering behave like one piece.",
+                "de": "Das Symbol entsteht direkt aus dem Namen: zwei ineinandergreifende Kettenglieder – ein Verweis auf 'Save' und auf 'Chain'. Die Glieder stehen für eine sichere Verbindung zwischen Menschen und zugleich für die verketteten Blöcke einer Blockchain. Die abgerundeten Glieder sind mit derselben Linienstärke und demselben Eckenradius gezeichnet wie die breite, technische Wortmarke, sodass Zeichen und Schrift als ein Ganzes wirken.",
+                "uk": "Іконка випливає прямо з назви: дві зчеплені ланки ланцюга — натяк і на «save», і на «chain». Ланки читаються як надійний зв’язок між людьми і водночас як пов’язані блоки блокчейну. Ланки із заокругленими кутами намальовані з тією самою товщиною лінії та радіусом, що й широкий технічний шрифт логотипу, тож знак і напис сприймаються як єдине ціле."
+            },
+            "final": {
+                "en": "The palette stays deliberately digital: a deep, near-black ground, a crisp white mark and a cool teal accent. Dark surfaces signal trust and discretion, white keeps the logo razor sharp on screens, and the teal adds a calm, technological note that feels fresh next to the usual financial blues. In the final round another entry took first place. Some time later, however, the client got back in touch: they had changed their mind about the winning design and wanted to buy mine instead. It is a quiet kind of win, a logo chosen after the competition was already over.",
+                "de": "Die Farbwelt ist bewusst digital gehalten: ein tiefer, fast schwarzer Grund, ein klares weißes Zeichen und ein kühler Türkis-Akzent. Dunkle Flächen stehen für Vertrauen und Diskretion, Weiß hält das Logo auf Bildschirmen gestochen scharf, und das Türkis setzt einen ruhigen, technologischen Akzent, der neben den üblichen Finanzblautönen frisch wirkt. In der Finalrunde belegte ein anderer Beitrag den ersten Platz. Einige Zeit später meldete sich der Auftraggeber jedoch erneut: Er hatte seine Meinung zum Siegerentwurf geändert und wollte stattdessen meinen erwerben. Ein leiser Sieg – ein Logo, das erst nach dem Wettbewerb gewählt wurde.",
+                "uk": "Палітра свідомо цифрова: глибокий майже чорний фон, чіткий білий знак і холодний бірюзовий акцент. Темні поверхні передають довіру та стриманість, білий робить логотип різким на екранах, а бірюзовий додає спокійну технологічну ноту, свіжішу за звичні фінансові сині. У фіналі перше місце посів інший учасник. Проте згодом замовник сам написав мені: він передумав щодо переможного варіанта й захотів викупити мій. Це тиха перемога — логотип, обраний уже після завершення конкурсу."
+            }
+        }
+    }
   ]
 };

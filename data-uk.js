@@ -138,6 +138,7 @@ const UK_PROJECTS = {
 };
 SITE.projects.forEach(p => {
  const a = UK_PROJECTS[p.slug];
+ if (!a) return;   // project carries its own inline "uk" strings in data.js (e.g. savechain)
  p.category.uk = a[0];
  const cs = p.caseStudy;
  ["type", "role", "client", "overview", "problem", "research", "final"].forEach((key,i) => cs[key].uk = a[i]);

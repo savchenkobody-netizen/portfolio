@@ -1159,6 +1159,9 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   .dawdle-video-row { grid-template-columns: var(--video-columns, repeat(2, 1fr)); }   /* videos: 2 equal */
 }
 
+/* alpha-channel clip inside a video row: no card behind it */
+.dawdle-video.dawdle-video.is-transparent { background: none; border-radius: 0; }
+
 /* --- video cell --- */
 .dawdle-video {
   position: relative;
@@ -1366,6 +1369,8 @@ main { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter
   line-height: 0;                      /* no inline-descender gap under the video */
   background: var(--bg-elevated);
 }
+/* clip with an alpha channel (e.g. .webm): no card behind it, page background shows through */
+.cs-video-full.is-transparent { background: none; border-radius: 0; overflow: visible; }
 .cs-video-full video {
   display: block;
   width: 100%;

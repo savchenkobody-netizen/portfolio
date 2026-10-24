@@ -1052,10 +1052,11 @@
         block.nums.forEach(function (n, i) {
           const cell = document.createElement("div");
           cell.className = "dawdle-video";
+          if (block.transparent && block.transparent[i]) cell.classList.add("is-transparent");   // alpha clip: page bg shows through
           if (block.ratios || block.ratio) cell.style.setProperty("--video-ratio", block.ratios ? block.ratios[i] : block.ratio);
 
           const video = document.createElement("video");
-          video.src = p.folder + "/" + n + "." + (block.extension || "mp4");
+          video.src = p.folder + "/" + n + "." + (block.extensions ? block.extensions[i] : block.extension || "mp4");
           video.autoplay = true;
           video.loop = true;
           video.muted = true;              // property form: required for programmatic autoplay
@@ -1066,7 +1067,36 @@
           video.setAttribute("playsinline", "");     // iOS Safari: play inline, not fullscreen
           video.setAttribute("webkit-playsinline", "");
           video.setAttribute("aria-label", p.title + " — demo clip " + n);
-          video.addEventListener("error", function () { cell.remove(); });
+          const poster = block.posters && block.posters[i];
+          video.addEventListener("error", function () {
+            if (!poster) { cell.remove(); return; }
+            /* browser can't play this clip (e.g. an alpha .webm in Safari): keep the
+               cell and show a still frame instead, so the row never loses a column */
+            video.style.display = "none";
+            const ctl = cell.querySelector(".dawdle-video-ctrl");
+            if (ctl) ctl.remove();
+            const still = document.createElement("img");
+            still.src = p.folder + "/" + poster;
+            still.alt = p.title + " — clip " + n;
+            still.style.cssText = video.getAttribute("style") || "";
+            still.style.position = "absolute";
+            if (!video.style.width) { still.style.inset = "0"; still.style.width = "100%"; still.style.height = "100%"; }
+            still.style.objectFit = "cover";
+            still.style.display = "block";
+            cell.appendChild(still);
+          });
+          /* crop: [left, top, right, bottom] fractions of the frame holding the
+             real content — scales the clip up so empty transparent margins sit
+             outside the cell and the content edges line up with the row */
+          const crop = block.crops && block.crops[i];
+          if (crop) {
+            const cw = crop[2] - crop[0], ch = crop[3] - crop[1];
+            video.style.inset = "auto";
+            video.style.width = (100 / cw) + "%";
+            video.style.height = (100 / ch) + "%";
+            video.style.left = (-100 * crop[0] / cw) + "%";
+            video.style.top = (-100 * crop[1] / ch) + "%";
+          }
 
           attachLoopControls(video, cell, p.title + " clip " + n);
           row.appendChild(cell);
@@ -1158,6 +1188,7 @@
       if (block.type === "video-full") {
         const wrap = document.createElement("div");
         wrap.className = "cs-video-full";
+        if (block.transparent) wrap.classList.add("is-transparent");   // alpha-channel clip: show the page bg
 
         const video = document.createElement("video");
         video.src = p.folder + "/" + block.num + "." + (block.extension || "mp4");

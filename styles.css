@@ -1909,6 +1909,16 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   }
 }
 
+/* SaveChain on mobile: one even rhythm between every card, whether it sits in the
+   same row or in the next block (same 16px the vehicle-wrap case study uses). */
+@media (max-width: 767px) {
+  #caseStudy[data-project="savechain"] + #csGallery,
+  #caseStudy[data-project="savechain"] + #csGallery .dawdle-img-row,
+  #caseStudy[data-project="savechain"] + #csGallery .dawdle-video-row {
+    gap: 16px;
+  }
+}
+
 .cs-video-full.has-loop-controls { position: relative; }
 
 /* Before/after comparison: images keep the same scale and original framing. */

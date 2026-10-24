@@ -233,6 +233,7 @@ const SITE = {
         "folder": "./SaveChain",
         "image": "./SaveChain/1.webp",
         "link": "./case-study.html?project=savechain",
+    "imageVersions": {"8": "adb76c50e978"},
     "blocks": [{"type": "image-row", "nums": [2, 3]}, {"type": "video-row", "nums": [4, "Logo"], "extensions": ["webm", "mp4"], "transparent": [true, false], "posters": ["4-poster.webp", null], "controlsRight": true, "crops": [[0.025, 0.0333333, 0.975, 0.9666667], null], "ratios": ["3648 / 2688", "2560 / 1440"], "columns": "minmax(0, 1.3571429fr) minmax(0, 1.7777778fr)"}, {"type": "image", "num": 5}, {"type": "image-row", "nums": [6, 7]}, {"type": "image", "num": 8}],
         "caseStudy": {
             "type": {

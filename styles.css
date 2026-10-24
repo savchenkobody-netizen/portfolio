@@ -1861,22 +1861,20 @@ body.has-custom-cursor .cs-figure img { cursor: zoom-in; }
   .projects-carousel .lightbox-nav { display: none; }
 }
 
-/* All languages share one column grid for the CTA and social links. */
+/* Footer on desktop: both rows use the SAME symmetric 3-column grid
+   (1fr · auto · 1fr), so the button and the social icons share one vertical
+   centre line on every page and in every language. The side columns are equal,
+   so a long contact line (DE/EN) can no longer push the icons off-centre. */
 @media (min-width: 721px) {
-  .site-footer {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    column-gap: clamp(16px, 4vw, 56px);
-  }
-  .site-footer > * { grid-column: 1 / -1; }
+  .footer-top,
   .footer-mid {
     display: grid;
-    grid-template-columns: subgrid;
-    column-gap: inherit;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   }
-  /* "get in [button] touch": the words hug the button instead of sitting in the
-     outer grid columns — the gap is set on .footer-top above */
-  .footer-top { justify-content: center; }
+  .footer-top { column-gap: clamp(16px, 4.5vw, 88px); }
+  /* the two words hug the button from each side */
+  .footer-top > .footer-word:first-child { justify-self: end; }
+  .footer-top > .footer-word:last-child { justify-self: start; }
   .footer-go { max-width: 100%; }
 }
 
